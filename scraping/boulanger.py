@@ -18,12 +18,29 @@ def get_infos_boulanger(product_name):
     
     if products:
         for product in products:
-            name = product.select_one('.product-list__product-label').text
-            brand = product.select_one('.product-list__product-label > strong').text
-            price = product.select_one('.price__amount').text
-            description = product.select_one('.keypoints').text
-            url_product = root + product.select_one('.product-list__product-image-link').get('href')
-            url_image = product.select_one('product-list__product-image').get('src')
+            name = product.select_one('.product-list__product-label')
+            if name:
+                name = name.get_text(strip=True)
+                
+            brand = product.select_one('.product-list__product-label > strong')
+            if brand:
+                brand = brand.get_text(strip=True)
+                
+            price = product.select_one('.price__amount')
+            if price:
+                price = price.get_text(strip=True)
+                
+            description = product.select_one('.keypoints')
+            if description:
+                description = description.get_text(strip=True)
+                
+            url_product = product.select_one('.product-list__product-image-link')
+            if url_product:
+                url_product = root + url_product.get('href')
+                
+            url_image = product.select_one('img.product-list__product-image')
+            if url_image:
+                url_image = url_image.get('src')
             
             try:
                 data = {
@@ -40,9 +57,17 @@ def get_infos_boulanger(product_name):
             except:
                 #if a variable is not defined
                 #! raise an error
+                print("problem")
+    
+    return data_list
+               
+          
             
-            
-            
+if __name__ == "__main__":
+    product = "ordinateur"
+    data = get_infos_boulanger(product_name=product)
+    print(data)
+    
     
     
     
