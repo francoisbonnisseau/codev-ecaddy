@@ -6,9 +6,24 @@ headers = {
 }
 
 
-def get_infos_boulanger(procuct_name):
-    url = f"https://www.boulanger.com/c/televiseur#tr="
+def get_infos_boulanger(product_name):
+    root = "https://boulanger.com"
+    url = f"https://www.boulanger.com/resultats?tr={product_name}"
+    page = requests.get(url, headers=headers)
+    soup = BeautifulSoup(page.text, "html.parser")
     
+    products = soup.select('.product-list__item')
+    data = {} #? forme {'Nom','Marque,'Prix','Description','Url','Url_image'}
+    
+    if products:
+        for product in products:
+            name = product.select_one('.product-list__product-label').text
+            brand = product.select_one('.product-list__product-label > strong').text
+            price = product.select_one('.price__amount').text
+            description = product.select_one('.keypoints').text
+            url_product = root + product.select_one('.product-list__product-image-link').get('href')
+            url_image = product.select_one('product-list__product-image').get('src')
+            
     
     
     
