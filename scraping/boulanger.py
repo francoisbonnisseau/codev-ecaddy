@@ -13,6 +13,7 @@ def get_infos_boulanger(product_name):
     soup = BeautifulSoup(page.text, "html.parser")
     
     products = soup.select('.product-list__item')
+    data_list = []
     data = {} #? forme {'Nom','Marque,'Prix','Description','Url','Url_image'}
     
     if products:
@@ -23,6 +24,24 @@ def get_infos_boulanger(product_name):
             description = product.select_one('.keypoints').text
             url_product = root + product.select_one('.product-list__product-image-link').get('href')
             url_image = product.select_one('product-list__product-image').get('src')
+            
+            try:
+                data = {
+                    'Nom' : name,
+                    'Marque' : brand,
+                    'Prix' : price,
+                    'Description' :description,
+                    'Url' : url_product,
+                    'Url_image' : url_image
+                }
+                
+                data_list.append(data)
+                
+            except:
+                #if a variable is not defined
+                #! raise an error
+            
+            
             
     
     
