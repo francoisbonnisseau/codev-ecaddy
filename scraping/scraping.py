@@ -45,7 +45,7 @@ def get_data_from_sites(sites_list, product):
     return product_data
 
 product_data = get_data_from_sites(sites, searched_product)
-print(product_data)
+# print(product_data)
 
 for site in sites:
     if os.path.isdir(today_date):
