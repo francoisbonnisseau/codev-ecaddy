@@ -6,7 +6,7 @@ headers = {
 }
 
 
-def get_infos_boulanger(product_name):
+def get_infos(product_name):
     root = "https://boulanger.com"
     url = f"https://www.boulanger.com/resultats?tr={product_name}"
     page = requests.get(url, headers=headers)
@@ -65,7 +65,7 @@ def get_infos_boulanger(product_name):
             
 if __name__ == "__main__":
     product = "ordinateur"
-    data = get_infos_boulanger(product_name=product)
+    data = get_infos(product_name=product)
     print(data)
     
     
