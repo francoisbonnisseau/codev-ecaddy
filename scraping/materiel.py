@@ -12,33 +12,33 @@ def get_infos_materiel(product_name):
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.text, "html.parser")
     
-    products = soup.select('.product-list__item')
+    products = soup.select('.c-products-list__item')
     data_list = []
     data = {} #? forme {'Nom','Marque,'Prix','Description','Url','Url_image'}
     
     if products:
         for product in products:
-            name = product.select_one('.product-list__product-label')
+            name = product.select_one('.c-product__title')
             if name:
                 name = name.get_text(strip=True)
                 
-            brand = product.select_one('.product-list__product-label > strong')
+            brand = product.select_one('.c-product__title')
             if brand:
-                brand = brand.get_text(strip=True)
+                brand = brand.get_text(strip=True).split(" ")[0]
                 
-            price = product.select_one('.price__amount')
+            price = product.select_one('.o-product__price')
             if price:
                 price = price.get_text(strip=True)
                 
-            description = product.select_one('.keypoints')
+            description = product.select_one('.c-product__description')
             if description:
                 description = description.get_text(strip=True)
                 
-            url_product = product.select_one('.product-list__product-image-link')
+            url_product = product.select_one('.c-product__link')
             if url_product:
                 url_product = root + url_product.get('href')
                 
-            url_image = product.select_one('img.product-list__product-image')
+            url_image = product.select_one('.c-product__thumb > a > img.img-fluid')
             if url_image:
                 url_image = url_image.get('src')
             
@@ -64,7 +64,7 @@ def get_infos_materiel(product_name):
           
             
 if __name__ == "__main__":
-    product = "ordinateur"
+    product = "ecouteurs"
     data = get_infos_materiel(product_name=product)
     print(data)
     
