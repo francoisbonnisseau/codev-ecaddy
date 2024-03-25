@@ -38,22 +38,23 @@ def save_data_in_csv(data, name, site_name):
 def get_data_from_sites(sites_list, product):
     product_data = {}
     if "boulanger" in sites_list:
-        product_data["boulanger"] = boulanger.get_products(product)
+        product_data["boulanger"] = boulanger.get_infos(product)
 
     if "materiel" in sites_list:
-        product_data["materiel"] = materiel.get_products(product)
+        product_data["materiel"] = materiel.get_infos(product)
     return product_data
 
 product_data = get_data_from_sites(sites, searched_product)
 print(product_data)
 
 for site in sites:
-    try:
+    if os.path.isdir(today_date):
+        os.chdir(today_date)
+        save_data_in_csv(product_data, searched_product, site)
+    else:
         os.mkdir(today_date)
         os.chdir(today_date)
         save_data_in_csv(product_data, searched_product, site)
-    except:
-        os.chdir(today_date)
-        save_data_in_csv(product_data, searched_product, site)
+        os.chdir('..')
     
     
