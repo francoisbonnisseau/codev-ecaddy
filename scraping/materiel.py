@@ -7,7 +7,6 @@ headers = {
 
 
 def get_infos(product_name):
-    root = "https://boulanger.com"
     url = f"https://www.materiel.net/recherche/{product_name}"
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.text, "html.parser")
@@ -36,7 +35,7 @@ def get_infos(product_name):
                 
             url_product = product.select_one('.c-product__link')
             if url_product:
-                url_product = root + url_product.get('href')
+                url_product = url_product.get('href')
                 
             url_image = product.select_one('.c-product__thumb > a > img.img-fluid')
             if url_image:
