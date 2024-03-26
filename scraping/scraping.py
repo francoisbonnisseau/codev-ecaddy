@@ -4,57 +4,82 @@ Ce fichier a pour but de rassembler les données scrapées dans chaque fichier "
 
 import csv
 from datetime import date
-import boulanger, materiel
 import os
-
-sites = ["boulanger", "materiel"]
-
-searched_product = "ecouteurs"
-
+from bs4 import BeautifulSoup
+import requests
 
 today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
+headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
+        }
 
+class Site:
+    def __init__(self, nom, base_url, search_url, selectors):
+        self.nom = nom
+        self.base_url = base_url
+        self.search_url = search_url
+        self.selectors = selectors
+        self.data_list = []
 
+    def get_infos(self, product_name):
+        url = f"{self.search_url}{product_name}"
+        page = requests.get(url, headers=headers)
+        soup = BeautifulSoup(page.text, "html.parser")
+
+        products = soup.select(self.selectors['products'])
+
+        for product in products:
+            name = self._extract_text(product, self.selectors['name'])
+            brand = self._extract_text(product, self.selectors['brand'])
+            price = self._extract_text(product, self.selectors['price'])
+            description = self._extract_text(product, self.selectors['description'])
+            url_product = self._extract_attribute(product, self.selectors['url_product'], 'href')
+            url_image = self._extract_attribute(product, self.selectors['url_image'], 'src')
+
+            data = {
+                'Nom': name,
+                'Marque': brand,
+                'Prix': price,
+                'Description': description,
+                'Url': url_product,
+                'Url_image': url_image
+            }
+            
+            self.data_list.append(data)
+
+    def _extract_text(self, element, selector):
+        selected_element = element.select_one(selector)
+        return selected_element.get_text(strip=True) if selected_element else None
+
+    def _extract_attribute(self, element, selector, attribute):
+        selected_element = element.select_one(selector)
+        return selected_element.get(attribute) if selected_element else None
     
-def save_data_in_csv(data, name, site_name):
-    # Enregistrer les données dans un fichier CSV
-    csv_file = open(f'{site_name}_{name}.csv', 'w', encoding='utf-8', newline='')
-    writer = csv.writer(csv_file)
-
-
-    with open(f'{site_name}_{name}.csv', 'w', encoding='utf-8', newline='') as csv_file:
+    def _save_data_in_csv(self, product_name):
+        # Enregistrer les données dans un fichier CSV
+        csv_file = open(f'{self.nom}_{product_name}.csv', 'w', encoding='utf-8', newline='')
         writer = csv.writer(csv_file)
-        # Écrire l'en-tête du searched_fichier CSV
-        writer.writerow(['Nom', 'Marque', 'Prix', 'Description', 'Url', 'Url_image'])
-        
-        # Écrire chaque ligne de données dans le fichier CSV
-        for product in data[site_name]:
-            writer.writerow([product['Nom'], product['Marque'], product['Prix'], product['Description'], product['Url'], product['Url_image']])
 
-    print(f"données de {name} du site {site_name} sauvegardées")
-    # Fermer le fichier CSV
-    csv_file.close()
+        with open(f'{self.nom}_{product_name}.csv', 'w', encoding='utf-8', newline='') as csv_file:
+            writer = csv.writer(csv_file)
+            # Écrire l'en-tête du searched_fichier CSV
+            writer.writerow(['Nom', 'Marque', 'Prix', 'Description', 'Url', 'Url_image'])
 
-def get_data_from_sites(sites_list, product):
-    product_data = {}
-    if "boulanger" in sites_list:
-        product_data["boulanger"] = boulanger.get_infos(product)
+            # Écrire chaque ligne de données dans le fichier CSV
+            for product in self.data_list:
+                writer.writerow([product['Nom'], product['Marque'], product['Prix'], product['Description'], product['Url'], product['Url_image']])
 
-    if "materiel" in sites_list:
-        product_data["materiel"] = materiel.get_infos(product)
-    return product_data
-
-product_data = get_data_from_sites(sites, searched_product)
-# print(product_data)
-
-for site in sites:
-    if os.path.isdir(today_date):
-        os.chdir(today_date)
-        save_data_in_csv(product_data, searched_product, site)
-    else:
-        os.mkdir(today_date)
-        os.chdir(today_date)
-        save_data_in_csv(product_data, searched_product, site)
-        os.chdir('..')
-    
-    
+            # Fermer le fichier CSV
+            csv_file.close()
+            
+    def _write_data(self, product_name):
+        self.get_infos(product_name)
+        if os.path.isdir(today_date):
+            os.chdir(today_date)
+            self.save_data_in_csv(self, product_name)
+            os.chdir('..')
+        else:
+            os.mkdir(today_date)
+            os.chdir(today_date)
+            self.save_data_in_csv(self, product_name)
+            os.chdir('..')
