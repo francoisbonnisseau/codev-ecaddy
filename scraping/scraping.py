@@ -133,6 +133,19 @@ if __name__ == "__main__":
                 'url_product': '.prod_txt_left',
                 'url_image': '.grb__liste-produit__liste__produit__image > a.prod_txt_left > img'
             }
+        },
+        'cybertech':{
+            'base_url' : 'https://www.cybertek.fr/',
+            'search_url' : 'https://www.cybertek.fr/boutique/produit.aspx?q=',
+            'selectors' : {
+                'products': '.la_liste_des_produits.grb__liste-produit__liste__produit',
+                'name': '.grb__liste-produit__liste__produit__information__libelle__libelle_produit',
+                'brand': '.grb__liste-produit__liste__produit__information__constructeur',
+                'price': '.grb__liste-produit__liste__produit__achat__prix > span',
+                'description': '.grb__liste-produit__liste__produit__information__caracteristiques__liste',
+                'url_product': '.prod_txt_left',
+                'url_image': '.grb__liste-produit__liste__produit__image > a.prod_txt_left > img'
+            }
         }
     }
 
@@ -140,9 +153,12 @@ if __name__ == "__main__":
     materiel_net = Site('materiel', site_informations['materiel']['base_url'], site_informations['materiel']['search_url'], site_informations['materiel']['selectors'])
     boulanger = Site('boulanger', site_informations['boulanger']['base_url'], site_informations['boulanger']['search_url'], site_informations['boulanger']['selectors'])
     grosbill = Site('grosbill', site_informations['grosbill']['base_url'], site_informations['grosbill']['search_url'], site_informations['grosbill']['selectors'])
+    cybertech = Site('cybertech', site_informations['cybertech']['base_url'], site_informations['cybertech']['search_url'], site_informations['cybertech']['selectors'])
+    
     
     # Get product information
-    product = "ecouteurs"
+    product = "asus"
     materiel_net.write_data(product_name=product)
     boulanger.write_data(product_name=product)
     grosbill.write_data(product_name=product)
+    cybertech.write_data(product_name=product)
