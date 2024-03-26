@@ -37,6 +37,9 @@ class Site:
             
             if self.nom == 'materiel':
                 brand = brand.split(" ")[0]
+            
+            # if self.nom == 'boulanger' or self.nom == 'grosbill':
+            #     url_image = self.base_url + url_image
                 
             data = {
                 'Nom': name,
@@ -117,14 +120,29 @@ if __name__ == "__main__":
                 'url_product': '.c-product__link',
                 'url_image': '.c-product__thumb > a > img.img-fluid'
             }
+        },
+        'grosbill': {
+            'base_url' : 'https://www.grosbill.com',
+            'search_url' : 'https://www.grosbill.com/produit.aspx?q=',
+            'selectors' : {
+                'products': '.la_liste_des_produits.grb__liste-produit__liste__produit',
+                'name': '.grb__liste-produit__liste__produit__information__libelle__libelle_produit',
+                'brand': '.grb__liste-produit__liste__produit__information__constructeur',
+                'price': '.grb__liste-produit__liste__produit__achat__prix > span',
+                'description': '.grb__liste-produit__liste__produit__information__caracteristiques__liste',
+                'url_product': '.prod_txt_left',
+                'url_image': '.grb__liste-produit__liste__produit__image > a.prod_txt_left > img'
+            }
         }
     }
 
     #creation des instances de classe Site
     materiel_net = Site('materiel', site_informations['materiel']['base_url'], site_informations['materiel']['search_url'], site_informations['materiel']['selectors'])
     boulanger = Site('boulanger', site_informations['boulanger']['base_url'], site_informations['boulanger']['search_url'], site_informations['boulanger']['selectors'])
-    
+    grosbill = Site('grosbill', site_informations['grosbill']['base_url'], site_informations['grosbill']['search_url'], site_informations['grosbill']['selectors'])
     
     # Get product information
     product = "ecouteurs"
     materiel_net.write_data(product_name=product)
+    boulanger.write_data(product_name=product)
+    grosbill.write_data(product_name=product)
