@@ -90,22 +90,41 @@ class Site:
 
 
 if __name__ == "__main__":
-    # Define the base URL and selectors for the Materiel.net website
-    base_url = "https://www.materiel.net"
-    search_url = "https://www.materiel.net/recherche/"
-    selectors = {
-        'products': '.c-products-list__item',
-        'name': '.c-product__title',
-        'brand': '.c-product__title',  # Assuming brand is also inside title element
-        'price': '.o-product__price',
-        'description': '.c-product__description',
-        'url_product': '.c-product__link',
-        'url_image': '.c-product__thumb > a > img.img-fluid'
+    
+    site_informations = {
+        'boulanger': {
+            'base_url': 'https://boulanger.com',
+            'search_url': 'https://www.boulanger.com/resultats?tr=',
+            'selectors': {
+                'products': '.product-list__item',
+                'name': '.product-list__product-label',
+                'brand': '.product-list__product-label > strong',
+                'price': '.price__amount',
+                'description': '.keypoints',
+                'url_product': '.product-list__product-image-link',
+                'url_image': 'img.product-list__product-image'
+            }
+        },
+        'materiel': {
+            'base_url' : 'https://materiel.net',
+            'search_url' : 'https://www.materiel.net/recherche/',
+            'selectors' : {
+                'products': '.c-products-list__item',
+                'name': '.c-product__title',
+                'brand': '.c-product__title',  # traitement spécifique pour ce site
+                'price': '.o-product__price',
+                'description': '.c-product__description',
+                'url_product': '.c-product__link',
+                'url_image': '.c-product__thumb > a > img.img-fluid'
+            }
+        }
     }
 
-    # Create an instance of the Site class for Materiel.net
-    materiel_net_site = Site('materiel', base_url, search_url, selectors)
-
+    #creation des instances de classe Site
+    materiel_net = Site('materiel', site_informations['materiel']['base_url'], site_informations['materiel']['search_url'], site_informations['materiel']['selectors'])
+    boulanger = Site('boulanger', site_informations['boulanger']['base_url'], site_informations['boulanger']['search_url'], site_informations['boulanger']['selectors'])
+    
+    
     # Get product information
     product = "ecouteurs"
-    materiel_net_site.write_data(product_name=product)
+    materiel_net.write_data(product_name=product)
