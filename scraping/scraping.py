@@ -134,7 +134,7 @@ if __name__ == "__main__":
                 'url_image': '.grb__liste-produit__liste__produit__image > a.prod_txt_left > img'
             }
         },
-        'cybertech':{
+        'cybertech': {
             'base_url' : 'https://www.cybertek.fr/',
             'search_url' : 'https://www.cybertek.fr/boutique/produit.aspx?q=',
             'selectors' : {
@@ -146,6 +146,19 @@ if __name__ == "__main__":
                 'url_product': '.prod_txt_left',
                 'url_image': '.grb__liste-produit__liste__produit__image > a.prod_txt_left > img'
             }
+        },
+        'alternate': {
+            'base_url': 'https://www.alternate.fr/',
+            'search_url': 'https://www.alternate.fr/listing.xhtml?q=',
+            'selectors': {
+                'products': '.productBox.boxCounter',
+                'name': '.product-name',
+                'brand': '.product-name > span',
+                'price': 'span.price',
+                'description': '.product-info',
+                'url_product': '.productBox.boxCounter',
+                'url_image': 'img.productPicture'
+            }
         }
     }
 
@@ -154,7 +167,7 @@ if __name__ == "__main__":
     boulanger = Site('boulanger', site_informations['boulanger']['base_url'], site_informations['boulanger']['search_url'], site_informations['boulanger']['selectors'])
     grosbill = Site('grosbill', site_informations['grosbill']['base_url'], site_informations['grosbill']['search_url'], site_informations['grosbill']['selectors'])
     cybertech = Site('cybertech', site_informations['cybertech']['base_url'], site_informations['cybertech']['search_url'], site_informations['cybertech']['selectors'])
-    
+    alternate = Site('alternate', site_informations['alternate']['base_url'], site_informations['alternate']['search_url'], site_informations['alternate']['selectors'])
     
     # Get product information
     product = "asus"
@@ -162,3 +175,4 @@ if __name__ == "__main__":
     boulanger.write_data(product_name=product)
     grosbill.write_data(product_name=product)
     cybertech.write_data(product_name=product)
+    alternate.write_data(product_name=product)
