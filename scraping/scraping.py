@@ -27,19 +27,24 @@ class Site:
 
         products = soup.select(self.selectors['products'])
 
-        for product in products:
+        for product in products: #cas général plus gestion de qq execptions selon le site
             name = self._extract_text(product, self.selectors['name'])
-            brand = self._extract_text(product, self.selectors['brand'])
+            if self.nom == 'materiel':
+                brand = self._extract_text(product, self.selectors['brand']).split(" ")[0]
+            else:
+                brand = self._extract_text(product, self.selectors['brand'])
             price = self._extract_text(product, self.selectors['price'])
             description = self._extract_text(product, self.selectors['description'])
-            url_product = self._extract_attribute(product, self.selectors['url_product'], 'href')
+            if self.nom == 'alternate':
+                url_product = product.get('href')
+            else:
+                url_product = self._extract_attribute(product, self.selectors['url_product'], 'href')
             url_image = self._extract_attribute(product, self.selectors['url_image'], 'src')
+                
             
-            if self.nom == 'materiel':
-                brand = brand.split(" ")[0]
-            
-            # if self.nom == 'boulanger' or self.nom == 'grosbill':
-            #     url_image = self.base_url + url_image
+            if self.nom == 'boulanger' or self.nom == 'grosbill' or self.nom == 'alternate':
+                if url_image:
+                    url_image = self.base_url + url_image
                 
             data = {
                 'Nom': name,
@@ -148,13 +153,13 @@ if __name__ == "__main__":
             }
         },
         'alternate': {
-            'base_url': 'https://www.alternate.fr/',
+            'base_url': 'https://www.alternate.fr',
             'search_url': 'https://www.alternate.fr/listing.xhtml?q=',
             'selectors': {
                 'products': '.productBox.boxCounter',
                 'name': '.product-name',
                 'brand': '.product-name > span',
-                'price': 'span.price',
+                'price': '.price',
                 'description': '.product-info',
                 'url_product': '.productBox.boxCounter',
                 'url_image': 'img.productPicture'
