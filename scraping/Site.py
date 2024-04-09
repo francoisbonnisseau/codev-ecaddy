@@ -7,6 +7,7 @@ from datetime import date
 import os
 from bs4 import BeautifulSoup
 import requests
+import json
 
 headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
@@ -98,81 +99,88 @@ class Site:
 
 
 if __name__ == "__main__":
+    # stockage des informations dans un json sites_information.json et lecture, stockage dans un dictionnaire
     
-    site_informations = {
-        'boulanger': {
-            'base_url': 'https://boulanger.com',
-            'search_url': 'https://www.boulanger.com/resultats?tr=',
-            'selectors': {
-                'products': '.product-list__item',
-                'name': '.product-list__product-label',
-                'brand': '.product-list__product-label > strong',
-                'price': '.price__amount',
-                'description': '.keypoints',
-                'url_product': '.product-list__product-image-link',
-                'url_image': 'img.product-list__product-image'
-            }
-        },
-        'materiel': {
-            'base_url' : 'https://materiel.net',
-            'search_url' : 'https://www.materiel.net/recherche/',
-            'selectors' : {
-                'products': '.c-products-list__item',
-                'name': '.c-product__title',
-                'brand': '.c-product__title',  # traitement spécifique pour ce site
-                'price': '.o-product__price',
-                'description': '.c-product__description',
-                'url_product': '.c-product__link',
-                'url_image': '.c-product__thumb > a > img.img-fluid'
-            }
-        },
-        'grosbill': {
-            'base_url' : 'https://www.grosbill.com',
-            'search_url' : 'https://www.grosbill.com/produit.aspx?q=',
-            'selectors' : {
-                'products': '.la_liste_des_produits.grb__liste-produit__liste__produit',
-                'name': '.grb__liste-produit__liste__produit__information__libelle__libelle_produit',
-                'brand': '.grb__liste-produit__liste__produit__information__constructeur',
-                'price': '.grb__liste-produit__liste__produit__achat__prix > span',
-                'description': '.grb__liste-produit__liste__produit__information__caracteristiques__liste',
-                'url_product': '.prod_txt_left',
-                'url_image': '.grb__liste-produit__liste__produit__image > a.prod_txt_left > img'
-            }
-        },
-        'cybertech': {
-            'base_url' : 'https://www.cybertek.fr/',
-            'search_url' : 'https://www.cybertek.fr/boutique/produit.aspx?q=',
-            'selectors' : {
-                'products': '.la_liste_des_produits.grb__liste-produit__liste__produit',
-                'name': '.grb__liste-produit__liste__produit__information__libelle__libelle_produit',
-                'brand': '.grb__liste-produit__liste__produit__information__constructeur',
-                'price': '.grb__liste-produit__liste__produit__achat__prix > span',
-                'description': '.grb__liste-produit__liste__produit__information__caracteristiques__liste',
-                'url_product': '.prod_txt_left',
-                'url_image': '.grb__liste-produit__liste__produit__image > a.prod_txt_left > img'
-            }
-        },
-        'alternate': {
-            'base_url': 'https://www.alternate.fr',
-            'search_url': 'https://www.alternate.fr/listing.xhtml?q=',
-            'selectors': {
-                'products': '.productBox.boxCounter',
-                'name': '.product-name',
-                'brand': '.product-name > span',
-                'price': '.price',
-                'description': '.product-info',
-                'url_product': '.productBox.boxCounter',
-                'url_image': 'img.productPicture'
-            }
-        }
-    }
+    with open('site_information.json', 'r') as infos_file:
+        site_information = json.load(infos_file)
+        # print(site_information)
+        print(json.dumps(site_information, indent=4, sort_keys=True))
+    
+    
+    # site_information = {
+    #     'boulanger': {
+    #         'base_url': 'https://boulanger.com',
+    #         'search_url': 'https://www.boulanger.com/resultats?tr=',
+    #         'selectors': {
+    #             'products': '.product-list__item',
+    #             'name': '.product-list__product-label',
+    #             'brand': '.product-list__product-label > strong',
+    #             'price': '.price__amount',
+    #             'description': '.keypoints',
+    #             'url_product': '.product-list__product-image-link',
+    #             'url_image': 'img.product-list__product-image'
+    #         }
+    #     },
+    #     'materiel': {
+    #         'base_url' : 'https://materiel.net',
+    #         'search_url' : 'https://www.materiel.net/recherche/',
+    #         'selectors' : {
+    #             'products': '.c-products-list__item',
+    #             'name': '.c-product__title',
+    #             'brand': '.c-product__title',  # traitement spécifique pour ce site
+    #             'price': '.o-product__price',
+    #             'description': '.c-product__description',
+    #             'url_product': '.c-product__link',
+    #             'url_image': '.c-product__thumb > a > img.img-fluid'
+    #         }
+    #     },
+    #     'grosbill': {
+    #         'base_url' : 'https://www.grosbill.com',
+    #         'search_url' : 'https://www.grosbill.com/produit.aspx?q=',
+    #         'selectors' : {
+    #             'products': '.la_liste_des_produits.grb__liste-produit__liste__produit',
+    #             'name': '.grb__liste-produit__liste__produit__information__libelle__libelle_produit',
+    #             'brand': '.grb__liste-produit__liste__produit__information__constructeur',
+    #             'price': '.grb__liste-produit__liste__produit__achat__prix > span',
+    #             'description': '.grb__liste-produit__liste__produit__information__caracteristiques__liste',
+    #             'url_product': '.prod_txt_left',
+    #             'url_image': '.grb__liste-produit__liste__produit__image > a.prod_txt_left > img'
+    #         }
+    #     },
+    #     'cybertech': {
+    #         'base_url' : 'https://www.cybertek.fr/',
+    #         'search_url' : 'https://www.cybertek.fr/boutique/produit.aspx?q=',
+    #         'selectors' : {
+    #             'products': '.la_liste_des_produits.grb__liste-produit__liste__produit',
+    #             'name': '.grb__liste-produit__liste__produit__information__libelle__libelle_produit',
+    #             'brand': '.grb__liste-produit__liste__produit__information__constructeur',
+    #             'price': '.grb__liste-produit__liste__produit__achat__prix > span',
+    #             'description': '.grb__liste-produit__liste__produit__information__caracteristiques__liste',
+    #             'url_product': '.prod_txt_left',
+    #             'url_image': '.grb__liste-produit__liste__produit__image > a.prod_txt_left > img'
+    #         }
+    #     },
+    #     'alternate': {
+    #         'base_url': 'https://www.alternate.fr',
+    #         'search_url': 'https://www.alternate.fr/listing.xhtml?q=',
+    #         'selectors': {
+    #             'products': '.productBox.boxCounter',
+    #             'name': '.product-name',
+    #             'brand': '.product-name > span',
+    #             'price': '.price',
+    #             'description': '.product-info',
+    #             'url_product': '.productBox.boxCounter',
+    #             'url_image': 'img.productPicture'
+    #         }
+    #     }
+    # }
 
     #creation des instances de classe Site
-    materiel_net = Site('materiel', site_informations['materiel']['base_url'], site_informations['materiel']['search_url'], site_informations['materiel']['selectors'])
-    boulanger = Site('boulanger', site_informations['boulanger']['base_url'], site_informations['boulanger']['search_url'], site_informations['boulanger']['selectors'])
-    grosbill = Site('grosbill', site_informations['grosbill']['base_url'], site_informations['grosbill']['search_url'], site_informations['grosbill']['selectors'])
-    cybertech = Site('cybertech', site_informations['cybertech']['base_url'], site_informations['cybertech']['search_url'], site_informations['cybertech']['selectors'])
-    alternate = Site('alternate', site_informations['alternate']['base_url'], site_informations['alternate']['search_url'], site_informations['alternate']['selectors'])
+    materiel_net = Site('materiel', site_information['materiel']['base_url'], site_information['materiel']['search_url'], site_information['materiel']['selectors'])
+    boulanger = Site('boulanger', site_information['boulanger']['base_url'], site_information['boulanger']['search_url'], site_information['boulanger']['selectors'])
+    grosbill = Site('grosbill', site_information['grosbill']['base_url'], site_information['grosbill']['search_url'], site_information['grosbill']['selectors'])
+    cybertech = Site('cybertech', site_information['cybertech']['base_url'], site_information['cybertech']['search_url'], site_information['cybertech']['selectors'])
+    alternate = Site('alternate', site_information['alternate']['base_url'], site_information['alternate']['search_url'], site_information['alternate']['selectors'])
     
     # Get product information
     product = "asus"
