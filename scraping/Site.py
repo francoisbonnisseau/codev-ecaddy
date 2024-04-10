@@ -23,9 +23,11 @@ class Site:
 
     def get_infos(self, product_name):
         url = f"{self.search_url}{product_name}"
+        #requête de la page demandée
         page = requests.get(url, headers=headers)
         soup = BeautifulSoup(page.text, "html.parser")
 
+        #on récupère la structure principale où sont stockés tous les produits sur la page
         products = soup.select(self.selectors['products'])
 
         for product in products: #cas général plus gestion de qq execptions selon le site
@@ -34,19 +36,23 @@ class Site:
                 brand = self._extract_text(product, self.selectors['brand']).split(" ")[0]
             else:
                 brand = self._extract_text(product, self.selectors['brand'])
+            #récupération du prix
             price = self._extract_text(product, self.selectors['price'])
+            #récupération de la description du produit
             description = self._extract_text(product, self.selectors['description'])
+            #? gestion des cas particuliers en fonction de la configuration des sites - ici pour alternate
             if self.nom == 'alternate':
                 url_product = product.get('href')
             else:
                 url_product = self._extract_attribute(product, self.selectors['url_product'], 'href')
             url_image = self._extract_attribute(product, self.selectors['url_image'], 'src')
                 
-            
+            #? gestion cas particuliers pour récupérer le lien complet de l'image
             if self.nom == 'boulanger' or self.nom == 'grosbill' or self.nom == 'alternate':
                 if url_image:
                     url_image = self.base_url + url_image
-                
+            
+            #on stocke toutes les données d'un produit dans ce dictionnaire data, que l'on ajoute ensuite à la liste data_list
             data = {
                 'Nom': name,
                 'Marque': brand,
@@ -59,13 +65,16 @@ class Site:
             self.data_list.append(data)
         return self.data_list
 
+    # méthode pour extraire le texte d'une balise html
     def _extract_text(self, element, selector):
         selected_element = element.select_one(selector)
         return selected_element.get_text(strip=True) if selected_element else None
 
+    #méthode pour extraire un attribut d'une balise html - on l'utilise ici pour l'url de l'image du produit, mais peut servir pour tout type d'attribut
     def _extract_attribute(self, element, selector, attribute):
         selected_element = element.select_one(selector)
         return selected_element.get(attribute) if selected_element else None
+    
     
     def _save_data_in_csv(self, product_name):
         # Enregistrer les données dans un fichier CSV
@@ -83,7 +92,8 @@ class Site:
 
             # Fermer le fichier CSV
             csv_file.close()
-            
+    
+    #méthode pour créer un fichier csv avec les produits trouvés pour un site    
     def write_data(self, product_name):
         today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
         self.get_infos(product_name)
