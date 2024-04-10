@@ -3,7 +3,7 @@ from product import Product
 from demand import Demand
 class Cart:
     all_products = []
-
+    all_demands=[]
     """classmethod"""
     def initialize_all_products(cls, all_products):
         """Initialize the list of all products."""
@@ -11,7 +11,17 @@ class Cart:
 
     def __init__(self):
         self.products = []
-
+        self.demands=[]
+    def get_products(self):
+        return self.products
+    def get_demands(self):
+        return self.demands
+    def add_demand(self,demand):
+        self.demands.append(demand)
+    
+    def remove_demand(self,demand):
+        self.demands.remove(demand)
+    
     def add_product(self, product):
         """Add a product to the cart."""
         self.products.append(product)
@@ -63,3 +73,5 @@ class Cart:
             self.products.append((cheapest_product,demand.get_quantity()))
             total_price += demand.get_quantity()* cheapest_product.get_price()
         return total_price
+
+change ??
