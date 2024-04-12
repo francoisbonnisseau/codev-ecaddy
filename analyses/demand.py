@@ -1,14 +1,12 @@
+import numpy as np 
+
 class Demand:
     last_id = 0  # Class variable to track the last assigned ID
 
-    def __init__(self, nature, name, brand, budget_limit, store, quantity):
+    def __init__(self, name, brand='', budget_limit=np.inf, store='', quantity=1):
         # Increment the last ID when a new instance is created
         Demand.last_id += 1
         self.id = Demand.last_id
-        # Validate demand_type
-        if not isinstance(nature, str):
-            raise ValueError("nature must be a string")
-        self.nature = nature
 
         # Validate name
         if not isinstance(name, str):
@@ -43,10 +41,6 @@ class Demand:
         """Get the ID of the demand."""
         return self.id
 
-    def get_type(self):
-        """Get the demand type."""
-        return self.type
-
     def get_name(self):
         """Get the name of the demand."""
         return self.name
@@ -69,87 +63,80 @@ class Demand:
 
 if __name__ == "__main__":
     # Test cases for Demand class
-
+    demand1 = Demand(name="Chair", brand="BrandX", budget_limit=50.0, store="Store A")
     # Test case 1: Valid input
     try:
-        demand1 = Demand(nature="Furniture", name="Chair", brand="BrandX", budget_limit=50.0, store="Store A", quantity=2)
+        demand1 = Demand(name="Chair", brand="BrandX", budget_limit=50.0, store="Store A", quantity=2)
         print("Test case 1 passed: Valid input")
     except ValueError:
         print("Test case 1 failed: Valid input")
 
-    # Test case 2: Invalid input - nature should be a string
+    # Test case 2: Invalid input - name should be a string
     try:
-        Demand(nature=123, name="Chair", brand="BrandX", budget_limit=50.0, store="Store A", quantity=2)
-        print("Test case 2 failed: Invalid input - nature should be a string")
+        Demand(name=123, brand="BrandX", budget_limit=50.0, store="Store A", quantity=2)
+        print("Test case 2 failed: Invalid input - name should be a string")
     except ValueError:
-        print("Test case 2 passed: Invalid input - nature should be a string")
+        print("Test case 2 passed: Invalid input - name should be a string")
 
-    # Test case 3: Invalid input - name should be a string
+    # Test case 3: Invalid input - brand should be a string
     try:
-        Demand(nature="Furniture", name=123, brand="BrandX", budget_limit=50.0, store="Store A", quantity=2)
-        print("Test case 3 failed: Invalid input - name should be a string")
+        Demand(name="Chair", brand=123, budget_limit=50.0, store="Store A", quantity=2)
+        print("Test case 3 failed: Invalid input - brand should be a string")
     except ValueError:
-        print("Test case 3 passed: Invalid input - name should be a string")
+        print("Test case 3 passed: Invalid input - brand should be a string")
 
-    # Test case 4: Invalid input - brand should be a string
+    # Test case 4: Invalid input - budget_limit should be a positive number
     try:
-        Demand(nature="Furniture", name="Chair", brand=123, budget_limit=50.0, store="Store A", quantity=2)
-        print("Test case 4 failed: Invalid input - brand should be a string")
+        Demand(name="Chair", brand="BrandX", budget_limit="50.0", store="Store A", quantity=2)
+        print("Test case 4 failed: Invalid input - budget_limit should be a number")
     except ValueError:
-        print("Test case 4 passed: Invalid input - brand should be a string")
+        print("Test case 4 passed: Invalid input - budget_limit should be a number")
+    try:
+        Demand(name="Chair", brand="BrandX", budget_limit=-50.0, store="Store A", quantity=2)
+        print("Test case 4 failed: Invalid input - budget_limit should be a positive number")
+    except ValueError:
+        print("Test case 4 passed: Invalid input - budget_limit should be a positive number")
+    # Test case 5: Invalid input - budget_limit should be greater than 0
+    try:
+        Demand(name="Chair", brand="BrandX", budget_limit=-50.0, store="Store A", quantity=2)
+        print("Test case 5 failed: Invalid input - budget_limit should be greater than 0")
+    except ValueError:
+        print("Test case 5 passed: Invalid input - budget_limit should be greater than 0")
 
-    # Test case 5: Invalid input - budget_limit should be a positive number
+    # Test case 6: Invalid input - store should be a string
     try:
-        Demand(nature="Furniture", name="Chair", brand="BrandX", budget_limit="50.0", store="Store A", quantity=2)
-        print("Test case 5 failed: Invalid input - budget_limit should be a number")
+        Demand(name="Chair", brand="BrandX", budget_limit=50.0, store=123, quantity=2)
+        print("Test case 6 failed: Invalid input - store should be a string")
     except ValueError:
-        print("Test case 5 passed: Invalid input - budget_limit should be a number")
-    try:
-        Demand(nature="Furniture", name="Chair", brand="BrandX", budget_limit=-50.0, store="Store A", quantity=2)
-        print("Test case 5 failed: Invalid input - budget_limit should be a positive number")
-    except ValueError:
-        print("Test case 5 passed: Invalid input - budget_limit should be a positive number")
-    # Test case 6: Invalid input - budget_limit should be greater than 0
-    try:
-        Demand(nature="Furniture", name="Chair", brand="BrandX", budget_limit=-50.0, store="Store A", quantity=2)
-        print("Test case 6 failed: Invalid input - budget_limit should be greater than 0")
-    except ValueError:
-        print("Test case 6 passed: Invalid input - budget_limit should be greater than 0")
+        print("Test case 6 passed: Invalid input - store should be a string")
 
-    # Test case 7: Invalid input - store should be a string
+    # Test case 7: Invalid input - quantity should be an integer
     try:
-        Demand(nature="Furniture", name="Chair", brand="BrandX", budget_limit=50.0, store=123, quantity=2)
-        print("Test case 7 failed: Invalid input - store should be a string")
+        Demand(name="Chair", brand="BrandX", budget_limit=50.0, store="Store A", quantity="2")
+        print("Test case 7 failed: Invalid input - quantity should be an integer")
     except ValueError:
-        print("Test case 7 passed: Invalid input - store should be a string")
-
-    # Test case 8: Invalid input - quantity should be an integer
+        print("Test case 7 passed: Invalid input - quantity should be an integer")
     try:
-        Demand(nature="Furniture", name="Chair", brand="BrandX", budget_limit=50.0, store="Store A", quantity="2")
-        print("Test case 8 failed: Invalid input - quantity should be an integer")
+        Demand(name="Chair", brand="BrandX", budget_limit=50.0, store="Store A", quantity=-2)
+        print("Test case 7 failed: Invalid input - quantity should be a positive integer")
     except ValueError:
-        print("Test case 8 passed: Invalid input - quantity should be an integer")
-    try:
-        Demand(nature="Furniture", name="Chair", brand="BrandX", budget_limit=50.0, store="Store A", quantity=-2)
-        print("Test case 8 failed: Invalid input - quantity should be a positive integer")
-    except ValueError:
-        print("Test case 8 passed: Invalid input - quantity should be a positive integer")
+        print("Test case 7 passed: Invalid input - quantity should be a positive integer")
         
 
-    # Test case 9: Invalid input - quantity should be greater than 0
+    # Test case 8: Invalid input - quantity should be greater than 0
     try:
-        Demand(nature="Furniture", name="Chair", brand="BrandX", budget_limit=50.0, store="Store A", quantity=0)
-        print("Test case 9 failed: Invalid input - quantity should be greater than 0")
+        Demand(name="Chair", brand="BrandX", budget_limit=50.0, store="Store A", quantity=0)
+        print("Test case 8 failed: Invalid input - quantity should be greater than 0")
     except ValueError:
-        print("Test case 9 passed: Invalid input - quantity should be greater than 0")
-    # Test case 10: Verify uniqueness and incrementation of ID with 10 demands
+        print("Test case 8 passed: Invalid input - quantity should be greater than 0")
+    # Test case 9: Verify uniqueness and incrementation of ID with 10 demands
     try:
         demands = []
         for i in range(10):
-            demands.append(Demand(nature="furniture", name=f"Chair{i+1}", brand="BrandX", budget_limit=50.0, store="Store A", quantity=2))
+            demands.append(Demand(name=f"Chair{i+1}", brand="BrandX", budget_limit=50.0, store="Store A", quantity=2))
         
         for i in range(1, len(demands)):
             assert demands[i].get_id() == demands[i-1].get_id() + 1  # IDs should increment by 1
-        print("Test case 10 passed: ID uniqueness and incrementation with 10 demands")
+        print("Test case 9 passed: ID uniqueness and incrementation with 10 demands")
     except AssertionError:
-        print("Test case 10 failed: ID uniqueness and incrementation with 10 demands")
+        print("Test case 9 failed: ID uniqueness and incrementation with 10 demands")

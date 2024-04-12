@@ -1,8 +1,8 @@
 class Product:
     last_id = 0  # Class variable to track the last assigned ID
-    def __init__(self, name, brand, price, description, url, image_url, store, nature):
+    def __init__(self, name, brand, price, description, url, image_url, store, nature=''):
             # Validate input values
-            if not isinstance(name, str) or not isinstance(brand, str) or not isinstance(description, str) or not isinstance(url, str) or not isinstance(image_url, str) or not isinstance(store, str) or not isinstance(nature, str):
+            if not isinstance(name, str) or not isinstance(brand, str) or not isinstance(description, str) or not isinstance(url, str) or not isinstance(image_url, str) or not isinstance(store, str) or not isinstance(nature, str) :
                 raise ValueError("Invalid input type for string attributes")
             if not isinstance(price, (int, float)) or price < 0:
                 raise ValueError("Price must be a non-negative number")
