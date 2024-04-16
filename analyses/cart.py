@@ -69,20 +69,21 @@ class Cart:
         """Charge les produits à partir des fichiers CSV et les ajoute à self.products."""
         for csv_file in csv_files:
             store_products=[]
-            with open(csv_file, 'r', newline='', encoding='utf-8') as file:
+            with open(csv_file, 'r', newline='', encoding='latin1') as file:
                 reader = csv.reader(file)
                 next(reader)  # Skip header row if present
+                
                 for row in reader:
                    # Créer une instance de Product à partir des données du fichier CSV
-                   row=row[0].split(';')
+                   print(len(row))
                    product = Product(
                         name=row[0],
                         brand=row[1],
-                        price=float(row[2]),
+                        price=float(row[2].replace('€', '').replace(',', '').strip()),
                         description=row[3],
-                        store=row[4],
-                        url=row[5],
-                        image_url=row[6]
+                        store='',
+                        url=row[4],
+                        image_url=row[5]
                     )
                    store_products.append(product)
             # Ajouter les produits à self.products       
@@ -93,6 +94,7 @@ class Cart:
         best_products=self.search_product_by_attributes( name=demand.get_name(),price_min=0, price_max=demand.get_budget_limit(), brand=demand.get_brand(), description=None, store=demand.get_store(), url=None, image_url=None)
         sorted_products=[]
         # Sort the list of products based on their price attribute
+        print(best_products)
         sorted_products = sorted(best_products, key=lambda x: x.get_price())
         return sorted_products
 
@@ -111,8 +113,7 @@ if __name__ == "__main__":
     cart = Cart(demand)
     # Chemin relatif des fichiers CSV dans le même répertoire que le script principal
     csv_files = [
-        os.path.join(os.path.dirname(__file__), 'alternate_asus.csv'),
-        os.path.join(os.path.dirname(__file__), 'alternate_asus1.csv')
+        os.path.join(os.path.dirname(__file__), 'alternate_asus.csv')
 
     ]
     # Charger les produits à partir des fichiers CSV
