@@ -4,6 +4,7 @@ import csv
 import numpy as np 
 from product import Product
 from demand import Demand
+from datetime import date
 class Cart:
     """classmethod"""
     def __init__(self,demand):
@@ -17,13 +18,13 @@ class Cart:
         self.demand=demand
     
     def add_product(self, product, store):
-    """Add a product to the cart."""
-    for store_products in self.products:
-        if store_products and store_products[0].get_store() == store:
-            store_products.append(product)
-            return
-    # If no inner list exists for the given store, create a new one
-    self.products.append([product])
+        """Add a product to the cart."""
+        for store_products in self.products:
+            if store_products and store_products[0].get_store() == store:
+                store_products.append(product)
+                return
+        # If no inner list exists for the given store, create a new one
+        self.products.append([product])
 
 
     def remove_product(self, product):
@@ -107,18 +108,20 @@ if __name__ == "__main__":
    
     # Créer une instance de Demand
     demand = Demand(
-    name="Laptop",
-    brand="hp",
+    name="Lap",
+    brand="asus",
     budget_limit=900,
     store=""
 )
     # Créer une instance de Cart avec la demande
     cart = Cart(demand)
     # Chemin relatif des fichiers CSV dans le même répertoire que le script principal
-    csv_files = [
-        os.path.join(os.path.dirname(__file__), 'Materiel_asus_for_test.csv')
+    today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
 
+    csv_files = [
+        os.path.join(os.path.join(os.path.dirname(__file__),'..', today_date),"materiel_asus_for_test.csv")
     ]
+    print(csv_files)
     # Charger les produits à partir des fichiers CSV
     cart.set_products(csv_files)
     sorted_products=cart.fill_the_demand()
