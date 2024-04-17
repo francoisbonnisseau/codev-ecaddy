@@ -130,21 +130,74 @@ canvas.create_text(
     fill="#000000",
     font=("Inter Bold", 16 * -1)
 )
-#checkboxes
-checkbox_1 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
-checkbox_1.place(x=715.0, y=220.0)
 
-checkbox_2 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
-checkbox_2.place(x=715.0, y=268.0)
+# canvas.create_rectangle(
+#     715.0,
+#     220.0,
+#     743.0,
+#     248.0,
+#     fill="#D3D3D3",
+#     outline="")
 
-checkbox_3 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
-checkbox_3.place(x=715.0, y=316.0)
+checkbox_boulanger = Checkbutton(
+    canvas,
+    onvalue=True,
+    offvalue=False,
+    height=2,
+    width=2,
+    bg="#fff",
+    activebackground="#fff",
+    highlightthickness=0
+)
+checkbox_boulanger.place(x=715.0, y=220.0)
 
-checkbox_4 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
-checkbox_4.place(x=715.0, y=364.0)
+checkbox_cybertech = Checkbutton(
+    canvas,
+    onvalue=True,
+    offvalue=False,
+    height=2,
+    width=2,
+    bg="#fff",
+    activebackground="#fff",
+    highlightthickness=0
+)
+checkbox_cybertech.place(x=715.0, y=268.0)
 
-checkbox_5 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
-checkbox_5.place(x=715.0, y=172.0)
+checkbox_grosbill = Checkbutton(
+    canvas,
+    onvalue=True,
+    offvalue=False,
+    height=2,
+    width=2,
+    bg="#fff",
+    activebackground="#fff",
+    highlightthickness=0
+)
+checkbox_grosbill.place(x=715.0, y=316.0)
+
+checkbox_materiel = Checkbutton(
+    canvas,
+    onvalue=True,
+    offvalue=False,
+    height=2,
+    width=2,
+    bg="#fff",
+    activebackground="#fff",
+    highlightthickness=0
+)
+checkbox_materiel.place(x=715.0, y=364.0)
+
+checkbox_alternate = Checkbutton(
+    canvas,
+    onvalue=True,
+    offvalue=False,
+    height=2,
+    width=2,
+    bg="#fff",
+    activebackground="#fff",
+    highlightthickness=0
+)
+checkbox_alternate.place(x=715.0, y=172.0)
 
 canvas.create_rectangle(
     641.0,
