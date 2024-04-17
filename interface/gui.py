@@ -7,7 +7,7 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Checkbutton
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -130,46 +130,21 @@ canvas.create_text(
     fill="#000000",
     font=("Inter Bold", 16 * -1)
 )
+#checkboxes
+checkbox_1 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
+checkbox_1.place(x=715.0, y=220.0)
 
-canvas.create_rectangle(
-    715.0,
-    220.0,
-    743.0,
-    248.0,
-    fill="#D3D3D3",
-    outline="")
+checkbox_2 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
+checkbox_2.place(x=715.0, y=268.0)
 
-canvas.create_rectangle(
-    715.0,
-    268.0,
-    743.0,
-    296.0,
-    fill="#D3D3D3",
-    outline="")
+checkbox_3 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
+checkbox_3.place(x=715.0, y=316.0)
 
-canvas.create_rectangle(
-    715.0,
-    316.0,
-    743.0,
-    344.0,
-    fill="#D3D3D3",
-    outline="")
+checkbox_4 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
+checkbox_4.place(x=715.0, y=364.0)
 
-canvas.create_rectangle(
-    715.0,
-    364.0,
-    743.0,
-    392.0,
-    fill="#D3D3D3",
-    outline="")
-
-canvas.create_rectangle(
-    715.0,
-    172.0,
-    743.0,
-    200.0,
-    fill="#D3D3D3",
-    outline="")
+checkbox_5 = Checkbutton(window, width=28, height=28, bg="#D3D3D3", highlightbackground="#D3D3D3")
+checkbox_5.place(x=715.0, y=172.0)
 
 canvas.create_rectangle(
     641.0,
