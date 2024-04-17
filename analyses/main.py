@@ -14,7 +14,7 @@ def fill_delivery(demands):
     delivery=[] #list of products
     for demand in demands: 
         cart=Cart(demand)
-        csv_files=send_requests(demand)
+        csv_files=send_requests(demand, Name of product , name of web sites )
         cart.set_products(csv_files)
         sorted_products=cart.fill_the_demand()
         delivery.append(sorted_products[0])

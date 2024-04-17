@@ -16,9 +16,15 @@ class Cart:
     def set_demand(self,demand):
         self.demand=demand
     
-    def add_product(self, product):
-        """Add a product to the cart."""
-        self.products.append([product])
+    def add_product(self, product, store):
+    """Add a product to the cart."""
+    for store_products in self.products:
+        if store_products and store_products[0].get_store() == store:
+            store_products.append(product)
+            return
+    # If no inner list exists for the given store, create a new one
+    self.products.append([product])
+
 
     def remove_product(self, product):
         """Remove a product from the cart."""
@@ -69,37 +75,30 @@ class Cart:
         """Charge les produits à partir des fichiers CSV et les ajoute à self.products."""
         for csv_file in csv_files:
             store_products=[]
-            with open(csv_file, 'r', newline='', encoding='latin1') as file:
-                """reader = csv.reader(file)
-                next(reader)  # Skip header row if present"""
-                reader = csv.DictReader(csv_file)
+            with open(csv_file, newline='', encoding='utf-8') as file:
+                reader = csv.DictReader(file)
+                #next(reader)  # Skip header row if present
                 for row in reader:
-                    print("Nom : " + row['Nom'], "Marque : " + row['Marque'], "Prix : " + row['Prix'], "Description : " + row['Description'], "url : " + row['Url'], "Url image : " + row['Url_image'])
-                """for row in reader:
-                   # Créer une instance de Product à partir des données du fichier CSV
-                   print(row)
-                   print(len(row[0].split(',')))
-                   print(len(row))
-                   product = Product(
-                        name=row[0],
-                        brand=row[1],
-                        price=float(row[2].replace('€', '').replace(',', '').strip()),
-                        description=row[3],
-                        store='',
-                        url=row[4],
-                        image_url=row[5]
+                    product = Product(
+                        name=row['Nom'],
+                        brand=row['Marque'],
+                        price=float(row['Prix'].replace(' ', '').replace('\xa0', '').replace('€', '.').replace(',', '.').strip()),
+                        description=row['Description'],
+                        store= os.path.basename(csv_file).split("_")[0],
+                        url=row['Url'],
+                        image_url=row['Url_image']
                     )
-                   store_products.append(product)
+                    store_products.append(product)
             # Ajouter les produits à self.products       
-            self.products.append(store_products)"""
+            self.products.append(store_products)
     def fill_the_demand(self):
         """Calculates the total price of the products for the given demands."""
         demand=self.demand
         best_products=self.search_product_by_attributes( name=demand.get_name(),price_min=0, price_max=demand.get_budget_limit(), brand=demand.get_brand(), description=None, store=demand.get_store(), url=None, image_url=None)
         sorted_products=[]
         # Sort the list of products based on their price attribute
-        print(best_products)
-        sorted_products = sorted(best_products, key=lambda x: x.get_price())
+        if None not in best_products:
+            sorted_products = sorted(best_products, key=lambda x: x.get_price())
         return sorted_products
 
 
@@ -108,16 +107,16 @@ if __name__ == "__main__":
    
     # Créer une instance de Demand
     demand = Demand(
-    name="laptop",
-    brand="asus",
-    budget_limit=99,
+    name="Laptop",
+    brand="hp",
+    budget_limit=900,
     store=""
 )
     # Créer une instance de Cart avec la demande
     cart = Cart(demand)
     # Chemin relatif des fichiers CSV dans le même répertoire que le script principal
     csv_files = [
-        os.path.join(os.path.dirname(__file__), 'alternate_asus.csv')
+        os.path.join(os.path.dirname(__file__), 'Materiel_asus_for_test.csv')
 
     ]
     # Charger les produits à partir des fichiers CSV
