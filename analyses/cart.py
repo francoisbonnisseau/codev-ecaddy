@@ -70,11 +70,15 @@ class Cart:
         for csv_file in csv_files:
             store_products=[]
             with open(csv_file, 'r', newline='', encoding='latin1') as file:
-                reader = csv.reader(file)
-                next(reader)  # Skip header row if present
-                
+                """reader = csv.reader(file)
+                next(reader)  # Skip header row if present"""
+                reader = csv.DictReader(csv_file)
                 for row in reader:
+                    print("Nom : " + row['Nom'], "Marque : " + row['Marque'], "Prix : " + row['Prix'], "Description : " + row['Description'], "url : " + row['Url'], "Url image : " + row['Url_image'])
+                """for row in reader:
                    # Créer une instance de Product à partir des données du fichier CSV
+                   print(row)
+                   print(len(row[0].split(',')))
                    print(len(row))
                    product = Product(
                         name=row[0],
@@ -87,7 +91,7 @@ class Cart:
                     )
                    store_products.append(product)
             # Ajouter les produits à self.products       
-            self.products.append(store_products)
+            self.products.append(store_products)"""
     def fill_the_demand(self):
         """Calculates the total price of the products for the given demands."""
         demand=self.demand
