@@ -5,8 +5,6 @@ from product import Product
 from demand import Demand
 from cart import Cart 
 
-
-
 def creat_demands():
 
     return demands
