@@ -18,6 +18,51 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
+
+## fonctions pour le fonctionnement de l'interface ##
+
+def compare():
+    print("comparer")
+    
+def remove_quantity():
+    current_value = quantity_input.get()
+    if current_value:
+        try:
+            current_value = int(current_value)
+        except:
+            quantity_input.delete(0, 'end')
+            quantity_input.insert(0, "1")
+        if current_value > 0:
+            quantity_input.delete(0, 'end')
+            quantity_input.insert(0, str(current_value - 1))
+
+def add_quantity():
+    current_value = quantity_input.get()
+    if current_value:
+        try:
+            current_value = int(current_value)
+            quantity_input.delete(0, 'end')
+            quantity_input.insert(0, str(current_value + 1))
+        except:
+            quantity_input.delete(0, 'end')
+            quantity_input.insert(0, "1")
+    else:
+        current_value = 0
+        quantity_input.delete(0, 'end')
+        quantity_input.insert(0, str(current_value + 1))
+
+def remove_item():
+    print("supprimer un item")
+    
+def add_item():
+    print("ajouter un item")
+
+
+
+
+
+
+
 window = Tk()
 
 window.geometry("973x605")
@@ -81,14 +126,14 @@ canvas.create_text(
 
 button_image_1 = PhotoImage(
     file=relative_to_assets("button_1.png"))
-button_1 = Button(
+add_item_button = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=add_item,
     relief="flat"
 )
-button_1.place(
+add_item_button.place(
     x=309.0,
     y=240.0,
     width=28.0,
@@ -214,13 +259,13 @@ entry_bg_1 = canvas.create_image(
     186.0,
     image=entry_image_1
 )
-entry_1 = Entry(
+product_input = Entry(
     bd=0,
     bg="#D3D3D3",
     fg="#000716",
     highlightthickness=0
 )
-entry_1.place(
+product_input.place(
     x=120.0,
     y=172.0,
     width=199.0,
@@ -234,13 +279,13 @@ entry_bg_2 = canvas.create_image(
     186.0,
     image=entry_image_2
 )
-entry_2 = Entry(
+brand_input = Entry(
     bd=0,
     bg="#D3D3D3",
     fg="#000716",
     highlightthickness=0
 )
-entry_2.place(
+brand_input.place(
     x=356.0,
     y=172.0,
     width=110.0,
@@ -276,14 +321,14 @@ canvas.create_text(
 
 button_image_2 = PhotoImage(
     file=relative_to_assets("button_2.png"))
-button_2 = Button(
+remove_item_button = Button(
     image=button_image_2,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
+    command=remove_item,
     relief="flat"
 )
-button_2.place(
+remove_item_button.place(
     x=58.0,
     y=172.0,
     width=28.0,
@@ -292,14 +337,14 @@ button_2.place(
 
 button_image_3 = PhotoImage(
     file=relative_to_assets("button_3.png"))
-button_3 = Button(
+plus_quantite = Button(
     image=button_image_3,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
+    command=add_quantity,
     relief="flat"
 )
-button_3.place(
+plus_quantite.place(
     x=570.0,
     y=172.0,
     width=28.0,
@@ -308,14 +353,14 @@ button_3.place(
 
 button_image_4 = PhotoImage(
     file=relative_to_assets("button_4.png"))
-button_4 = Button(
+moins_quantite = Button(
     image=button_image_4,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_4 clicked"),
+    command=remove_quantity,
     relief="flat"
 )
-button_4.place(
+moins_quantite.place(
     x=504.0,
     y=172.0,
     width=28.0,
@@ -329,18 +374,20 @@ entry_bg_3 = canvas.create_image(
     186.0,
     image=entry_image_3
 )
-entry_3 = Entry(
+quantity_input = Entry(
     bd=0,
     bg="#D3D3D3",
     fg="#000716",
     highlightthickness=0
 )
-entry_3.place(
+quantity_input.place(
     x=544.0,
     y=172.0,
     width=14.0,
     height=26.0
 )
+#on ajoute une valeur par défaut
+quantity_input.insert(0, "1")
 
 canvas.create_rectangle(
     81.0,
@@ -352,14 +399,14 @@ canvas.create_rectangle(
 
 button_image_5 = PhotoImage(
     file=relative_to_assets("button_5.png"))
-button_5 = Button(
+comparer = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_5 clicked"),
+    command=compare,
     relief="flat"
 )
-button_5.place(
+comparer.place(
     x=670.0,
     y=509.0,
     width=174.0,
