@@ -1,6 +1,10 @@
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton
 from pathlib import Path
 
+
+# Variable globale pour suivre la position verticale actuelle des blocs
+current_y_position = 150
+
 # Fonction pour ajouter un bloc
 def add_block():
     # Créer les éléments du bloc
@@ -10,10 +14,12 @@ def add_block():
     remove_block_button = Button(window, image=button_image_2, borderwidth=0, highlightthickness=0, command=lambda: remove_block(product_input, brand_input, quantity_input, remove_block_button))
 
     # Positionner les éléments du bloc dans l'interface
-    product_input.place(x=120.0, y=172.0, width=199.0, height=26.0)
-    brand_input.place(x=356.0, y=172.0, width=110.0, height=26.0)
-    quantity_input.place(x=544.0, y=172.0, width=14.0, height=26.0)
-    remove_block_button.place(x=58.0, y=172.0, width=28.0, height=28.0)
+    product_input.place(x=120.0, y=current_y_position + 20, width=199.0, height=26.0)
+    brand_input.place(x=356.0, y=current_y_position + 20, width=110.0, height=26.0)
+    quantity_input.place(x=544.0, y=current_y_position + 20, width=14.0, height=26.0)
+    remove_block_button.place(x=58.0, y=current_y_position + 20, width=28.0, height=28.0)
+    
+    current_y_position += 100
 
 # Fonction pour supprimer un bloc
 def remove_block(product_input, brand_input, quantity_input, remove_block_button):
