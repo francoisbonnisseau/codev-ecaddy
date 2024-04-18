@@ -47,9 +47,71 @@ images_repertory = {} # si on ne stocke pas les images dans un dictionnaire exte
 quantity_buttons_repertory = {} # chaque ligne a son propre set de boutons
 quantity_entries_repertory = {} # chaque ligne a son propre set d'entrées
 quantities_repertory = {} # les quantités sont propres à chaque produit
+product_inputs = {}
+brand_inputs = {}
 add_product_button = Button()
 
+## fonctions pour le fonctionnement de l'interface ##
+
+def compare():
+    print("comparer")
+    
+def remove_quantity(index):
+    global quantities_repertory
+    current_value = quantity_entries_repertory['quantity_input'+index].get()
+    if current_value:
+        try:
+            current_value = int(current_value)
+        except:
+            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+            quantity_entries_repertory['quantity_input'+index].insert(0, "1")
+        if current_value > 0:
+            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+            quantity_entries_repertory['quantity_input'+index].insert(0, str(current_value - 1))
+
+def add_quantity(index):
+    global quantities_repertory
+    current_value = quantity_entries_repertory['quantity_input'+index].get()
+    quantities_repertory[int(index)] = current_value
+    if current_value :
+        try:
+            incrementend_value = int(current_value)+1
+            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+            quantity_entries_repertory['quantity_input'+index].insert(0, str(incrementend_value))
+        except:
+            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+            quantity_entries_repertory['quantity_input'+index].insert(0, "1")
+    else:
+        quantities_repertory[int(index)]  = 0
+        quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+        quantity_entries_repertory['quantity_input'+index].insert(0, "1")
+
+def remove_item(index):
+    quantity_buttons_repertory['plus_quantite'+str(index)].destroy()
+    quantity_buttons_repertory['moins_quantite'+str(index)].destroy()
+    quantity_entries_repertory['quantity_input'+str(index)].destroy()
+    canvas.delete(images_repertory['entry_image_1'+str(index)])
+    canvas.delete(images_repertory['entry_image_2'+str(index)])
+    canvas.delete(images_repertory['entry_image_3'+str(index)])
+
+
+
+def add_item():
+    global products_number
+    products_number+=1
+    y_shift = (products_number-1)*80
+    add_product_input(y1=172+y_shift)
+    add_brand_input(y1=172+y_shift)
+    add_product_texts(y1=152+y_shift)
+    add_remove_product_button(y1=172+y_shift)
+    add_quantity_inputs(y1=172+y_shift)
+    add_products_separator(y1=217.9999999999999+y_shift)
+    add_product_button.destroy()
+    add_new_product_button(y1=240+y_shift)
+
+
 ## fonctions pour l'implémentation de l'interface ##
+
 
 def add_product_input(x1=120.0,y1=172.0):
     global produit_images
@@ -61,13 +123,13 @@ def add_product_input(x1=120.0,y1=172.0):
         y1+14,
         image=entry_image_1
     )
-    product_input = Entry(
+    product_inputs[products_number] = Entry(
         bd=0,
         bg="#D3D3D3",
         fg="#000716",
         highlightthickness=0
     )
-    product_input.place(
+    product_inputs[products_number].place(
         x=x1,
         y=y1,
         width=199.0,
@@ -84,13 +146,13 @@ def add_brand_input(x1=356.0,y1=172.0):
         y1+14,
         image=entry_image_2
     )
-    brand_input = Entry(
+    brand_inputs[products_number] = Entry(
         bd=0,
         bg="#D3D3D3",
         fg="#000716",
         highlightthickness=0
     )
-    brand_input.place(
+    brand_inputs[products_number].place(
         x=x1,
         y=y1,
         width=110.0,
@@ -133,7 +195,7 @@ def add_remove_product_button(x1=58.0,y1=172.0):
         image=button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=remove_item,
+        command=lambda index=str(products_number):remove_item(index),
         relief="flat"
     )
     remove_item_button.place(
@@ -230,58 +292,6 @@ def add_new_product_button(x1=309.0,y1=240.0):
         width=28.0,
         height=28.0
     )
-
-
-## fonctions pour le fonctionnement de l'interface ##
-
-def compare():
-    print("comparer")
-    
-def remove_quantity(index):
-    global quantities_repertory
-    current_value = quantity_entries_repertory['quantity_input'+index].get()
-    if current_value:
-        try:
-            current_value = int(current_value)
-        except:
-            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
-            quantity_entries_repertory['quantity_input'+index].insert(0, "1")
-        if current_value > 0:
-            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
-            quantity_entries_repertory['quantity_input'+index].insert(0, str(current_value - 1))
-
-def add_quantity(index):
-    global quantities_repertory
-    current_value = quantity_entries_repertory['quantity_input'+index].get()
-    quantities_repertory[int(index)] = current_value
-    if current_value :
-        try:
-            incrementend_value = int(current_value)+1
-            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
-            quantity_entries_repertory['quantity_input'+index].insert(0, str(incrementend_value))
-        except:
-            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
-            quantity_entries_repertory['quantity_input'+index].insert(0, "1")
-    else:
-        quantities_repertory[int(index)]  = 0
-        quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
-        quantity_entries_repertory['quantity_input'+index].insert(0, "1")
-
-def remove_item():
-    print("supprimer un item")
-
-def add_item():
-    global products_number
-    products_number+=1
-    y_shift = (products_number-1)*80
-    add_product_input(y1=172+y_shift)
-    add_brand_input(y1=172+y_shift)
-    add_product_texts(y1=152+y_shift)
-    add_remove_product_button(y1=172+y_shift)
-    add_quantity_inputs(y1=172+y_shift)
-    add_products_separator(y1=217.9999999999999+y_shift)
-    add_product_button.destroy()
-    add_new_product_button(y1=240+y_shift)
 
 ## implémentation de l'interface
 
