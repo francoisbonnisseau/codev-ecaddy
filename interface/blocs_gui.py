@@ -1,4 +1,4 @@
-from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton
+from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, Scrollbar
 from pathlib import Path
 
 # Fonction utilitaire pour les chemins relatifs aux assets
@@ -7,6 +7,10 @@ def relative_to_assets(path: str) -> Path:
     ASSETS_FOLDER = "assets/frame0"
     ASSETS_PATH = OUTPUT_PATH / ASSETS_FOLDER
     return ASSETS_PATH / Path(path)
+
+#gestion de la scrollbar 
+def update_canvas_height():
+    canvas.config(scrollregion=canvas.bbox("all"))
 
 
 # Variable globale pour suivre la position verticale actuelle des blocs
@@ -153,7 +157,7 @@ def add_block():
     
     block_images.append((button_image_2,))
 
-    
+    update_canvas_height()
     current_y_position += 100
 
 # Fonction pour supprimer un bloc
@@ -181,6 +185,11 @@ canvas = Canvas(
     relief="ridge"
 )
 canvas.place(x=0, y=0)
+
+#scrollbar
+scrollbar = Scrollbar(window, orient="vertical")
+scrollbar.pack(side="right", fill="y")
+scrollbar.config(command=canvas.yview)
 
 # Ajouter le texte et les boutons
 canvas.create_rectangle(
@@ -354,6 +363,8 @@ comparer.place(
     width=174.0,
     height=64.0
 )
+
+
 
 window.resizable(False, False)
 window.mainloop()
