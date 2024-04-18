@@ -32,11 +32,11 @@ def add_block():
     if button_image_2 is None:
         button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
 
+    #supprimer le bouton add_item du bloc précédent si c'est au moins le deuxieme bloc
+    if add_item_button:
+        add_item_button.destroy()
     
     # Créer les éléments du bloc
-    button_image_1 = PhotoImage(
-        file=relative_to_assets("button_1.png")
-    )
     add_item_button = Button(
         window,
         image=button_image_1,
