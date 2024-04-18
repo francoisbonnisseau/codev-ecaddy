@@ -9,31 +9,97 @@ current_y_position = 250
 def add_block():
     global current_y_position
     # Créer les éléments du bloc
-    product_input = Entry(window, bd=0, bg="#D3D3D3", fg="#000716", highlightthickness=0)
-    brand_input = Entry(window, bd=0, bg="#D3D3D3", fg="#000716", highlightthickness=0)
-    quantity_input = Entry(window, bd=0, bg="#D3D3D3", fg="#000716", highlightthickness=0)
-    remove_block_button = Button(window, image=button_image_2, borderwidth=0, highlightthickness=0, command=lambda: remove_block(product_input, brand_input, quantity_input, remove_block_button))
+    entry_image_1 = PhotoImage(
+        file=relative_to_assets("entry_1.png")
+    )
+    entry_bg_1 = canvas.create_image(
+        219.5,
+        current_y_position + 186.0,
+        image=entry_image_1
+    )
+    product_input = Entry(
+        window,
+        bd=0,
+        bg="#D3D3D3",
+        fg="#000716",
+        highlightthickness=0
+    )
+    product_input.place(
+        x=120.0,
+        y=current_y_position + 172.0,
+        width=199.0,
+        height=26.0
+    )
 
-    # Positionner les éléments du bloc dans l'interface
-    product_input.place(x=120.0, y=current_y_position + 20, width=199.0, height=26.0)
-    brand_input.place(x=356.0, y=current_y_position + 20, width=110.0, height=26.0)
-    quantity_input.place(x=544.0, y=current_y_position + 20, width=14.0, height=26.0)
-    remove_block_button.place(x=58.0, y=current_y_position + 20, width=28.0, height=28.0)
+    entry_image_2 = PhotoImage(
+        file=relative_to_assets("entry_2.png")
+    )
+    entry_bg_2 = canvas.create_image(
+        411.0,
+        current_y_position + 186.0,
+        image=entry_image_2
+    )
+    brand_input = Entry(
+        window,
+        bd=0,
+        bg="#D3D3D3",
+        fg="#000716",
+        highlightthickness=0
+    )
+    brand_input.place(
+        x=356.0,
+        y=current_y_position + 172.0,
+        width=110.0,
+        height=26.0
+    )
+
+    canvas.create_text(
+        114.0,
+        current_y_position + 152.0,
+        anchor="nw",
+        text="Nom du produit *",
+        fill="#000000",
+        font=("Inter Medium", 14 * -1)
+    )
+
+    canvas.create_text(
+        350.0,
+        current_y_position + 152.0,
+        anchor="nw",
+        text="Marque",
+        fill="#000000",
+        font=("Inter Medium", 14 * -1)
+    )
+    
+    button_image_2 = PhotoImage(
+        file=relative_to_assets("button_2.png")
+    )
+    remove_item_button = Button(
+        window,
+        image=button_image_2,
+        borderwidth=0,
+        highlightthickness=0,
+        command=remove_block,
+        relief="flat"
+    )
+    remove_item_button.place(
+        x=58.0,
+        y=current_y_position + 172.0,
+        width=28.0,
+        height=28.0
+    )
+
     
     current_y_position += 100
 
 # Fonction pour supprimer un bloc
 def remove_block(product_input, brand_input, quantity_input, remove_block_button):
+    global current_y_position
     product_input.destroy()
     brand_input.destroy()
     quantity_input.destroy()
     remove_block_button.destroy()
-    
-def add_quantity():
-    pass
-
-def remove_quantity():
-    pass
+    current_y_position -= 100
 
 def compare():
     pass
@@ -231,154 +297,7 @@ canvas.create_rectangle(
     outline=""
 )
 
-entry_image_1 = PhotoImage(
-    file=relative_to_assets("entry_1.png")
-)
-entry_bg_1 = canvas.create_image(
-    219.5,
-    186.0,
-    image=entry_image_1
-)
-product_input = Entry(
-    window,
-    bd=0,
-    bg="#D3D3D3",
-    fg="#000716",
-    highlightthickness=0
-)
-product_input.place(
-    x=120.0,
-    y=172.0,
-    width=199.0,
-    height=26.0
-)
 
-entry_image_2 = PhotoImage(
-    file=relative_to_assets("entry_2.png")
-)
-entry_bg_2 = canvas.create_image(
-    411.0,
-    186.0,
-    image=entry_image_2
-)
-brand_input = Entry(
-    window,
-    bd=0,
-    bg="#D3D3D3",
-    fg="#000716",
-    highlightthickness=0
-)
-brand_input.place(
-    x=356.0,
-    y=172.0,
-    width=110.0,
-    height=26.0
-)
-
-canvas.create_text(
-    114.0,
-    152.0,
-    anchor="nw",
-    text="Nom du produit *",
-    fill="#000000",
-    font=("Inter Medium", 14 * -1)
-)
-
-canvas.create_text(
-    350.0,
-    152.0,
-    anchor="nw",
-    text="Marque",
-    fill="#000000",
-    font=("Inter Medium", 14 * -1)
-)
-
-canvas.create_text(
-    504.0,
-    149.0,
-    anchor="nw",
-    text="Quantité",
-    fill="#000000",
-    font=("Inter Medium", 14 * -1)
-)
-
-button_image_2 = PhotoImage(
-    file=relative_to_assets("button_2.png")
-)
-remove_item_button = Button(
-    window,
-    image=button_image_2,
-    borderwidth=0,
-    highlightthickness=0,
-    command=remove_block,
-    relief="flat"
-)
-remove_item_button.place(
-    x=58.0,
-    y=172.0,
-    width=28.0,
-    height=28.0
-)
-
-button_image_3 = PhotoImage(
-    file=relative_to_assets("button_3.png")
-)
-plus_quantite = Button(
-    window,
-    image=button_image_3,
-    borderwidth=0,
-    highlightthickness=0,
-    command=add_quantity,
-    relief="flat"
-)
-plus_quantite.place(
-    x=570.0,
-    y=172.0,
-    width=28.0,
-    height=28.0
-)
-
-button_image_4 = PhotoImage(
-    file=relative_to_assets("button_4.png")
-)
-moins_quantite = Button(
-    window,
-    image=button_image_4,
-    borderwidth=0,
-    highlightthickness=0,
-    command=remove_quantity,
-    relief="flat"
-)
-moins_quantite.place(
-    x=504.0,
-    y=172.0,
-    width=28.0,
-    height=28.0
-)
-
-entry_image_3 = PhotoImage(
-    file=relative_to_assets("entry_3.png")
-)
-entry_bg_3 = canvas.create_image(
-    551.0,
-    186.0,
-    image=entry_image_3
-)
-quantity_input = Entry(
-    window,
-    bd=0,
-    bg="#D3D3D3",
-    fg="#000716",
-    highlightthickness=0
-)
-quantity_input.place(
-    x=544.0,
-    y=172.0,
-    width=14.0,
-    height=26.0
-)
-#on ajoute une valeur par défaut
-quantity_input.insert(0, "1")
 
 canvas.create_rectangle(
     81.0,
