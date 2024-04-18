@@ -19,50 +19,12 @@ def relative_to_assets(path: str) -> Path:
 
 
 
-## fonctions pour le fonctionnement de l'interface ##
-
-def compare():
-    print("comparer")
-    
-def remove_quantity():
-    current_value = quantity_input.get()
-    if current_value:
-        try:
-            current_value = int(current_value)
-        except:
-            quantity_input.delete(0, 'end')
-            quantity_input.insert(0, "1")
-        if current_value > 0:
-            quantity_input.delete(0, 'end')
-            quantity_input.insert(0, str(current_value - 1))
-
-def add_quantity():
-    current_value = quantity_input.get()
-    if current_value:
-        try:
-            current_value = int(current_value)
-            quantity_input.delete(0, 'end')
-            quantity_input.insert(0, str(current_value + 1))
-        except:
-            quantity_input.delete(0, 'end')
-            quantity_input.insert(0, "1")
-    else:
-        current_value = 0
-        quantity_input.delete(0, 'end')
-        quantity_input.insert(0, str(current_value + 1))
-
-def remove_item():
-    print("supprimer un item")
-    
-def add_item():
-    print("ajouter un item")
-
-
-
+## implémentation de la trame
 
 window = Tk()
 
 window.geometry("973x605")
+window.title("Ecaddy")
 window.configure(bg = "#FFFFFF")
 
 
@@ -77,6 +39,253 @@ canvas = Canvas(
 )
 
 canvas.place(x = 0, y = 0)
+
+## variables pour l'implémentation de l'interface ##
+
+products_number = 1
+images_repertory = {} # si on ne stocke pas les images dans un dictionnaire externe, les fonctions d'implémentation ne marchent pas
+quantity_buttons_repertory = {} # chaque ligne a son propre set de boutons
+quantity_entries_repertory = {} # chaque ligne a son propre set d'entrées
+quantities_repertory = {} # les quantités sont propres à chaque produit
+add_product_button = Button()
+
+## fonctions pour l'implémentation de l'interface ##
+
+def add_product_input(x1=120.0,y1=172.0):
+    global produit_images
+    entry_image_1 = PhotoImage(
+        file=relative_to_assets("entry_1.png"))
+    images_repertory['entry_image_1'+str(products_number)]=entry_image_1
+    entry_bg_1 = canvas.create_image(
+        x1+99.5,
+        y1+14,
+        image=entry_image_1
+    )
+    product_input = Entry(
+        bd=0,
+        bg="#D3D3D3",
+        fg="#000716",
+        highlightthickness=0
+    )
+    product_input.place(
+        x=x1,
+        y=y1,
+        width=199.0,
+        height=26.0
+    )
+
+def add_brand_input(x1=356.0,y1=172.0):
+    global produit_images
+    entry_image_2 = PhotoImage(
+        file=relative_to_assets("entry_2.png"))
+    images_repertory['entry_image_2'+str(products_number)]=entry_image_2
+    entry_bg_2 = canvas.create_image(
+        x1+55,
+        y1+14,
+        image=entry_image_2
+    )
+    brand_input = Entry(
+        bd=0,
+        bg="#D3D3D3",
+        fg="#000716",
+        highlightthickness=0
+    )
+    brand_input.place(
+        x=x1,
+        y=y1,
+        width=110.0,
+        height=26.0
+    )
+
+def add_product_texts(x1=114.0,y1=152.0):
+    canvas.create_text(
+        x1,
+        y1,
+        anchor="nw",
+        text="Nom du produit *",
+        fill="#000000",
+        font=("Inter Medium", 14 * -1)
+    )
+    canvas.create_text(
+        x1+236,
+        y1,
+        anchor="nw",
+        text="Marque",
+        fill="#000000",
+        font=("Inter Medium", 14 * -1)
+    )
+    canvas.create_text(
+        x1+390,
+        y1-3,
+        anchor="nw",
+        text="Quantité",
+        fill="#000000",
+        font=("Inter Medium", 14 * -1)
+    )
+
+def add_remove_product_button(x1=58.0,y1=172.0):
+    global produit_images
+    button_image_2 = PhotoImage(
+        file=relative_to_assets("button_2.png")
+    )
+    images_repertory['button_image_2'+str(products_number)]=button_image_2
+    remove_item_button = Button(
+        image=button_image_2,
+        borderwidth=0,
+        highlightthickness=0,
+        command=remove_item,
+        relief="flat"
+    )
+    remove_item_button.place(
+        x=x1,
+        y=y1,
+        width=28.0,
+        height=28.0
+    )
+
+def add_quantity_inputs(x1=504.0,y1=172.0):
+    global images_repertory, quantity_buttons_repertory
+    button_image_3 = PhotoImage(
+        file=relative_to_assets("button_3.png"))
+    images_repertory['button_image_3'+str(products_number)]=button_image_3
+    quantity_buttons_repertory['plus_quantite'+str(products_number)] = Button(
+        image=button_image_3,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda index=str(products_number):add_quantity(index),
+        relief="flat"
+    )
+    quantity_buttons_repertory['plus_quantite'+str(products_number)].place(
+        x=x1+66,
+        y=y1,
+        width=28.0,
+        height=28.0
+    )
+
+    button_image_4 = PhotoImage(
+        file=relative_to_assets("button_4.png"))
+    images_repertory['button_image_4'+str(products_number)]=button_image_4
+    quantity_buttons_repertory['moins_quantite'+str(products_number)] = Button(
+        image=button_image_4,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda index=str(products_number):remove_quantity(index),
+        relief="flat"
+    )
+    quantity_buttons_repertory['moins_quantite'+str(products_number)].place(
+        x=x1,
+        y=y1,
+        width=28.0,
+        height=28.0
+    )
+
+    entry_image_3 = PhotoImage(
+        file=relative_to_assets("entry_3.png"))
+    images_repertory['entry_image_3'+str(products_number)]=entry_image_3
+    entry_bg_3 = canvas.create_image(
+        x1+47,
+        y1+14,
+        image=entry_image_3
+    )
+    quantity_entries_repertory['quantity_input'+str(products_number)] = Entry(
+        bd=0,
+        bg="#D3D3D3",
+        fg="#000716",
+        highlightthickness=0
+    )
+    quantity_entries_repertory['quantity_input'+str(products_number)].place(
+        x=x1+40,
+        y=y1,
+        width=14.0,
+        height=26.0
+    )
+    #on ajoute une valeur par défaut
+    quantity_entries_repertory['quantity_input'+str(products_number)].insert(0, "1")
+
+def add_products_separator(x1=81.0,y1=217.9999999999999):
+    canvas.create_rectangle(
+        x1,
+        y1,
+        x1+475.0,
+        y1+1.0000000000001,
+        fill="#1EBA65",
+        outline=""
+    )
+
+def add_new_product_button(x1=309.0,y1=240.0):
+    global images_repertory, add_product_button
+    button_image_1 = PhotoImage(
+        file=relative_to_assets("button_1.png"))
+    images_repertory['button_image_1']=button_image_1
+    add_product_button = Button(
+        image=button_image_1,
+        borderwidth=0,
+        highlightthickness=0,
+        command=add_item,
+        relief="flat"
+    )
+    add_item_button.place(
+        x=x1,
+        y=y1,
+        width=28.0,
+        height=28.0
+    )
+
+
+## fonctions pour le fonctionnement de l'interface ##
+
+def compare():
+    print("comparer")
+    
+def remove_quantity(index):
+    global quantities_repertory
+    current_value = quantity_entries_repertory['quantity_input'+index].get()
+    if current_value:
+        try:
+            current_value = int(current_value)
+        except:
+            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+            quantity_entries_repertory['quantity_input'+index].insert(0, "1")
+        if current_value > 0:
+            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+            quantity_entries_repertory['quantity_input'+index].insert(0, str(current_value - 1))
+
+def add_quantity(index):
+    global quantities_repertory
+    current_value = quantity_entries_repertory['quantity_input'+index].get()
+    quantities_repertory[int(index)] = current_value
+    if current_value :
+        try:
+            incrementend_value = int(current_value)+1
+            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+            quantity_entries_repertory['quantity_input'+index].insert(0, str(incrementend_value))
+        except:
+            quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+            quantity_entries_repertory['quantity_input'+index].insert(0, "1")
+    else:
+        quantities_repertory[int(index)]  = 0
+        quantity_entries_repertory['quantity_input'+index].delete(0, 'end')
+        quantity_entries_repertory['quantity_input'+index].insert(0, "1")
+
+def remove_item():
+    print("supprimer un item")
+
+def add_item():
+    global products_number
+    products_number+=1
+    y_shift = (products_number-1)*80
+    add_product_input(y1=172+y_shift)
+    add_brand_input(y1=172+y_shift)
+    add_product_texts(y1=152+y_shift)
+    add_remove_product_button(y1=172+y_shift)
+    add_quantity_inputs(y1=172+y_shift)
+    add_products_separator(y1=217.9999999999999+y_shift)
+    add_product_button.destroy()
+    add_new_product_button(y1=240+y_shift)
+
+## implémentation de l'interface
+
+
 canvas.create_rectangle(
     0.0,
     0.0,
@@ -104,15 +313,6 @@ canvas.create_text(
 )
 
 canvas.create_text(
-    770.0,
-    177.0,
-    anchor="nw",
-    text="Alternate",
-    fill="#000000",
-    font=("Inter Bold", 16 * -1)
-)
-
-canvas.create_text(
     667.0,
     116.0,
     anchor="nw",
@@ -135,6 +335,15 @@ add_item_button.place(
     y=240.0,
     width=28.0,
     height=28.0
+)
+
+canvas.create_text(
+    770.0,
+    177.0,
+    anchor="nw",
+    text="Alternate",
+    fill="#000000",
+    font=("Inter Bold", 16 * -1)
 )
 
 canvas.create_text(
@@ -233,6 +442,7 @@ checkbox_alternate = Checkbutton(
 )
 checkbox_alternate.place(x=715.0, y=172.0)
 
+# Barre entre les produits choisis et la liste des vendeurs
 canvas.create_rectangle(
     641.0,
     66.0,
@@ -241,6 +451,8 @@ canvas.create_rectangle(
     fill="#1EBA65",
     outline="")
 
+add_product_input()
+"""
 entry_image_1 = PhotoImage(
     file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(
@@ -260,7 +472,9 @@ product_input.place(
     width=199.0,
     height=26.0
 )
-
+"""
+add_brand_input()
+"""
 entry_image_2 = PhotoImage(
     file=relative_to_assets("entry_2.png"))
 entry_bg_2 = canvas.create_image(
@@ -280,7 +494,9 @@ brand_input.place(
     width=110.0,
     height=26.0
 )
-
+"""
+add_product_texts()
+"""
 canvas.create_text(
     114.0,
     152.0,
@@ -307,7 +523,9 @@ canvas.create_text(
     fill="#000000",
     font=("Inter Medium", 14 * -1)
 )
-
+"""
+add_remove_product_button()
+"""
 button_image_2 = PhotoImage(
     file=relative_to_assets("button_2.png"))
 remove_item_button = Button(
@@ -323,7 +541,9 @@ remove_item_button.place(
     width=28.0,
     height=28.0
 )
-
+"""
+add_quantity_inputs()
+"""
 button_image_3 = PhotoImage(
     file=relative_to_assets("button_3.png"))
 plus_quantite = Button(
@@ -377,7 +597,11 @@ quantity_input.place(
 )
 #on ajoute une valeur par défaut
 quantity_input.insert(0, "1")
+"""
 
+# Petite barre entre deux produits
+add_products_separator()
+"""
 canvas.create_rectangle(
     81.0,
     217.9999999999999,
@@ -385,7 +609,7 @@ canvas.create_rectangle(
     219.0,
     fill="#1EBA65",
     outline="")
-
+"""
 button_image_5 = PhotoImage(
     file=relative_to_assets("button_5.png"))
 comparer = Button(
