@@ -15,6 +15,9 @@ current_y_position = 0
 # Variable pour stocker la référence du bouton "add_item" du bloc précédent
 previous_add_button = None
 
+# Liste pour stocker les références des images des blocs
+block_images = []
+
 # Définir les variables d'image globales
 button_image_1 = None
 entry_image_1 = None
@@ -23,7 +26,7 @@ button_image_2 = None
 
 # Fonction pour ajouter un bloc
 def add_block():
-    global current_y_position, button_image_1, entry_image_1, entry_image_2, button_image_2, previous_add_button
+    global current_y_position, button_image_1, entry_image_1, entry_image_2, button_image_2, previous_add_button, block_images
     
     #importer les images
     if button_image_1 is None:
@@ -40,6 +43,15 @@ def add_block():
         previous_add_button.destroy()
     
     # Créer les éléments du bloc
+    canvas.create_rectangle(
+        81.0,
+        current_y_position + 217.9999999999999,
+        556.0,
+        current_y_position + 219.0,
+        fill="#1EBA65",
+        outline=""
+    )
+    
     add_item_button = Button(
         window,
         image=button_image_1,
@@ -77,6 +89,7 @@ def add_block():
         width=199.0,
         height=26.0
     )
+    block_images.append((entry_image_1,))
 
     entry_image_2 = PhotoImage(
         file=relative_to_assets("entry_2.png")
@@ -99,6 +112,8 @@ def add_block():
         width=110.0,
         height=26.0
     )
+    
+    block_images.append((entry_image_2,))
 
     canvas.create_text(
         114.0,
@@ -135,6 +150,8 @@ def add_block():
         width=28.0,
         height=28.0
     )
+    
+    block_images.append((button_image_2,))
 
     
     current_y_position += 100
@@ -323,16 +340,6 @@ canvas.create_rectangle(
 ##créer le premier bloc
 add_block()
 
-
-
-canvas.create_rectangle(
-    81.0,
-    217.9999999999999,
-    556.0,
-    219.0,
-    fill="#1EBA65",
-    outline=""
-)
 
 button_image_5 = PhotoImage(
     file=relative_to_assets("button_5.png")
