@@ -157,12 +157,8 @@ def add_block():
     current_y_position += 100
 
 # Fonction pour supprimer un bloc
-def remove_block(product_input, brand_input, quantity_input, remove_block_button):
+def remove_block():
     global current_y_position
-    product_input.destroy()
-    brand_input.destroy()
-    quantity_input.destroy()
-    remove_block_button.destroy()
     current_y_position -= 100
 
 def compare():
