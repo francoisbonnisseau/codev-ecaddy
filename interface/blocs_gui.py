@@ -12,6 +12,9 @@ def relative_to_assets(path: str) -> Path:
 # Variable globale pour suivre la position verticale actuelle des blocs
 current_y_position = 0
 
+# Variable pour stocker la référence du bouton "add_item" du bloc précédent
+previous_add_button = None
+
 # Définir les variables d'image globales
 button_image_1 = None
 entry_image_1 = None
@@ -20,7 +23,7 @@ button_image_2 = None
 
 # Fonction pour ajouter un bloc
 def add_block():
-    global current_y_position, button_image_1, entry_image_1, entry_image_2, button_image_2
+    global current_y_position, button_image_1, entry_image_1, entry_image_2, button_image_2, previous_add_button
     
     #importer les images
     if button_image_1 is None:
@@ -33,8 +36,8 @@ def add_block():
         button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
 
     #supprimer le bouton add_item du bloc précédent si c'est au moins le deuxieme bloc
-    if add_item_button:
-        add_item_button.destroy()
+    if previous_add_button:
+        previous_add_button.destroy()
     
     # Créer les éléments du bloc
     add_item_button = Button(
@@ -51,6 +54,8 @@ def add_block():
         width=28.0,
         height=28.0
     )
+    previous_add_button = add_item_button
+    
     entry_image_1 = PhotoImage(
         file=relative_to_assets("entry_1.png")
     )
