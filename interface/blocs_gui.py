@@ -3,10 +3,11 @@ from pathlib import Path
 
 
 # Variable globale pour suivre la position verticale actuelle des blocs
-current_y_position = 150
+current_y_position = 250
 
 # Fonction pour ajouter un bloc
 def add_block():
+    global current_y_position
     # Créer les éléments du bloc
     product_input = Entry(window, bd=0, bg="#D3D3D3", fg="#000716", highlightthickness=0)
     brand_input = Entry(window, bd=0, bg="#D3D3D3", fg="#000716", highlightthickness=0)
