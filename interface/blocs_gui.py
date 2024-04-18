@@ -1,14 +1,56 @@
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton
 from pathlib import Path
 
+# Fonction utilitaire pour les chemins relatifs aux assets
+def relative_to_assets(path: str) -> Path:
+    OUTPUT_PATH = Path(__file__).parent
+    ASSETS_FOLDER = "assets/frame0"
+    ASSETS_PATH = OUTPUT_PATH / ASSETS_FOLDER
+    return ASSETS_PATH / Path(path)
+
 
 # Variable globale pour suivre la position verticale actuelle des blocs
-current_y_position = 250
+current_y_position = 0
+
+# Définir les variables d'image globales
+button_image_1 = None
+entry_image_1 = None
+entry_image_2 = None
+button_image_2 = None
 
 # Fonction pour ajouter un bloc
 def add_block():
-    global current_y_position
+    global current_y_position, button_image_1, entry_image_1, entry_image_2, button_image_2
+    
+    #importer les images
+    if button_image_1 is None:
+        button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
+    if entry_image_1 is None:
+        entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
+    if entry_image_2 is None:
+        entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
+    if button_image_2 is None:
+        button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
+
+    
     # Créer les éléments du bloc
+    button_image_1 = PhotoImage(
+        file=relative_to_assets("button_1.png")
+    )
+    add_item_button = Button(
+        window,
+        image=button_image_1,
+        borderwidth=0,
+        highlightthickness=0,
+        command=add_block,
+        relief="flat"
+    )
+    add_item_button.place(
+        x=309.0,
+        y=current_y_position + 240.0,
+        width=28.0,
+        height=28.0
+    )
     entry_image_1 = PhotoImage(
         file=relative_to_assets("entry_1.png")
     )
@@ -104,12 +146,6 @@ def remove_block(product_input, brand_input, quantity_input, remove_block_button
 def compare():
     pass
 
-# Fonction utilitaire pour les chemins relatifs aux assets
-def relative_to_assets(path: str) -> Path:
-    OUTPUT_PATH = Path(__file__).parent
-    ASSETS_FOLDER = "assets/frame0"
-    ASSETS_PATH = OUTPUT_PATH / ASSETS_FOLDER
-    return ASSETS_PATH / Path(path)
 
 # Créer la fenêtre principale
 window = Tk()
@@ -172,24 +208,6 @@ canvas.create_text(
     text="CHOISIR DES MAGASINS",
     fill="#000000",
     font=("Inter Bold", 16 * -1)
-)
-
-button_image_1 = PhotoImage(
-    file=relative_to_assets("button_1.png")
-)
-add_item_button = Button(
-    window,
-    image=button_image_1,
-    borderwidth=0,
-    highlightthickness=0,
-    command=add_block,
-    relief="flat"
-)
-add_item_button.place(
-    x=309.0,
-    y=240.0,
-    width=28.0,
-    height=28.0
 )
 
 canvas.create_text(
@@ -296,6 +314,9 @@ canvas.create_rectangle(
     fill="#1EBA65",
     outline=""
 )
+
+##créer le premier bloc
+add_block()
 
 
 
