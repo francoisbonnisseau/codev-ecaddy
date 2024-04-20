@@ -6,7 +6,6 @@ from demand import Demand
 from cart import Cart 
 
 def creat_demands():
-
     return demands
 def send_requests(Name,Brand, Web_sites):
      
