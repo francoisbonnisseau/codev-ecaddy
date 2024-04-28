@@ -50,4 +50,7 @@ def fill_delivery(demands, web_sites):
 """how  to execute:
 * pressing the compare botton
 * we need a function that reads the writen demands from the client window and returns writen_demands as a list [ {name: 'name1';brand: 'brand1'}, {name: 'name2';brand:'brand2'}, ... ]
+* creat demands 
+* fill delevery 
+* we have to creat a function that presents the results 
 """
