@@ -10,9 +10,12 @@ from ..scraping.Site import Site
 
 
 def creat_demands():
-
-
-
+    writen_demands= [{name: 'name1', brand: 'brand1'}, {name: 'name2',brand:'brand2'}]
+    """we have to import  writen_demands from the interface """
+    demands=[]
+    for writen_demand in writen_demands:
+        demand=demand(name= writen_demand[name], brand=writen_demand[brand] , budget_limit=np.inf, store='', quantity=1)
+        demands.append(demand)
     return demands
 Web_sites_name=['materiel', 'boulanger','grosbill','cybertech','alternate']
 def send_requests(Name,Brand, Web_sites):
@@ -42,3 +45,9 @@ def fill_delivery(demands, web_sites):
         sorted_products=cart.fill_the_demand()
         delivery.append(sorted_products[0])
     return delivery
+
+
+"""how  to execute:
+* pressing the compare botton
+* we need a function that reads the writen demands from the client window and returns writen_demands as a list [ {name: 'name1';brand: 'brand1'}, {name: 'name2';brand:'brand2'}, ... ]
+"""
