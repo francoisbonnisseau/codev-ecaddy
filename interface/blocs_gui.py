@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-c
-=======
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, Scrollbar
 from pathlib import Path
 
@@ -22,6 +19,9 @@ current_y_position = 0
 # Variable pour stocker la référence du bouton "add_item" du bloc précédent
 previous_add_button = None
 
+#Variable pour compter le nombre de blocs - permet de cibler les blocs à supprimer
+block_count = 0
+
 # Liste pour stocker les références des images des blocs
 block_images = []
 
@@ -33,7 +33,7 @@ button_image_2 = None
 
 # Fonction pour ajouter un bloc
 def add_block():
-    global current_y_position, button_image_1, entry_image_1, entry_image_2, button_image_2, previous_add_button, block_images
+    global current_y_position, button_image_1, entry_image_1, entry_image_2, button_image_2, previous_add_button, block_images, block_count
     
     #importer les images
     if button_image_1 is None:
@@ -143,30 +143,45 @@ def add_block():
     button_image_2 = PhotoImage(
         file=relative_to_assets("button_2.png")
     )
-    remove_item_button = Button(
-        window,
-        image=button_image_2,
-        borderwidth=0,
-        highlightthickness=0,
-        command=remove_block,
-        relief="flat"
-    )
-    remove_item_button.place(
-        x=58.0,
-        y=current_y_position + 172.0,
-        width=28.0,
-        height=28.0
-    )
+    # remove_item_button = Button(
+    #     window,
+    #     image=button_image_2,
+    #     borderwidth=0,
+    #     highlightthickness=0,
+    #     command=remove_block,
+    #     relief="flat"
+    # )
+    # remove_item_button.place(
+    #     x=58.0,
+    #     y=current_y_position + 172.0,
+    #     width=28.0,
+    #     height=28.0
+    # )
     
     block_images.append((button_image_2,))
 
     update_canvas_height()
     current_y_position += 100
+    block_count += 1
 
-# Fonction pour supprimer un bloc
-def remove_block():
-    global current_y_position
-    current_y_position -= 100
+#? Fonction pour supprimer un bloc - pour le moment pas cette fonctionnalité (pas de première nécessité)
+# def remove_block():
+#     global current_y_position
+    
+#     # Determine the ID of the block to remove
+#     block_id = len(block_images) - 1
+    
+#     # Reset fields of the targeted block
+#     block = block_images[block_id]
+#     block.product_input.delete(0, Tk.END)
+#     block.brand_input.delete(0, Tk.END)
+    
+#     # Optionally, destroy the block's frame if you want to remove it completely from the GUI
+#     # block.frame.destroy()
+    
+#     # Update canvas height and current_y_position
+#     current_y_position -= 100
+#     update_canvas_height()
 
 def compare():
     pass
@@ -371,4 +386,3 @@ comparer.place(
 
 window.resizable(False, False)
 window.mainloop()
->>>>>>> 7a478ba38cd70a175d2da898bd19fa7c5838c3c4
