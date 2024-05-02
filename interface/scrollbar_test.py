@@ -1,4 +1,4 @@
-from tkinter import Frame, Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, Scrollbar
+from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, Scrollbar, Frame
 from pathlib import Path
 
 # Fonction utilitaire pour les chemins relatifs aux assets
@@ -8,18 +8,14 @@ def relative_to_assets(path: str) -> Path:
     ASSETS_PATH = OUTPUT_PATH / ASSETS_FOLDER
     return ASSETS_PATH / Path(path)
 
-
 # Variable globale pour suivre la position verticale actuelle des blocs
 current_y_position = 0
 
 # Variable pour stocker la référence du bouton "add_item" du bloc précédent
 previous_add_button = None
 
-#Variable pour compter le nombre de blocs - permet de cibler les blocs à supprimer
+# Variable pour compter le nombre de blocs - permet de cibler les blocs à supprimer
 block_count = 0
-
-# Liste pour stocker les références des images des blocs
-block_images = []
 
 # Définir les variables d'image globales
 button_image_1 = None
@@ -29,7 +25,7 @@ button_image_2 = None
 
 # Fonction pour ajouter un bloc
 def add_block():
-    global current_y_position, button_image_1, entry_image_1, entry_image_2, button_image_2, previous_add_button, block_images, block_count
+    global current_y_position, button_image_1, entry_image_1, entry_image_2, button_image_2, previous_add_button, block_count
     
     #importer les images
     if button_image_1 is None:
@@ -40,11 +36,12 @@ def add_block():
         entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
     if button_image_2 is None:
         button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
-
-    #supprimer le bouton add_item du bloc précédent si c'est au moins le deuxieme bloc
-    if previous_add_button:
-        previous_add_button.destroy()
     
+    
+    # Créer un frame pour contenir le bloc
+    block_frame = Frame(blocks_frame, bg="#FFFFFF")
+    block_frame.pack(fill="x", padx=10, pady=5)
+
     # Créer les éléments du bloc
     canvas.create_rectangle(
         81.0,
@@ -54,139 +51,46 @@ def add_block():
         fill="#1EBA65",
         outline=""
     )
-    
+
     add_item_button = Button(
-        window,
+        block_frame,
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
         command=add_block,
         relief="flat"
     )
-    add_item_button.place(
-        x=309.0,
-        y=current_y_position + 240.0,
-        width=28.0,
-        height=28.0
-    )
+    add_item_button.grid(row=0, column=0)
     previous_add_button = add_item_button
     
-    entry_image_1 = PhotoImage(
-        file=relative_to_assets("entry_1.png")
-    )
-    entry_bg_1 = canvas.create_image(
-        219.5,
-        current_y_position + 186.0,
-        image=entry_image_1
-    )
     product_input = Entry(
-        window,
+        block_frame,
         bd=0,
         bg="#D3D3D3",
         fg="#000716",
         highlightthickness=0
     )
-    product_input.place(
-        x=120.0,
-        y=current_y_position + 172.0,
-        width=199.0,
-        height=26.0
-    )
-    block_images.append((entry_image_1,))
-
-    entry_image_2 = PhotoImage(
-        file=relative_to_assets("entry_2.png")
-    )
-    entry_bg_2 = canvas.create_image(
-        411.0,
-        current_y_position + 186.0,
-        image=entry_image_2
-    )
+    product_input.grid(row=1, column=0)
+    
     brand_input = Entry(
-        window,
+        block_frame,
         bd=0,
         bg="#D3D3D3",
         fg="#000716",
         highlightthickness=0
     )
-    brand_input.place(
-        x=356.0,
-        y=current_y_position + 172.0,
-        width=110.0,
-        height=26.0
-    )
-    
-    block_images.append((entry_image_2,))
-
-    canvas.create_text(
-        114.0,
-        current_y_position + 152.0,
-        anchor="nw",
-        text="Nom du produit *",
-        fill="#000000",
-        font=("Inter Medium", 14 * -1)
-    )
-
-    canvas.create_text(
-        350.0,
-        current_y_position + 152.0,
-        anchor="nw",
-        text="Marque",
-        fill="#000000",
-        font=("Inter Medium", 14 * -1)
-    )
-    
-    button_image_2 = PhotoImage(
-        file=relative_to_assets("button_2.png")
-    )
-    # remove_item_button = Button(
-    #     window,
-    #     image=button_image_2,
-    #     borderwidth=0,
-    #     highlightthickness=0,
-    #     command=remove_block,
-    #     relief="flat"
-    # )
-    # remove_item_button.place(
-    #     x=58.0,
-    #     y=current_y_position + 172.0,
-    #     width=28.0,
-    #     height=28.0
-    # )
-    
-    block_images.append((button_image_2,))
+    brand_input.grid(row=1, column=1)
 
     current_y_position += 100
     block_count += 1
 
-#? Fonction pour supprimer un bloc - pour le moment pas cette fonctionnalité (pas de première nécessité)
-# def remove_block():
-#     global current_y_position
-    
-#     # Determine the ID of the block to remove
-#     block_id = len(block_images) - 1
-    
-#     # Reset fields of the targeted block
-#     block = block_images[block_id]
-#     block.product_input.delete(0, Tk.END)
-#     block.brand_input.delete(0, Tk.END)
-    
-#     # Optionally, destroy the block's frame if you want to remove it completely from the GUI
-#     # block.frame.destroy()
-    
-#     # Update canvas height and current_y_position
-#     current_y_position -= 100
-#     update_canvas_height()
-
 def compare():
     pass
-
 
 # Créer la fenêtre principale
 window = Tk()
 window.geometry("973x605")
 window.configure(bg="#FFFFFF")
-
 
 # Créer un canvas
 canvas = Canvas(
@@ -199,6 +103,10 @@ canvas = Canvas(
     relief="ridge"
 )
 canvas.place(x=0, y=0)
+
+# Créer un frame pour contenir les blocs
+blocks_frame = Frame(canvas, bg="#FFFFFF")
+blocks_frame.place(x=0, y=0, relwidth=1, relheight=1)
 
 # Ajouter le texte et les boutons
 canvas.create_rectangle(
@@ -354,7 +262,6 @@ canvas.create_rectangle(
 ##créer le premier bloc
 add_block()
 
-
 button_image_5 = PhotoImage(
     file=relative_to_assets("button_5.png")
 )
@@ -372,8 +279,6 @@ comparer.place(
     width=174.0,
     height=64.0
 )
-
-
 
 window.resizable(False, False)
 window.mainloop()

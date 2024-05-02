@@ -1,0 +1,67 @@
+{
+    "boulanger": {
+        "base_url": "https://boulanger.com",
+        "search_url": "https://www.boulanger.com/resultats?tr=",
+        "selectors": {
+            "products": ".product-list__item",
+            "name": ".product-list__product-label",
+            "brand": ".product-list__product-label > strong",
+            "price": ".price__amount",
+            "description": ".keypoints",
+            "url_product": ".product-list__product-image-link",
+            "url_image": "img.product-list__product-image"
+        }
+    },
+    "materiel": {
+        "base_url" : "https://materiel.net",
+        "search_url" : "https://www.materiel.net/recherche/",
+        "selectors" : {
+            "products": ".c-products-list__item",
+            "name": ".c-product__title",
+            "brand": ".c-product__title",
+            "price": ".o-product__price",
+            "description": ".c-product__description",
+            "url_product": ".c-product__link",
+            "url_image": ".c-product__thumb > a > img.img-fluid"
+        }
+    },
+    "grosbill": {
+        "base_url" : "https://www.grosbill.com",
+        "search_url" : "https://www.grosbill.com/produit.aspx?q=",
+        "selectors" : {
+            "products": ".la_liste_des_produits.grb__liste-produit__liste__produit",
+            "name": ".grb__liste-produit__liste__produit__information__libelle__libelle_produit",
+            "brand": ".grb__liste-produit__liste__produit__information__constructeur",
+            "price": ".grb__liste-produit__liste__produit__achat__prix > span",
+            "description": ".grb__liste-produit__liste__produit__information__caracteristiques__liste",
+            "url_product": ".prod_txt_left",
+            "url_image": ".grb__liste-produit__liste__produit__image > a.prod_txt_left > img"
+        }
+    },
+    "cybertech": {
+        "base_url" : "https://www.cybertek.fr/",
+        "search_url" : "https://www.cybertek.fr/boutique/produit.aspx?q=",
+        "selectors" : {
+            "products": ".la_liste_des_produits.grb__liste-produit__liste__produit",
+            "name": ".grb__liste-produit__liste__produit__information__libelle__libelle_produit",
+            "brand": ".grb__liste-produit__liste__produit__information__constructeur",
+            "price": ".grb__liste-produit__liste__produit__achat__prix > span",
+            "description": ".grb__liste-produit__liste__produit__information__caracteristiques__liste",
+            "url_product": ".prod_txt_left",
+            "url_image": ".grb__liste-produit__liste__produit__image > a.prod_txt_left > img"
+        }
+    },
+    "alternate": {
+        "base_url": "https://www.alternate.fr",
+        "search_url": "https://www.alternate.fr/listing.xhtml?q=",
+        "selectors": {
+            "products": ".productBox.boxCounter",
+            "name": ".product-name",
+            "brand": ".product-name > span",
+            "price": ".price",
+            "description": ".product-info",
+            "url_product": ".productBox.boxCounter",
+            "url_image": "img.productPicture"
+        }
+    }
+}
