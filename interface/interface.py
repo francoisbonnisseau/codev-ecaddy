@@ -5,6 +5,12 @@ import sys
 sys.path.append("..")
 from scraping.Site import Site
 from scraping import *
+sys.path.append("..")
+from analyses.product import Product
+from analyses.demand import Demand
+from analyses.cart import Cart  
+
+
 
 class Block:
     def __init__(self, canvas, window, current_y_position, add_block, images):
@@ -342,6 +348,23 @@ class ShoppingApp:
     def add_block(self):
         self.block.add()
 
+    def creat_demands():
+        writen_demands=[ {name: writen_demand[0], brand: writen_demand[1]}  for writen_demand in self.comparison_information['products'] ]
+        """we have to import  writen_demands from the interface """
+        demands=[]
+        for writen_demand in writen_demands:
+            demand=demand(name= writen_demand[name], brand=writen_demand[brand] , budget_limit=np.inf, store='', quantity=1)
+            demands.append(demand)
+        return demands
+    def fill_delivery(demands, csv_files):
+        delivery=[] #list of products
+        for demand in demands:
+            cart=Cart(demand)
+            cart.set_products(csv_files)
+            sorted_products=cart.fill_the_demand()
+            delivery.append(sorted_products[0])
+        return delivery
+
     def compare(self):
         
         with open('site_information.json', 'r') as infos_file:
@@ -373,21 +396,34 @@ class ShoppingApp:
                 for product in self.comparison_information['products']:
                     for site in self.comparison_information['sites']:
                         if site == 'materiel_net':
-                            materiel_net.write_data(product[0]+" "+product[1])
+                            materiel_net.write_data(product[0]+"_"+product[1])
                             print(f'materiel scraped for product {product[0]}')
                         if site == 'boulanger':
-                            boulanger.write_data(product[0]+" "+product[1])
+                            boulanger.write_data(product[0]+"_"+product[1])
                             print(f'boulanger scraped for product {product[0]}')
                         if site == 'grosbill':
-                            grosbill.write_data(product[0]+" "+product[1])
+                            grosbill.write_data(product[0]+"_"+product[1])
                             print(f'grosbill scraped for product {product[0]}')
                         if site == 'cybertech':
-                            cybertech.write_data(product[0]+" "+product[1])
+                            cybertech.write_data(product[0]+"_"+product[1])
                             print(f'cybertech scraped for product {product[0]}')
                         if site == 'alternate':
-                            alternate.write_data(product[0]+" "+product[1])
+                            alternate.write_data(product[0]+"_"+product[1])
                             print(f'alternate scraped for product {product[0]}')
+            
+             #creat csv_files_path 
+            today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
             csv_files=[]
+            for web_site_name in Web_sites_name:
+                csv_file= f"../{today_date}/{web_site_name}_{key_word_research}.csv"
+                csv_files.append(csv_file)
+
+            
+            demands=self.creat_demands()
+            dilevery=self.fill_delivery(demands, csv_files)
+            
+                
+           
             
             return self.comparison_information
 
