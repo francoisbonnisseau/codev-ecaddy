@@ -193,7 +193,7 @@ if __name__ == "__main__":
     alternate = Site('alternate', site_information['alternate']['base_url'], site_information['alternate']['search_url'], site_information['alternate']['selectors'])
     
     # Get product information
-    product = "pc asus"
+    product = "gopro"
     materiel_net.write_data(product_name=product)
     boulanger.write_data(product_name=product)
     grosbill.write_data(product_name=product)
