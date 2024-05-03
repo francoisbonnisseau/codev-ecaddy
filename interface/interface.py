@@ -2,6 +2,7 @@ from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, BooleanV
 from pathlib import Path
 import json
 import sys
+from datetime import date
 sys.path.append("..")
 from scraping.Site import Site
 from scraping import *
@@ -356,13 +357,12 @@ class ShoppingApp:
             demand=demand(name= writen_demand[name], brand=writen_demand[brand] , budget_limit=np.inf, store='', quantity=1)
             demands.append(demand)
         return demands
-    def fill_delivery(demands, csv_files):
-        delivery=[] #list of products
-        for demand in demands:
-            cart=Cart(demand)
-            cart.set_products(csv_files)
-            sorted_products=cart.fill_the_demand()
-            delivery.append(sorted_products[0])
+    """ fill dilevery is a function that returns a list of best product for each website """
+    def fill_delivery(demand, csv_files):
+        cart=Cart(demand)
+        cart.set_products(csv_files)
+        sorted_products=cart.fill_the_demand()
+        delivery=sorted_products
         return delivery
 
     def compare(self):
@@ -411,16 +411,22 @@ class ShoppingApp:
                             alternate.write_data(product[0]+"_"+product[1])
                             print(f'alternate scraped for product {product[0]}')
             
-             #creat csv_files_path 
-            today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
-            csv_files=[]
-            for web_site_name in Web_sites_name:
-                csv_file= f"../{today_date}/{web_site_name}_{key_word_research}.csv"
-                csv_files.append(csv_file)
-
-            
+                
             demands=self.creat_demands()
-            dilevery=self.fill_delivery(demands, csv_files)
+            #creat csv_files_path 
+            today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
+            
+
+            #list of the products responding to research
+            dileveries=[]
+            for demand in demands: 
+                #csv files for searching this product
+                csv_files=[]
+                key_word_research=demand.get_name()+"_"+demand.get_brand()
+                for web_site_name in self.comparison_information['sites'] :
+                    csv_file= f"../{today_date}/{web_site_name}_{key_word_research}.csv"
+                    csv_files.append(csv_file)
+                dileveries.append(self.fill_delivery(demand, csv_files)[0])
             
                 
            
