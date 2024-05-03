@@ -2,6 +2,7 @@ from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, BooleanV
 from pathlib import Path
 import json
 import sys
+import numpy as np 
 from datetime import date
 sys.path.append("..")
 from scraping.Site import Site
@@ -349,16 +350,16 @@ class ShoppingApp:
     def add_block(self):
         self.block.add()
 
-    def creat_demands():
-        writen_demands=[ {name: writen_demand[0], brand: writen_demand[1]}  for writen_demand in self.comparison_information['products'] ]
+    def creat_demands(self):
+        writen_demands=[ {'name': writen_demand[0], 'brand': writen_demand[1]}  for writen_demand in self.comparison_information['products'] ]
         """we have to import  writen_demands from the interface """
         demands=[]
         for writen_demand in writen_demands:
-            demand=demand(name= writen_demand[name], brand=writen_demand[brand] , budget_limit=np.inf, store='', quantity=1)
-            demands.append(demand)
+            the_demand=Demand(name= writen_demand['name'], brand=writen_demand['brand'] , budget_limit=np.inf, store='', quantity=1)
+            demands.append(the_demand)
         return demands
     """ fill dilevery is a function that returns a list of best product for each website """
-    def fill_delivery(demand, csv_files):
+    def fill_delivery(self, demand, csv_files):
         cart=Cart(demand)
         cart.set_products(csv_files)
         sorted_products=cart.fill_the_demand()
@@ -418,15 +419,16 @@ class ShoppingApp:
             
 
             #list of the products responding to research
-            dileveries=[]
+            deliveries=[]
             for demand in demands: 
                 #csv files for searching this product
                 csv_files=[]
                 key_word_research=demand.get_name()+"_"+demand.get_brand()
                 for web_site_name in self.comparison_information['sites'] :
-                    csv_file= f"../{today_date}/{web_site_name}_{key_word_research}.csv"
+                    OUTPUT_PATH = Path(__file__).parent
+                    csv_file= f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
                     csv_files.append(csv_file)
-                dileveries.append(self.fill_delivery(demand, csv_files)[0])
+                deliveries.append(self.fill_delivery(demand, csv_files)[0])
             
                 
            
