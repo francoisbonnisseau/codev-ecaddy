@@ -372,7 +372,7 @@ class ShoppingApp:
                 #on commence le scrapping et l'analyse des données
                 for product in self.comparison_information['products']:
                     for site in self.comparison_information['sites']:
-                        if site == 'materiel_net':
+                        if site == 'materiel':
                             materiel_net.write_data(product[0]+" "+product[1])
                             print(f'materiel scraped for product {product[0]}')
                         if site == 'boulanger':
