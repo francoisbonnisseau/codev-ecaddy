@@ -130,6 +130,7 @@ class ShoppingApp:
     def __init__(self):
         self.sites_repertory = ['boulanger', 'cybertech', 'grosbill', 'materiel', 'alternate']
         self.window = Tk()
+        self.window.protocol("WM_DELETE_WINDOW", self.on_close)
         self.window.geometry("973x605")
         self.window.configure(bg="#FFFFFF")      
 
@@ -329,19 +330,26 @@ class ShoppingApp:
         self.window.resizable(False, False)
         self.window.mainloop()
 
+    def on_close(self):
+        # Appelé lors de la fermeture de la fenêtre Tkinter
+        self.window.destroy()
+    
     def add_block(self):
         self.block.add()
 
     def compare(self):
-        comparison_information = {'products':[] , 'sites':[]}
-        comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
-                                              if product[0] != '' and product[1] != '']
-        for site in self.sites_repertory: 
-            checkbox = getattr(self, 'checkbox_' + site + '_state')
-            if checkbox.get():
-                comparison_information['sites'].append(site)
-        # affichage des erreurs (aucun produit / aucun site) ? 
-        return comparison_information
+        if self.window.winfo_exists():
+            comparison_information = {'products':[] , 'sites':[]}
+            #on ajoute le produit à la liste si le nom du produit n'est pas vide. On autorise une marque vide
+            comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
+                                                if product[0] != '']
+            for site in self.sites_repertory: 
+                checkbox = getattr(self, 'checkbox_' + site + '_state')
+                if checkbox.get():
+                    comparison_information['sites'].append(site)
+            # affichage des erreurs (aucun produit / aucun site) ? 
+            print(comparison_information)
+            return comparison_information
 
 def relative_to_assets(path: str) -> Path:
     OUTPUT_PATH = Path(__file__).parent
