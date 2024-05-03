@@ -373,21 +373,21 @@ class ShoppingApp:
                 for product in self.comparison_information['products']:
                     for site in self.comparison_information['sites']:
                         if site == 'materiel_net':
-                            materiel_net.write_data(product[0])
+                            materiel_net.write_data(product[0]+" "+product[1])
                             print(f'materiel scraped for product {product[0]}')
                         if site == 'boulanger':
-                            boulanger.write_data(product[0])
+                            boulanger.write_data(product[0]+" "+product[1])
                             print(f'boulanger scraped for product {product[0]}')
                         if site == 'grosbill':
-                            grosbill.write_data(product[0])
+                            grosbill.write_data(product[0]+" "+product[1])
                             print(f'grosbill scraped for product {product[0]}')
                         if site == 'cybertech':
-                            cybertech.write_data(product[0])
+                            cybertech.write_data(product[0]+" "+product[1])
                             print(f'cybertech scraped for product {product[0]}')
                         if site == 'alternate':
-                            alternate.write_data(product[0])
+                            alternate.write_data(product[0]+" "+product[1])
                             print(f'alternate scraped for product {product[0]}')
-            
+            csv_files=[]
             
             return self.comparison_information
 
