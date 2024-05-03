@@ -1,5 +1,10 @@
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, BooleanVar, Scrollbar
 from pathlib import Path
+import json
+import sys
+sys.path.append("..")
+from scraping.Site import Site
+from scraping import *
 
 class Block:
     def __init__(self, canvas, window, current_y_position, add_block, images):
@@ -338,18 +343,51 @@ class ShoppingApp:
         self.block.add()
 
     def compare(self):
+        
+        with open('site_information.json', 'r') as infos_file:
+            self.site_information = json.load(infos_file)
+            # print(site_information)
+            # print(json.dumps(site_information, indent=4, sort_keys=True))
+        
+        materiel_net = Site.Site('materiel', self.site_information['materiel']['base_url'], self.site_information['materiel']['search_url'], self.site_information['materiel']['selectors'])
+        boulanger = Site.Site('boulanger', self.site_information['boulanger']['base_url'], self.site_information['boulanger']['search_url'], self.site_information['boulanger']['selectors'])
+        grosbill = Site.Site('grosbill', self.site_information['grosbill']['base_url'], self.site_information['grosbill']['search_url'], self.site_information['grosbill']['selectors'])
+        cybertech = Site.Site('cybertech', self.site_information['cybertech']['base_url'], self.site_information['cybertech']['search_url'], self.site_information['cybertech']['selectors'])
+        alternate = Site.Site('alternate', self.site_information['alternate']['base_url'], self.site_information['alternate']['search_url'], self.site_information['alternate']['selectors'])
+        
+        
         if self.window.winfo_exists():
-            comparison_information = {'products':[] , 'sites':[]}
+            self.comparison_information = {'products':[] , 'sites':[]}
             #on ajoute le produit à la liste si le nom du produit n'est pas vide. On autorise une marque vide
-            comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
+            self.comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
                                                 if product[0] != '']
             for site in self.sites_repertory: 
                 checkbox = getattr(self, 'checkbox_' + site + '_state')
                 if checkbox.get():
-                    comparison_information['sites'].append(site)
+                    self.comparison_information['sites'].append(site)
             # affichage des erreurs (aucun produit / aucun site) ? 
-            print(comparison_information)
-            return comparison_information
+            print(self.comparison_information)
+            
+            for product in self.comparison_information['products']:
+                for site in self.comparison_information['sites']:
+                    if site == 'materiel_net':
+                        materiel_net.write_data(product[0])
+                        print(f'materiel scraped for product {product[0]}')
+                    if site == 'boulanger':
+                        boulanger.write_data(product[0])
+                        print(f'boulanger scraped for product {product[0]}')
+                    if site == 'grosbill':
+                        grosbill.write_data(product[0])
+                        print(f'grosbill scraped for product {product[0]}')
+                    if site == 'cybertech':
+                        cybertech.write_data(product[0])
+                        print(f'cybertech scraped for product {product[0]}')
+                    if site == 'alternate':
+                        alternate.write_data(product[0])
+                        print(f'alternate scraped for product {product[0]}')
+            
+            
+            return self.comparison_information
 
 def relative_to_assets(path: str) -> Path:
     OUTPUT_PATH = Path(__file__).parent

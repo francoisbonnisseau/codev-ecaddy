@@ -2,8 +2,8 @@
 import os
 import csv
 import numpy as np 
-from product import Product
-from demand import Demand
+from analyses.product import Product
+from analyses.demand import Demand
 from datetime import date
 class Cart:
     """classmethod"""
