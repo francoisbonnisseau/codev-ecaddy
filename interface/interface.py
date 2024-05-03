@@ -391,7 +391,7 @@ class ShoppingApp:
             # affichage des erreurs (aucun produit / aucun site) ? 
             print(self.comparison_information)
             
-            if(self.comparison_information):
+            if(self.comparison_information and self.comparison_information['sites']):
                 #on commence le scrapping et l'analyse des données
                 for product in self.comparison_information['products']:
                     for site in self.comparison_information['sites']:
