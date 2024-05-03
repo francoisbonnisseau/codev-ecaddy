@@ -368,23 +368,25 @@ class ShoppingApp:
             # affichage des erreurs (aucun produit / aucun site) ? 
             print(self.comparison_information)
             
-            for product in self.comparison_information['products']:
-                for site in self.comparison_information['sites']:
-                    if site == 'materiel_net':
-                        materiel_net.write_data(product[0])
-                        print(f'materiel scraped for product {product[0]}')
-                    if site == 'boulanger':
-                        boulanger.write_data(product[0])
-                        print(f'boulanger scraped for product {product[0]}')
-                    if site == 'grosbill':
-                        grosbill.write_data(product[0])
-                        print(f'grosbill scraped for product {product[0]}')
-                    if site == 'cybertech':
-                        cybertech.write_data(product[0])
-                        print(f'cybertech scraped for product {product[0]}')
-                    if site == 'alternate':
-                        alternate.write_data(product[0])
-                        print(f'alternate scraped for product {product[0]}')
+            if(self.comparison_information):
+                #on commence le scrapping et l'analyse des données
+                for product in self.comparison_information['products']:
+                    for site in self.comparison_information['sites']:
+                        if site == 'materiel_net':
+                            materiel_net.write_data(product[0])
+                            print(f'materiel scraped for product {product[0]}')
+                        if site == 'boulanger':
+                            boulanger.write_data(product[0])
+                            print(f'boulanger scraped for product {product[0]}')
+                        if site == 'grosbill':
+                            grosbill.write_data(product[0])
+                            print(f'grosbill scraped for product {product[0]}')
+                        if site == 'cybertech':
+                            cybertech.write_data(product[0])
+                            print(f'cybertech scraped for product {product[0]}')
+                        if site == 'alternate':
+                            alternate.write_data(product[0])
+                            print(f'alternate scraped for product {product[0]}')
             
             
             return self.comparison_information
