@@ -1,12 +1,15 @@
 import os
 import csv
+import sys
 import numpy as np 
 from product import Product
 from demand import Demand
 from cart import Cart 
 from datetime import date
-from ..scraping.Site import Site
-""" i have an error on importing  scraping.Site"""
+
+sys.path.append("..")
+
+from scraping.Site import Site
 
 
 def creat_demands():
