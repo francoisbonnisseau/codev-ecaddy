@@ -1,4 +1,4 @@
-from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, Scrollbar
+from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, BooleanVar, Scrollbar
 from pathlib import Path
 
 class Block:
@@ -10,6 +10,8 @@ class Block:
         self.previous_add_button = None
         self.block_images = []
         self.images = images
+        self.product_inputs = []
+        self.brand_inputs = []
 
     def add(self):
         #supprimer le bouton add_item du bloc précédent si c'est au moins le deuxieme bloc
@@ -57,6 +59,7 @@ class Block:
             fg="#000716",
             highlightthickness=0
         )
+        self.product_inputs.append(product_input)
         product_input.place(
             x=120.0,
             y=self.current_y_position + 172.0,
@@ -80,6 +83,7 @@ class Block:
             fg="#000716",
             highlightthickness=0
         )
+        self.brand_inputs.append(brand_input)
         brand_input.place(
             x=356.0,
             y=self.current_y_position + 172.0,
@@ -115,12 +119,19 @@ class Block:
         
         self.current_y_position += 100
 
+    def get_product_brand_inputs(self):
+        product_inputs = [entry.get() for entry in self.product_inputs]
+        brand_contents = [entry.get() for entry in self.brand_inputs]
+        product_brand_inputs = [[product_inputs[i],brand_contents[i]] for i in range(len(product_inputs))]
+        return product_brand_inputs
+
 #création de la classe Shopping app qui va contenir l'interface graphique
 class ShoppingApp:
     def __init__(self):
+        self.sites_repertory = ['boulanger', 'cybertech', 'grosbill', 'materiel', 'alternate']
         self.window = Tk()
         self.window.geometry("973x605")
-        self.window.configure(bg="#FFFFFF")
+        self.window.configure(bg="#FFFFFF")      
 
         self.canvas = Canvas(
             self.window,
@@ -207,8 +218,10 @@ class ShoppingApp:
             font=("Inter Bold", 16 * -1)
         )
 
+        self.checkbox_boulanger_state = BooleanVar()  
         self.checkbox_boulanger = Checkbutton(
             self.window,
+            variable=self.checkbox_boulanger_state,
             onvalue=True,
             offvalue=False,
             height=2,
@@ -219,8 +232,10 @@ class ShoppingApp:
         )
         self.checkbox_boulanger.place(x=715.0, y=220.0)
 
+        self.checkbox_cybertech_state = BooleanVar()  
         self.checkbox_cybertech = Checkbutton(
             self.window,
+            variable=self.checkbox_cybertech_state,            
             onvalue=True,
             offvalue=False,
             height=2,
@@ -231,8 +246,10 @@ class ShoppingApp:
         )
         self.checkbox_cybertech.place(x=715.0, y=268.0)
 
+        self.checkbox_grosbill_state = BooleanVar()  
         self.checkbox_grosbill = Checkbutton(
             self.window,
+            variable=self.checkbox_grosbill_state,
             onvalue=True,
             offvalue=False,
             height=2,
@@ -243,8 +260,10 @@ class ShoppingApp:
         )
         self.checkbox_grosbill.place(x=715.0, y=316.0)
 
+        self.checkbox_materiel_state = BooleanVar()  
         self.checkbox_materiel = Checkbutton(
             self.window,
+            variable=self.checkbox_materiel_state,
             onvalue=True,
             offvalue=False,
             height=2,
@@ -255,8 +274,10 @@ class ShoppingApp:
         )
         self.checkbox_materiel.place(x=715.0, y=364.0)
 
+        self.checkbox_alternate_state = BooleanVar()  
         self.checkbox_alternate = Checkbutton(
             self.window,
+            variable=self.checkbox_alternate_state,
             onvalue=True,
             offvalue=False,
             height=2,
@@ -312,7 +333,15 @@ class ShoppingApp:
         self.block.add()
 
     def compare(self):
-        pass
+        comparison_information = {'products':[] , 'sites':[]}
+        comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
+                                              if product[0] != '' and product[1] != '']
+        for site in self.sites_repertory: 
+            checkbox = getattr(self, 'checkbox_' + site + '_state')
+            if checkbox.get():
+                comparison_information['sites'].append(site)
+        # affichage des erreurs (aucun produit / aucun site) ? 
+        return comparison_information
 
 def relative_to_assets(path: str) -> Path:
     OUTPUT_PATH = Path(__file__).parent

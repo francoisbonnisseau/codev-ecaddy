@@ -42,8 +42,9 @@ canvas.place(x = 0, y = 0)
 
 ## variables pour l'implémentation de l'interface ##
 
-products_number = 1
+products_number = 0
 images_repertory = {} # si on ne stocke pas les images dans un dictionnaire externe, les fonctions d'implémentation ne marchent pas
+                      # contient des button_image 1 à 4 et des entry_image 1 à 3
 quantity_buttons_repertory = {} # chaque ligne a son propre set de boutons
 quantity_entries_repertory = {} # chaque ligne a son propre set d'entrées
 quantities_repertory = {} # les quantités sont propres à chaque produit
@@ -93,7 +94,10 @@ def remove_item(index):
     canvas.delete(images_repertory['entry_image_1'+str(index)])
     canvas.delete(images_repertory['entry_image_2'+str(index)])
     canvas.delete(images_repertory['entry_image_3'+str(index)])
-
+    canvas.delete(images_repertory['button_image_1'])
+    canvas.delete(images_repertory['button_image_2'+str(index)])
+    canvas.delete(images_repertory['button_image_3'+str(index)])
+    canvas.delete(images_repertory['button_image_4'+str(index)])
 
 
 def add_item():
@@ -279,6 +283,8 @@ def add_new_product_button(x1=309.0,y1=240.0):
     button_image_1 = PhotoImage(
         file=relative_to_assets("button_1.png"))
     images_repertory['button_image_1']=button_image_1
+    for i in images_repertory:
+        print(i)
     add_product_button = Button(
         image=button_image_1,
         borderwidth=0,
@@ -461,7 +467,8 @@ canvas.create_rectangle(
     fill="#1EBA65",
     outline="")
 
-add_product_input()
+
+add_item()
 """
 entry_image_1 = PhotoImage(
     file=relative_to_assets("entry_1.png"))
@@ -483,7 +490,6 @@ product_input.place(
     height=26.0
 )
 """
-add_brand_input()
 """
 entry_image_2 = PhotoImage(
     file=relative_to_assets("entry_2.png"))
@@ -505,7 +511,6 @@ brand_input.place(
     height=26.0
 )
 """
-add_product_texts()
 """
 canvas.create_text(
     114.0,
@@ -534,7 +539,6 @@ canvas.create_text(
     font=("Inter Medium", 14 * -1)
 )
 """
-add_remove_product_button()
 """
 button_image_2 = PhotoImage(
     file=relative_to_assets("button_2.png"))
@@ -552,7 +556,6 @@ remove_item_button.place(
     height=28.0
 )
 """
-add_quantity_inputs()
 """
 button_image_3 = PhotoImage(
     file=relative_to_assets("button_3.png"))
@@ -610,7 +613,6 @@ quantity_input.insert(0, "1")
 """
 
 # Petite barre entre deux produits
-add_products_separator()
 """
 canvas.create_rectangle(
     81.0,
