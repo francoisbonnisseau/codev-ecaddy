@@ -350,7 +350,7 @@ class ShoppingApp:
     def add_block(self):
         self.block.add()
 
-    def creat_demands(self):
+    def create_demands(self):
         writen_demands=[ {'name': writen_demand[0], 'brand': writen_demand[1]}  for writen_demand in self.comparison_information['products'] ]
         """we have to import  writen_demands from the interface """
         demands=[]
@@ -413,7 +413,7 @@ class ShoppingApp:
                             print(f'alternate scraped for product {product[0]}')
             
                 
-            demands=self.creat_demands()
+            demands=self.create_demands()
             #creat csv_files_path 
             today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
             
@@ -429,9 +429,6 @@ class ShoppingApp:
                     csv_file= f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
                     csv_files.append(csv_file)
                 deliveries.append(self.fill_delivery(demand, csv_files)[0])
-            
-                
-           
             
             return self.comparison_information
 
