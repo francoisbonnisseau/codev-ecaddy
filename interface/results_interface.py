@@ -186,7 +186,7 @@ class ResultsInterface:
             766.0,
             195.0,
             anchor="nw",
-            text="Alternate",
+            text=self.products[0]['site'],
             fill="#FFFFFF",
             font=("Inter Medium", 20 * -1)
         )
@@ -194,7 +194,7 @@ class ResultsInterface:
             151.0,
             451.0,
             anchor="nw",
-            text="Boulanger",
+            text=self.products[1]['site'],
             fill="#1EBA65",
             font=("Inter Medium", 20 * -1)
         )
@@ -202,7 +202,7 @@ class ResultsInterface:
             598.0,
             451.0,
             anchor="nw",
-            text="CyberTech",
+            text=self.products[2]['site'],
             fill="#1EBA65",
             font=("Inter Medium", 20 * -1)
         )
@@ -216,245 +216,13 @@ class ResultsInterface:
         )
         self.window.resizable(False, False)
         self.window.mainloop()
-# from tkinter import *
 
-
-# window = Tk()
-
-# window.geometry("973x605")
-# window.configure(bg = "#FFFFFF")
-
-
-# canvas = Canvas(
-#     window,
-#     bg = "#FFFFFF",
-#     height = 605,
-#     width = 973,
-#     bd = 0,
-#     highlightthickness = 0,
-#     relief = "ridge"
-# )
-
-# canvas.place(x = 0, y = 0)
-# canvas.create_rectangle(
-#     0.0,
-#     0.0,
-#     973.0,
-#     73.0,
-#     fill="#B0E0C6",
-#     outline="")
-
-# canvas.create_text(
-#     431.0,
-#     27.0,
-#     anchor="nw",
-#     text="Vos résultats !",
-#     fill="#000000",
-#     font=("Inter Bold", 16 * -1)
-# )
-
-# canvas.create_rectangle(
-#     40.0,
-#     97.0,
-#     933.0,
-#     251.0,
-#     fill="#1EBA65",
-#     outline="")
-
-# canvas.create_rectangle(
-#     40.0,
-#     275.0,
-#     555.0,
-#     516.0,
-#     fill="#B0DFC6",
-#     outline="")
-
-# canvas.create_text(
-#     151.0,
-#     370.0,
-#     anchor="nw",
-#     text="Description de l’iphone 14 pro lorem ipsum dolor sit amet ",
-#     fill="#000000",
-#     font=("Inter SemiBold", 15 * -1)
-# )
-
-# canvas.create_rectangle(
-#     572.0,
-#     275.0,
-#     933.0,
-#     516.0,
-#     fill="#E1FCEE",
-#     outline="")
-
-# canvas.create_text(
-#     598.0,
-#     370.0,
-#     anchor="nw",
-#     text="Description de l’iphone 14 pro\n lorem ipsum dolor sit amet ",
-#     fill="#000000",
-#     font=("Inter SemiBold", 15 * -1)
-# )
-
-# canvas.create_text(
-#     69.0,
-#     138.0,
-#     anchor="nw",
-#     text="1",
-#     fill="#FFFFFF",
-#     font=("Inter Black", 60 * -1)
-# )
-
-# canvas.create_text(
-#     69.0,
-#     295.0,
-#     anchor="nw",
-#     text="2",
-#     fill="#000000",
-#     font=("Inter Black", 60 * -1)
-# )
-
-# canvas.create_text(
-#     598.0,
-#     290.0,
-#     anchor="nw",
-#     text="3",
-#     fill="#1EBA65",
-#     font=("Inter Black", 60 * -1)
-# )
-
-# canvas.create_text(
-#     151.0,
-#     118.0,
-#     anchor="nw",
-#     text="Iphone 14 Pro",
-#     fill="#000000",
-#     font=("Inter Black", 30 * -1)
-# )
-
-# canvas.create_text(
-#     151.0,
-#     310.0,
-#     anchor="nw",
-#     text="Iphone 14 Pro",
-#     fill="#000000",
-#     font=("Inter Black", 30 * -1)
-# )
-
-# canvas.create_text(
-#     663.0,
-#     310.0,
-#     anchor="nw",
-#     text="Iphone 14 Pro",
-#     fill="#000000",
-#     font=("Inter Black", 20 * -1)
-# )
-
-# canvas.create_text(
-#     775.0,
-#     107.0,
-#     anchor="nw",
-#     text="999€99",
-#     fill="#000000",
-#     font=("Inter Bold", 30 * -1)
-# )
-
-# canvas.create_text(
-#     405.0,
-#     303.0,
-#     anchor="nw",
-#     text="1020€99",
-#     fill="#000000",
-#     font=("Inter Bold", 30 * -1)
-# )
-
-# canvas.create_text(
-#     828.0,
-#     307.0,
-#     anchor="nw",
-#     text="1050€99",
-#     fill="#000000",
-#     font=("Inter Bold", 15 * -1)
-# )
-
-# canvas.create_text(
-#     151.0,
-#     179.0,
-#     anchor="nw",
-#     text="Description de l’iphone 14 pro lorem ipsum dolor sit amet ",
-#     fill="#000000",
-#     font=("Inter SemiBold", 15 * -1)
-# )
-
-# canvas.create_text(
-#     151.0,
-#     150.0,
-#     anchor="nw",
-#     text="Apple",
-#     fill="#000000",
-#     font=("Inter SemiBold", 15 * -1)
-# )
-
-# canvas.create_text(
-#     151.0,
-#     342.0,
-#     anchor="nw",
-#     text="Apple",
-#     fill="#000000",
-#     font=("Inter SemiBold", 15 * -1)
-# )
-
-# canvas.create_text(
-#     663.0,
-#     334.0,
-#     anchor="nw",
-#     text="Apple",
-#     fill="#000000",
-#     font=("Inter SemiBold", 13 * -1)
-# )
-
-# canvas.create_text(
-#     766.0,
-#     195.0,
-#     anchor="nw",
-#     text="Alternate",
-#     fill="#FFFFFF",
-#     font=("Inter Medium", 20 * -1)
-# )
-
-# canvas.create_text(
-#     151.0,
-#     451.0,
-#     anchor="nw",
-#     text="Boulanger",
-#     fill="#1EBA65",
-#     font=("Inter Medium", 20 * -1)
-# )
-
-# canvas.create_text(
-#     598.0,
-#     451.0,
-#     anchor="nw",
-#     text="CyberTech",
-#     fill="#1EBA65",
-#     font=("Inter Medium", 20 * -1)
-# )
-
-# canvas.create_text(
-#     369.0,
-#     560.0,
-#     anchor="nw",
-#     text="Tous les résultats en dessous",
-#     fill="#000000",
-#     font=("Inter Bold", 16 * -1)
-# )
-# window.resizable(False, False)
-# window.mainloop()
 
 
 if __name__ == "__main__":
     products = [
-    {"name": "Iphone 14 Pro", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "999€99"},
-    {"name": "Iphone 15 Pro", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1020€99"},
-    {"name": "Iphone 14 Pro", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1050€99"}
+    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet là", "price": "998€99"},
+    {"name": "Iphone 15 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet lorem ipsum dolor si amet texte long long texte long longtexte long long", "price": "1020€99"},
+    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"}
 ]
     interface = ResultsInterface(products)
