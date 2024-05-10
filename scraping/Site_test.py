@@ -141,7 +141,7 @@ def run_test(site_name, base_url, search_url, selectors):
         site = Site(site_name, base_url, search_url, selectors)
         site.get_infos('ecouteurs')
     except Exception as e:
-        print(f"Error running test for {site_name}: {e}")
+        print(f" {site_name}: {e}")
         return True
 
 # Execute all tests
