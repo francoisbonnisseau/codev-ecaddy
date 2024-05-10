@@ -25,10 +25,17 @@ class Site:
         url = f"{self.search_url}{product_name}"
         #requête de la page demandée
         page = requests.get(url, headers=headers)
+        if page.status_code != 200:
+            print(f"Failed to load page {url}")
+            return None
         soup = BeautifulSoup(page.text, "html.parser")
 
         #on récupère la structure principale où sont stockés tous les produits sur la page
-        products = soup.select(self.selectors['products'])
+        try:
+            products = soup.select(self.selectors['products'])
+        except Exception as e:
+            print(f"Erreur en tentant de récupérer les éléments de la page: {e}")
+            return None
 
         for product in products: #cas général plus gestion de qq execptions selon le site
             name = self._extract_text(product, self.selectors['name'])
@@ -67,13 +74,21 @@ class Site:
 
     # méthode pour extraire le texte d'une balise html
     def _extract_text(self, element, selector):
-        selected_element = element.select_one(selector)
-        return selected_element.get_text(strip=True) if selected_element else None
+        try:
+            selected_element = element.select_one(selector)
+            return selected_element.get_text(strip=True) if selected_element else None
+        except Exception as e:
+            print(f"Erreur en tentant d'extraire le texte avec le sélecteur '{selector}': {e}")
+            return None
 
-    #méthode pour extraire un attribut d'une balise html - on l'utilise ici pour l'url de l'image du produit, mais peut servir pour tout type d'attribut
+    # Méthode pour extraire un attribut d'une balise HTML
     def _extract_attribute(self, element, selector, attribute):
-        selected_element = element.select_one(selector)
-        return selected_element.get(attribute) if selected_element else None
+        try:
+            selected_element = element.select_one(selector)
+            return selected_element.get(attribute) if selected_element else None
+        except Exception as e:
+            print(f"Erreur en tentant d'extraire l'attribut '{attribute}' avec le sélecteur '{selector}': {e}")
+            return None
     
     
     def _save_data_in_csv(self, product_name):
