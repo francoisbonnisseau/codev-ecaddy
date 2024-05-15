@@ -83,7 +83,7 @@ class Cart:
                     product = Product(
                         name=row['Nom'],
                         brand=row['Marque'],
-                        price=float(row['Prix'].replace(' ', '').replace('\xa0', '').replace('€', '').replace(',', '.').strip()),
+                        price=float(row['Prix'].replace('.','').replace(' ', '').replace('\xa0', '').replace('€', '').replace(',', '.').strip()),
                         description=row['Description'],
                         store= os.path.basename(csv_file).split("_")[0],
                         url=row['Url'],

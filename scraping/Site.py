@@ -59,15 +59,18 @@ class Site:
                 if url_image:
                     url_image = self.base_url + url_image
             
-            #on stocke toutes les données d'un produit dans ce dictionnaire data, que l'on ajoute ensuite à la liste data_list
-            data = {
-                'Nom': name,
-                'Marque': brand,
-                'Prix': price,
-                'Description': description,
-                'Url': url_product,
-                'Url_image': url_image
-            }
+            if price != None and name != None and brand != None and description != None and url_product != None:
+                #on stocke toutes les données d'un produit dans ce dictionnaire data, que l'on ajoute ensuite à la liste data_list
+                data = {
+                    'Nom': name,
+                    'Marque': brand,
+                    'Prix': price,
+                    'Description': description,
+                    'Url': url_product,
+                    'Url_image': url_image
+                }
+                
+                self.data_list.append(data)
             
             self.data_list.append(data)
         return self.data_list
