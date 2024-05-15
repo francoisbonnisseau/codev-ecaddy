@@ -35,6 +35,39 @@ class Cart:
             if len(store_products)==0:
                 self.products.remove(store_products)
 
+    def filter_products(self, name=None, price_min=None, price_max=None, brand=None, description=None, store=None, url=None, image_url=None):
+        """
+        Retrieves all products in the cart that match the specified criteria.
+        
+        Args:
+            name (str, optional): The name of the product to filter by.
+            price_min (float, optional): The minimum price of the product to filter by.
+            price_max (float, optional): The maximum price of the product to filter by.
+            brand (str, optional): The brand of the product to filter by.
+            description (str, optional): The description of the product to filter by.
+            store (str, optional): The store where the product is available to filter by.
+            url (str, optional): The URL of the product to filter by.
+            image_url (str, optional): The image URL of the product to filter by.
+        
+        Returns:
+            list: A list of products that match the specified criteria.
+        """
+        matching_products = []
+        for store_products in self.products:
+            for product in store_products:
+                # Check if the product matches the criteria for each specified attribute
+                if (name is None or name.lower() in product.get_name().lower()) and \
+                   (price_min is None or product.get_price() >= price_min) and \
+                   (price_max is None or product.get_price() <= price_max) and \
+                   (brand is None or brand.lower() in product.get_brand().lower()) and \
+                   (description is None or description.lower() in product.get_description().lower()) and \
+                   (store is None or store.lower() in product.get_store().lower()) and \
+                   (url is None or url == product.get_url()) and \
+                   (image_url is None or image_url == product.get_image_url()):
+                    matching_products.append(product)
+        return matching_products
+    
+
     def search_product_by_attributes(self, name=None, price_min=None, price_max=None, brand=None, description=None, store=None, url=None, image_url=None):
         """Searches for products in the cart based on specified attributes."""
         useful_products=[]
@@ -96,7 +129,7 @@ class Cart:
     def fill_the_demand(self):
         """Calculates the total price of the products for the given demands."""
         demand=self.demand
-        best_products=self.search_product_by_attributes( name=demand.get_name(),price_min=0, price_max=demand.get_budget_limit(), brand=demand.get_brand(), description=None, store=demand.get_store(), url=None, image_url=None)
+        best_products=self.filter_products( name=demand.get_name(),price_min=0, price_max=demand.get_budget_limit(), brand=demand.get_brand(), description=None, store=demand.get_store(), url=None, image_url=None)
         sorted_products=[]
         # Sort the list of products based on their price attribute
         if None not in best_products:
