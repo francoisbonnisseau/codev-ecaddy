@@ -3,7 +3,7 @@ import numpy as np
 class Demand:
     last_id = 0  # Class variable to track the last assigned ID
 
-    def __init__(self, name, brand='', budget_limit=np.inf, store='', quantity=1):
+    def __init__(self, name, brand='', budget_limit=np.inf, store='', quantity=1, price_min=0):
         # Increment the last ID when a new instance is created
         Demand.last_id += 1
         self.id = Demand.last_id
@@ -25,6 +25,13 @@ class Demand:
             raise ValueError("budget_limit must be greater than 0")
         self.budget_limit = budget_limit
 
+        # Validate price_min
+        if not isinstance(price_min, (int, float)):
+            raise ValueError("budget_limit must be a number")
+        if price_min < 0:
+            raise ValueError("budget_limit must be greater than 0")
+        self.price_min = price_min
+        
         # Validate store
         if not isinstance(store, str):
             raise ValueError("store must be a string")
@@ -60,6 +67,10 @@ class Demand:
     def get_quantity(self):
         """Get the quantity of the demand."""
         return self.quantity
+    def get_price_min(self):
+        return self.price_min
+    
+    
 
 if __name__ == "__main__":
     # Test cases for Demand class

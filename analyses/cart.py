@@ -136,7 +136,7 @@ class Cart:
     def fill_the_demand(self):
         """Calculates the total price of the products for the given demands."""
         demand=self.demand
-        best_products=self.filter_products( name=demand.get_name(),price_min=0, price_max=demand.get_budget_limit(), brand=demand.get_brand(), description=None, store=demand.get_store(), url=None, image_url=None)
+        best_products=self.filter_products( name=demand.get_name(),price_min=demand.get_price_min(), price_max=demand.get_budget_limit(), brand=demand.get_brand(), description=None, store=demand.get_store(), url=None, image_url=None)
         sorted_products=[]
         # Sort the list of products based on their price attribute
         if None not in best_products:

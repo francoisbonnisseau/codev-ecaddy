@@ -243,7 +243,7 @@ class ShoppingApp:
             width=2,
             bg="#fff",
             activebackground="#fff",
-            highlightthcickness=0
+            highlightthickness=0
         )
         self.checkbox_boulanger.place(x=715.0, y=220.0)
 
@@ -352,11 +352,11 @@ class ShoppingApp:
         self.block.add()
 
     def create_demands(self):
-        writen_demands=[ {'name': writen_demand[0], 'brand': writen_demand[1]}  for writen_demand in self.comparison_information['products'] ]
+        writen_demands=[ {'name': writen_demand[0], 'brand': writen_demand[1],'price_min': writen_demand[2]}  for writen_demand in self.comparison_information['products'] ]
         """we have to import  writen_demands from the interface """
         demands=[]
         for writen_demand in writen_demands:
-            the_demand=Demand(name= writen_demand['name'], brand=writen_demand['brand'] , budget_limit=np.inf, store='', quantity=1)
+            the_demand=Demand(name= writen_demand['name'], brand=writen_demand['brand'] , budget_limit=np.inf, store='', quantity=1, price_min=writen_demand['price_min'])
             demands.append(the_demand)
         return demands
     """ fill dilevery is a function that returns a list of best product for each website """
