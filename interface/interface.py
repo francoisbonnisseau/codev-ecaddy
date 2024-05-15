@@ -243,7 +243,7 @@ class ShoppingApp:
             width=2,
             bg="#fff",
             activebackground="#fff",
-            highlightthickness=0
+            highlightthcickness=0
         )
         self.checkbox_boulanger.place(x=715.0, y=220.0)
 

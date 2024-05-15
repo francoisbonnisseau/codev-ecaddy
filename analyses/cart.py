@@ -104,6 +104,11 @@ class Cart:
                query.lower() in product.store.lower() :
                 matching_products.append(product)
         return matching_products
+    
+    def correspondPrice (self, SPrice ):  
+        price=0 
+        print(SPrice)
+        return price
     def set_products(self,csv_files):
         """this function reads the csv files and set products  """
         """Charge les produits à partir des fichiers CSV et les ajoute à self.products."""
@@ -116,7 +121,8 @@ class Cart:
                     product = Product(
                         name=row['Nom'],
                         brand=row['Marque'],
-                        price=float(row['Prix'].replace('.','').replace(' ', '').replace('\xa0', '').replace('€', '').replace(',', '.').strip()),
+                        price=self.correspondPrice (row['Prix']) ,
+                        #price=float(row['Prix'].replace('.','').replace(' ', '').replace('\xa0', '').replace('€', '').replace(',', '.').strip()),
                         description=row['Description'],
                         store= os.path.basename(csv_file).split("_")[0],
                         url=row['Url'],
