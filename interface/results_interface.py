@@ -58,7 +58,15 @@ class ResultsInterface:
             151.0,
             370.0,
             anchor="nw",
-            text=self.products[0]['description'],
+            text=self.products[1]['description'][:60],
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+        self.canvas.create_text(
+            151.0,
+            385.0,
+            anchor="nw",
+            text=self.products[1]['description'][60:120],
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
         )
@@ -74,7 +82,15 @@ class ResultsInterface:
             598.0,
             370.0,
             anchor="nw",
-            text=self.products[1]['description'],
+            text=self.products[2]['description'][:50],
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+        self.canvas.create_text(
+            598.0,
+            385.0,
+            anchor="nw",
+            text=self.products[2]['description'][50:100],
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
         )
@@ -106,7 +122,7 @@ class ResultsInterface:
             151.0,
             118.0,
             anchor="nw",
-            text=self.products[0]['name'],
+            text=self.products[0]['name'].split(' ')[0],
             fill="#000000",
             font=("Inter Black", 30 * -1)
         )
@@ -114,7 +130,7 @@ class ResultsInterface:
             151.0,
             310.0,
             anchor="nw",
-            text=self.products[1]['name'],
+            text=self.products[1]['name'].split(' ')[0],
             fill="#000000",
             font=("Inter Black", 30 * -1)
         )
@@ -122,7 +138,7 @@ class ResultsInterface:
             663.0,
             310.0,
             anchor="nw",
-            text=self.products[2]['name'],
+            text=self.products[2]['name'].split(' ')[0],
             fill="#000000",
             font=("Inter Black", 20 * -1)
         )
@@ -154,7 +170,15 @@ class ResultsInterface:
             151.0,
             179.0,
             anchor="nw",
-            text=self.products[0]['description'],
+            text=self.products[0]['description'][:130],
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+        self.canvas.create_text(
+            151.0,
+            194.0,
+            anchor="nw",
+            text=self.products[0]['description'][130:200],
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
         )
@@ -233,7 +257,7 @@ class ResultsInterface:
     def open_results_window(self):
         # Step 2: Create a Frame for the Table
         self.window_table = Tk()
-        self.window_table.geometry("973x605")
+        self.window_table.geometry("1400x400")
         self.window_table.configure(bg="#FFFFFF")
         self.window_table.title("Results Table")
         table_frame = Frame(self.window_table)
@@ -252,7 +276,7 @@ class ResultsInterface:
         scrollbar.config(command=self.table.yview)
 
         # Step 5: Configure the Table Headers
-        self.table["columns"] = ("name", "site", "brand", "description", "price")
+        self.table["columns"] = ("name", "site", "brand", "description", "price", "link")
         self.table.column("#0", width=0, stretch="no")  # Hiding the first column
         self.table.heading("name", text="Name")
         self.table.heading("site", text="Site")
@@ -283,37 +307,9 @@ def relative_to_assets(path: str) -> Path:
 
 if __name__ == "__main__":
     products = [
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet là", "price": "998€99"},
-    {"name": "Iphone 15 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet lorem ipsum dolor si amet texte long long texte long longtexte long long", "price": "1020€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"}    
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet là", "price": "998€99", "url":"http://example.com/product1"},
+    {"name": "Iphone 15 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet lorem ipsum dolor si amet texte long long texte long longtexte long long", "price": "1020€99", "url":"http://example.com/product1"},
+    {"name": "Iphone 16 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 16 pro lorem ipsum dolor sit amet ", "price": "1099€99", "url":"http://example.com/product3"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99", "url":"http://example.com/product2"}
 ]
     interface = ResultsInterface(products)

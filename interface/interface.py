@@ -428,9 +428,8 @@ class ShoppingApp:
                     OUTPUT_PATH = Path(__file__).parent
                     csv_file= f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
                     csv_files.append(csv_file)
-                deliveries.append(self.fill_delivery(demand, csv_files)[0])
-            
-            print(len(deliveries))
+                print(self.fill_delivery(demand,csv_files))
+                deliveries = self.fill_delivery(demand, csv_files)
             
             final_products = []
             for product in deliveries:
