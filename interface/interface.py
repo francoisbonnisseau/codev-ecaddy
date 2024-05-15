@@ -26,6 +26,7 @@ class Block:
         self.images = images
         self.product_inputs = []
         self.brand_inputs = []
+        self.price_inputs = []
 
     def add(self):
         #supprimer le bouton add_item du bloc précédent si c'est au moins le deuxieme bloc
