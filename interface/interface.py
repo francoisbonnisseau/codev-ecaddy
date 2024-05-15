@@ -5,6 +5,7 @@ import sys
 import numpy as np 
 from datetime import date
 sys.path.append("..")
+from results_interface import ResultsInterface
 from scraping.Site import Site
 from scraping import *
 sys.path.append("..")
@@ -429,6 +430,8 @@ class ShoppingApp:
                     csv_file= f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
                     csv_files.append(csv_file)
                 deliveries.append(self.fill_delivery(demand, csv_files)[0])
+            
+            interface = ResultsInterface(deliveries)
             
             return self.comparison_information
 
