@@ -3,6 +3,7 @@
 # https://github.com/ParthJadhav/Tkinter-Designer
 
 from tkinter import VERTICAL, Tk, Canvas, Entry, Text, Button, PhotoImage
+from pathlib import Path
 from tkinter import Scrollbar
 from tkinter import Frame
 from tkinter import Label
@@ -15,17 +16,12 @@ class ResultsInterface:
         self.window = Tk()
         self.window.geometry("973x605")
         self.window.configure(bg="#FFFFFF")
+        self.window.title("Vos résultats !")
 
-        self.canvas = Canvas(
-            self.window,
-            bg="#FFFFFF",
-            height=605,
-            width=973,
-            bd=0,
-            highlightthickness=0,
-            relief="ridge"
-        )
-        self.canvas.place(x=0, y=0)
+        
+        self.canvas = Canvas(self.window)
+        self.canvas.pack(side="left", fill="both", expand=True)
+        
         self.canvas.create_rectangle(
             0.0,
             0.0,
@@ -210,18 +206,39 @@ class ResultsInterface:
             fill="#1EBA65",
             font=("Inter Medium", 20 * -1)
         )
-        self.canvas.create_text(
-            369.0,
-            560.0,
-            anchor="nw",
-            text="Tous les résultats en dessous",
-            fill="#000000",
-            font=("Inter Bold", 16 * -1)
+        button_image = PhotoImage(
+            file=relative_to_assets("voir_resultats.png")
         )
+        self.resultats = Button(
+            self.canvas,
+            image = button_image,
+            borderwidth=0,
+            highlightthickness=0,
+            command=self.open_results_window,
+            relief="flat"
+        )
+        
+        self.resultats.place(
+            x=200.0,
+            y=530.0,
+            width=600,
+            height=64.0
+        )
+            
+            
+        self.window.resizable(False, False)
+        self.window.mainloop()
 
+        
+    def open_results_window(self):
         # Step 2: Create a Frame for the Table
-        table_frame = Frame(self.window)
-        table_frame.pack(fill="both", expand=True)
+        self.window_table = Tk()
+        self.window_table.geometry("973x605")
+        self.window_table.configure(bg="#FFFFFF")
+        self.window_table.title("Results Table")
+        table_frame = Frame(self.window_table)
+        table_frame.pack(side="bottom", fill="both", expand=True)
+
 
         # Step 3: Create a Scrollbar
         scrollbar = Scrollbar(table_frame, orient=VERTICAL)
@@ -229,7 +246,7 @@ class ResultsInterface:
 
         # Step 4: Create a Treeview Table
         self.table = Treeview(table_frame, yscrollcommand=scrollbar.set, selectmode="browse")
-        self.table.pack(side="left", fill="both", expand=True)
+        self.table.pack(side="bottom", fill="both", expand=True)
 
         # Configure the scrollbar to command the table's yview
         scrollbar.config(command=self.table.yview)
@@ -244,15 +261,23 @@ class ResultsInterface:
         self.table.heading("price", text="Price")
 
         # Step 6: Insert Data into the Table
-        for product in products:
+        for product in self.products:
             self.table.insert("", "end", values=(product["name"], product["site"], product["brand"], product["description"], product["price"]))
 
+    
+        # Step 8: Add the table to the new window
+        self.table.pack(side="left", fill="both", expand=True)
 
 
 
-        self.window.resizable(False, False)
-        self.window.mainloop()
 
+
+    
+def relative_to_assets(path: str) -> Path:
+    OUTPUT_PATH = Path(__file__).parent
+    ASSETS_FOLDER = "assets/frame0"
+    ASSETS_PATH = OUTPUT_PATH / ASSETS_FOLDER
+    return ASSETS_PATH / Path(path)
 
 
 if __name__ == "__main__":
