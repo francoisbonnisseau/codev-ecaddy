@@ -186,7 +186,7 @@ class ResultsInterface:
             766.0,
             195.0,
             anchor="nw",
-            text=self.products[0]['site'],
+            text=self.products[0]['store'],
             fill="#FFFFFF",
             font=("Inter Medium", 20 * -1)
         )
@@ -194,7 +194,7 @@ class ResultsInterface:
             151.0,
             451.0,
             anchor="nw",
-            text=self.products[1]['site'],
+            text=self.products[1]['store'],
             fill="#1EBA65",
             font=("Inter Medium", 20 * -1)
         )
@@ -202,7 +202,7 @@ class ResultsInterface:
             598.0,
             451.0,
             anchor="nw",
-            text=self.products[2]['site'],
+            text=self.products[2]['store'],
             fill="#1EBA65",
             font=("Inter Medium", 20 * -1)
         )
