@@ -227,12 +227,11 @@ class ResultsInterface:
             fill="#1EBA65",
             font=("Inter Medium", 20 * -1)
         )
-        button_image = PhotoImage(
-            file=self.relative_to_assets("voir_resultats.png")
-        )
+        
         self.resultats = Button(
             self.canvas,
-            image = button_image,
+            bg="#1EBA65",
+            text="Voir tous les résultats",
             borderwidth=0,
             highlightthickness=0,
             command=self.open_results_window,
@@ -240,15 +239,17 @@ class ResultsInterface:
         )
         
         self.resultats.place(
-            x=200.0,
+            x=360.0,
             y=530.0,
-            width=600,
+            width=300,
             height=64.0
         )
-            
+        
+        
             
         self.window.resizable(False, False)
         self.window.mainloop()
+
 
         
     def open_results_window(self):
@@ -291,11 +292,12 @@ class ResultsInterface:
         self.table.pack(side="left", fill="both", expand=True)
 
 
-    def relative_to_assets(path: str) -> Path:
+    def relative_to_assets(self, path: str) -> Path:
         OUTPUT_PATH = Path(__file__).parent
         ASSETS_FOLDER = "assets/frame0"
         ASSETS_PATH = OUTPUT_PATH / ASSETS_FOLDER
         return ASSETS_PATH / Path(path)
+    
 
 
 if __name__ == "__main__":

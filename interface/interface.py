@@ -11,7 +11,7 @@ from scraping import *
 sys.path.append("..")
 from analyses.product import Product
 from analyses.demand import Demand
-from analyses.cart import Cart  
+from analyses.cart import Cart
 
 
 
@@ -436,6 +436,7 @@ class ShoppingApp:
                 final_products.append({'name': product.get_name(), 'brand': product.get_brand(), 'price': product.get_price(), 'description': product.get_description(), 'url': product.get_url(), 'image_url': product.get_image_url(), 'store': product.get_store()})
         
             print(final_products)
+            
             
             return ResultsInterface(final_products)
 
