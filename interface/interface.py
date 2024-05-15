@@ -5,6 +5,7 @@ import sys
 import numpy as np 
 from datetime import date
 sys.path.append("..")
+from results_interface import ResultsInterface
 from scraping.Site import Site
 from scraping import *
 sys.path.append("..")
@@ -363,8 +364,7 @@ class ShoppingApp:
         cart=Cart(demand)
         cart.set_products(csv_files)
         sorted_products=cart.fill_the_demand()
-        delivery=sorted_products
-        return delivery
+        return sorted_products
 
     def compare(self):
         
@@ -429,6 +429,15 @@ class ShoppingApp:
                     csv_file= f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
                     csv_files.append(csv_file)
                 deliveries.append(self.fill_delivery(demand, csv_files)[0])
+            
+            print(deliveries)
+            
+            final_products = []
+            for product in deliveries:
+                final_products.append({'name': product.get_name(), 'brand': product.get_brand(), 'price': product.get_price(), 'description': product.get_description(), 'url': product.get_url(), 'image_url': product.get_image_url(), 'store': product.get_store()})
+        
+            print(final_products)
+            interface = ResultsInterface(final_products)
             
             return self.comparison_information
 

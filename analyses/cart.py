@@ -72,7 +72,7 @@ class Cart:
                 matching_products.append(product)
         return matching_products
     def set_products(self,csv_files):
-        """this function re ds the csv files and set products  """
+        """this function reads the csv files and set products  """
         """Charge les produits à partir des fichiers CSV et les ajoute à self.products."""
         for csv_file in csv_files:
             store_products=[]
@@ -84,7 +84,7 @@ class Cart:
                     product = Product(
                         name=row['Nom'],
                         brand=row['Marque'],
-                        price=float(row['Prix'].replace(' ', '').replace('\xa0', '').replace('€', '.').replace(',', '.').strip()),
+                        price=float(row['Prix'].replace('.','').replace(' ', '').replace('\xa0', '').replace('€', '').replace(',', '.').strip()),
                         description=row['Description'],
                         store= os.path.basename(csv_file).split("_")[0],
                         url=row['Url'],
