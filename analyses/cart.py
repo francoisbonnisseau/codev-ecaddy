@@ -111,7 +111,7 @@ class Cart:
         if store == "boulanger":
             return float(SPrice.replace(',','.').replace(' ', '').replace('€', '').strip())
         if store == "alternate":
-            return float(SPrice.replace(' ', '').replace('€', '').replace(',', '.').strip())
+            return float(SPrice.replace('.','').replace(' ', '').replace('€', '').replace(',', '.').strip())
     def set_products(self,csv_files):
         """this function reads the csv files and set products  """
         """Charge les produits à partir des fichiers CSV et les ajoute à self.products."""
