@@ -385,7 +385,7 @@ class ShoppingApp:
         self.block.add()
 
     def create_demands(self):
-        writen_demands=[ {'name': writen_demand[0], 'brand': writen_demand[1],'price_min': writen_demand[2]}  for writen_demand in self.comparison_information['products'] ]
+        writen_demands=[ {'name': writen_demand[0], 'brand': writen_demand[1],'price_min': int(writen_demand[2])}  for writen_demand in self.comparison_information['products'] ]
         """we have to import  writen_demands from the interface """
         demands=[]
         for writen_demand in writen_demands:
