@@ -429,17 +429,21 @@ class ShoppingApp:
                     csv_file= f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
                     csv_files.append(csv_file)
                 deliveries.append(self.fill_delivery(demand, csv_files)[0])
+<<<<<<< HEAD
                 
             print(deliveries)
+=======
+            
+            print(len(deliveries))
+>>>>>>> 6c590fe42a80086cb7aa5f9cadd046c8c33dc905
             
             final_products = []
             for product in deliveries:
                 final_products.append({'name': product.get_name(), 'brand': product.get_brand(), 'price': product.get_price(), 'description': product.get_description(), 'url': product.get_url(), 'image_url': product.get_image_url(), 'store': product.get_store()})
         
             print(final_products)
-            interface = ResultsInterface(final_products)
             
-            return self.comparison_information
+            return ResultsInterface(final_products)
 
 def relative_to_assets(path: str) -> Path:
     OUTPUT_PATH = Path(__file__).parent

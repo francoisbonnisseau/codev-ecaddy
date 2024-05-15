@@ -259,10 +259,11 @@ class ResultsInterface:
         self.table.heading("brand", text="Brand")
         self.table.heading("description", text="Description")
         self.table.heading("price", text="Price")
+        self.table.heading("link", text="Link")
 
         # Step 6: Insert Data into the Table
         for product in self.products:
-            self.table.insert("", "end", values=(product["name"], product["site"], product["brand"], product["description"], product["price"]))
+            self.table.insert("", "end", values=(product["name"], product["store"], product["brand"], product["description"], product["price"], product["url"]))
 
     
         # Step 8: Add the table to the new window
@@ -282,37 +283,37 @@ def relative_to_assets(path: str) -> Path:
 
 if __name__ == "__main__":
     products = [
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet là", "price": "998€99"},
-    {"name": "Iphone 15 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet lorem ipsum dolor si amet texte long long texte long longtexte long long", "price": "1020€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
-    {"name": "Iphone 14 Pro", "site":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"}    
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet là", "price": "998€99"},
+    {"name": "Iphone 15 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet lorem ipsum dolor si amet texte long long texte long longtexte long long", "price": "1020€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"},
+    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99"}    
 ]
     interface = ResultsInterface(products)
