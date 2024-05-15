@@ -26,6 +26,7 @@ class Block:
         self.images = images
         self.product_inputs = []
         self.brand_inputs = []
+        self.price_inputs = []
 
     def add(self):
         #supprimer le bouton add_item du bloc précédent si c'est au moins le deuxieme bloc
@@ -107,6 +108,29 @@ class Block:
         
         self.block_images.append((entry_image_2,))
         
+        entry_bg_3 = self.canvas.create_image(
+            550.0,
+            self.current_y_position + 186.0,
+            image=entry_image_2
+        )
+        price_input = Entry(
+            self.window,
+            bd=0,
+            bg="#D3D3D3",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.price_inputs.append(price_input)
+        price_input.place(
+            x=500.0,
+            y=self.current_y_position + 172.0,
+            width=110.0,
+            height=26.0
+        )
+        
+        self.block_images.append((entry_image_2,))
+        
+        
         self.canvas.create_text(
             114.0,
             self.current_y_position + 152.0,
@@ -124,6 +148,15 @@ class Block:
             fill="#000000",
             font=("Inter Medium", 14 * -1)
         )
+        
+        self.canvas.create_text(
+            500.0,
+            self.current_y_position + 152.0,
+            anchor="nw",
+            text="Prix minimum",
+            fill="#000000",
+            font=("Inter Medium", 14 * -1)
+        )
 
         button_image_2 = PhotoImage(
             file=relative_to_assets("button_2.png")
@@ -136,7 +169,8 @@ class Block:
     def get_product_brand_inputs(self):
         product_inputs = [entry.get() for entry in self.product_inputs]
         brand_contents = [entry.get() for entry in self.brand_inputs]
-        product_brand_inputs = [[product_inputs[i],brand_contents[i]] for i in range(len(product_inputs))]
+        min_price_content = [entry.get() for entry in self.price_inputs]
+        product_brand_inputs = [[product_inputs[i],brand_contents[i],min_price_content[i]] for i in range(len(product_inputs))]
         return product_brand_inputs
 
 #création de la classe Shopping app qui va contenir l'interface graphique
@@ -298,8 +332,7 @@ class ShoppingApp:
             height=2,
             width=2,
             bg="#fff",
-            activebackground="#fff",
-            highlightthickness=0
+            activebackground="#fff"
         )
         self.checkbox_alternate.place(x=715.0, y=172.0)
 

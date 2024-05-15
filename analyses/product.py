@@ -4,7 +4,9 @@ class Product:
             # Validate input values
             if not isinstance(name, str) or not isinstance(brand, str) or not isinstance(description, str) or not isinstance(url, str) or not isinstance(image_url, str) or not isinstance(store, str) or not isinstance(nature, str) :
                 raise ValueError("Invalid input type for string attributes")
-            if not isinstance(price, (int, float)) or price < 0:
+            if not isinstance(price, (int, float)):
+                raise ValueError("Price must be an integer or float")
+            if price < 0:
                 raise ValueError("Price must be a non-negative number")
             
             # Increment the last ID when a new instance is created
