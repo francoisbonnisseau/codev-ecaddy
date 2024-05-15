@@ -80,7 +80,6 @@ class Cart:
                 reader = csv.DictReader(file)
                 #next(reader)  # Skip header row if present
                 for row in reader:
-                    print(row['Prix'].replace(' ', '').replace('\xa0', '').replace('€', '.').replace(',', '.').strip())
                     product = Product(
                         name=row['Nom'],
                         brand=row['Marque'],
