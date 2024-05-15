@@ -4,8 +4,8 @@ import json
 import sys
 import numpy as np 
 from datetime import date
-sys.path.append("..")
 from results_interface import ResultsInterface
+sys.path.append("..")
 from scraping.Site import Site
 from scraping import *
 sys.path.append("..")
