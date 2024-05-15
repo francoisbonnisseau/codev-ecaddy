@@ -80,6 +80,7 @@ class Cart:
                 reader = csv.DictReader(file)
                 #next(reader)  # Skip header row if present
                 for row in reader:
+                    print(row['Prix'].replace(' ', '').replace('\xa0', '').replace('€', '.').replace(',', '.').strip())
                     product = Product(
                         name=row['Nom'],
                         brand=row['Marque'],
@@ -119,7 +120,7 @@ if __name__ == "__main__":
     today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
 
     csv_files = [
-        os.path.join(os.path.join(os.path.dirname(__file__),'..', today_date),"materiel_asus_for_test.csv")
+        os.path.join(os.path.join(os.path.dirname(__file__), today_date),"materiel_asus_for_test.csv")
     ]
     print(csv_files)
     # Charger les produits à partir des fichiers CSV
