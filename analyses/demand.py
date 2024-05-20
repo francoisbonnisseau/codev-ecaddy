@@ -27,9 +27,9 @@ class Demand:
 
         # Validate price_min
         if not isinstance(price_min, (int, float)):
-            raise ValueError("budget_limit must be a number")
+            raise ValueError("price_min must be a number")
         if price_min < 0:
-            raise ValueError("budget_limit must be greater than 0")
+            raise ValueError("bprice_min must be greater than 0")
         self.price_min = price_min
         
         # Validate store
