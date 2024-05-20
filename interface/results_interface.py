@@ -6,6 +6,7 @@ from tkinter import Frame
 from tkinter import Label
 from tkinter.ttk import Treeview
 
+
 class ResultsInterface:
     def __init__(self, products):
         self.products = products
