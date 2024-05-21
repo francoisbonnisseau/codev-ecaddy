@@ -37,7 +37,7 @@ class Site:
             print(f"Erreur en tentant de récupérer les éléments de la page: {e}")
             return None
 
-        for product in products: #cas général plus gestion de qq execptions selon le site
+        for product in products: #cas général plus gestion de qq exceptions selon le site
             name = self._extract_text(product, self.selectors['name'])
             if self.nom == 'materiel':
                 brand = self._extract_text(product, self.selectors['brand']).split(" ")[0]
