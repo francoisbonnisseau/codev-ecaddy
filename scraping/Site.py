@@ -26,7 +26,7 @@ class Site:
         #requête de la page demandée
         page = requests.get(url, headers=headers)
         if page.status_code != 200:
-            print(f"Failed to load page {url}")
+            print(f"Erreur en tentant d'accéder à la page : {url}")
             return None
         soup = BeautifulSoup(page.text, "html.parser")
 
@@ -101,7 +101,7 @@ class Site:
 
         with open(f'{self.nom}_{product_name}.csv', 'w', encoding='utf-8', newline='') as csv_file:
             writer = csv.writer(csv_file)
-            # Écrire l'en-tête du searched_fichier CSV
+            # Écrire l'en-tête du fichier CSV
             writer.writerow(['Nom', 'Marque', 'Prix', 'Description', 'Url', 'Url_image'])
 
             # Écrire chaque ligne de données dans le fichier CSV
