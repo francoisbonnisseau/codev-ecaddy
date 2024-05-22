@@ -4,9 +4,7 @@ class Demand:
     last_id = 0  # Class variable to track the last assigned ID
 
     def __init__(self, name, brand='', budget_limit=np.inf, store='', quantity=1, price_min=0):
-        # Increment the last ID when a new instance is created
-        Demand.last_id += 1
-        self.id = Demand.last_id
+        
 
         # Validate name
         if not isinstance(name, str):
@@ -43,6 +41,10 @@ class Demand:
         if quantity <= 0:
             raise ValueError("quantity must be greater than 0")
         self.quantity = quantity
+
+        # Increment the last ID when a new instance is created
+        Demand.last_id += 1
+        self.id = Demand.last_id
 
     def get_id(self):
         """Get the ID of the demand."""

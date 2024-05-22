@@ -6,7 +6,13 @@ from analyses.product import Product
 from analyses.demand import Demand
 from datetime import date
 class Cart:
-    """classmethod"""
+    """classmethod
+    This class have two main attributes: 
+    products: a list that is filled with products found after the scraping, these products are not filtred 
+        products=[[products1 of store A, product 2 of store A, ...],[products1 of store B, product 2 of store B, ...],...]
+    demands: a demand,  it must be instantiated when creating crat
+    
+    """
     def __init__(self,demand):
         self.products = []
         self.demand=demand
@@ -69,8 +75,12 @@ class Cart:
     
 
     def search_product_by_attributes(self, name=None, price_min=None, price_max=None, brand=None, description=None, store=None, url=None, image_url=None):
-        """Searches for products in the cart based on specified attributes."""
+        """Searches for products in the cart based on specified attributes.
+        it updates the aatribute products and returns the best product from each list
+        """
+        #a list of filtred products i have the same structure of the attribute products  
         useful_products=[]
+        # a list of best prodcut of each store  
         best_products=[]
         for store_product in self.products:
             best_store_price=np.inf
@@ -90,8 +100,9 @@ class Cart:
                     if product.get_price()<=best_store_price:
                         best_store_price=product.get_price()
                         best_store_product=product
-            useful_products.append(matching_products)
-            best_products.append(best_store_product)
+            if best_store_price != np.inf : 
+                useful_products.append(matching_products)
+                best_products.append(best_store_product)
         self.products=useful_products
         return best_products
     def search_by_query(self, query):
@@ -113,7 +124,7 @@ class Cart:
         if store == "alternate":
             return float(SPrice.replace('.','').replace(' ', '').replace('€', '').replace(',', '.').strip())
     def set_products(self,csv_files):
-        """this function reads the csv files and set products  """
+        """this function reads the csv files and set the attribute products  """
         """Charge les produits à partir des fichiers CSV et les ajoute à self.products."""
         for csv_file in csv_files:
             store_products=[]
