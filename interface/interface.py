@@ -430,20 +430,35 @@ class ShoppingApp:
                 for product in self.comparison_information['products']:
                     for site in self.comparison_information['sites']:
                         if site == 'materiel':
-                            materiel_net.write_data(product[0]+"_"+product[1])
-                            print(f'materiel scraped for product {product[0]}')
+                            try:
+                                materiel_net.write_data(product[0]+"_"+product[1])
+                                print(f'materiel scraped for product {product[0]}')
+                            except:
+                                print(f'error while scraping materiel for product {product[0]}')
                         if site == 'boulanger':
-                            boulanger.write_data(product[0]+"_"+product[1])
-                            print(f'boulanger scraped for product {product[0]}')
+                            try:
+                                boulanger.write_data(product[0]+"_"+product[1])
+                                print(f'boulanger scraped for product {product[0]}')
+                            except: 
+                                print(f'error while scraping boulanger for product {product[0]}')
                         if site == 'grosbill':
-                            grosbill.write_data(product[0]+"_"+product[1])
-                            print(f'grosbill scraped for product {product[0]}')
+                            try:
+                                grosbill.write_data(product[0]+"_"+product[1])
+                                print(f'grosbill scraped for product {product[0]}')
+                            except:
+                                print(f'error while scraping grosbill for product {product[0]}')
                         if site == 'cybertech':
-                            cybertech.write_data(product[0]+"_"+product[1])
-                            print(f'cybertech scraped for product {product[0]}')
+                            try:
+                                cybertech.write_data(product[0]+"_"+product[1])
+                                print(f'cybertech scraped for product {product[0]}')
+                            except:
+                                print(f'error while scraping cybertech for product {product[0]}')
                         if site == 'alternate':
-                            alternate.write_data(product[0]+"_"+product[1])
-                            print(f'alternate scraped for product {product[0]}')
+                            try:
+                                alternate.write_data(product[0]+"_"+product[1])
+                                print(f'alternate scraped for product {product[0]}')
+                            except:
+                                print(f'error while scraping alternate for product {product[0]}')
             
                 
             demands=self.create_demands()

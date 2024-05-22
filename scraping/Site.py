@@ -8,6 +8,7 @@ import os
 from bs4 import BeautifulSoup
 import requests
 import json
+import time
 
 headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
@@ -26,7 +27,7 @@ class Site:
         #requête de la page demandée
         page = requests.get(url, headers=headers)
         if page.status_code != 200:
-            print(f"Failed to load page {url}")
+            print(f"Erreur en tentant d'accéder à la page : {url}")
             return None
         soup = BeautifulSoup(page.text, "html.parser")
 
@@ -37,7 +38,7 @@ class Site:
             print(f"Erreur en tentant de récupérer les éléments de la page: {e}")
             return None
 
-        for product in products: #cas général plus gestion de qq execptions selon le site
+        for product in products: #cas général plus gestion de qq exceptions selon le site
             name = self._extract_text(product, self.selectors['name'])
             if self.nom == 'materiel':
                 brand = self._extract_text(product, self.selectors['brand']).split(" ")[0]
@@ -101,7 +102,7 @@ class Site:
 
         with open(f'{self.nom}_{product_name}.csv', 'w', encoding='utf-8', newline='') as csv_file:
             writer = csv.writer(csv_file)
-            # Écrire l'en-tête du searched_fichier CSV
+            # Écrire l'en-tête du fichier CSV
             writer.writerow(['Nom', 'Marque', 'Prix', 'Description', 'Url', 'Url_image'])
 
             # Écrire chaque ligne de données dans le fichier CSV
@@ -210,10 +211,76 @@ if __name__ == "__main__":
     cybertech = Site('cybertech', site_information['cybertech']['base_url'], site_information['cybertech']['search_url'], site_information['cybertech']['selectors'])
     alternate = Site('alternate', site_information['alternate']['base_url'], site_information['alternate']['search_url'], site_information['alternate']['selectors'])
     
+
     # Get product information
-    product = "gopro"
-    materiel_net.write_data(product_name=product)
-    boulanger.write_data(product_name=product)
-    grosbill.write_data(product_name=product)
-    cybertech.write_data(product_name=product)
-    alternate.write_data(product_name=product)
+    # product = "gopro"
+    # materiel_net.write_data(product_name=product)
+    # boulanger.write_data(product_name=product)
+    # grosbill.write_data(product_name=product)
+    # cybertech.write_data(product_name=product)
+    # alternate.write_data(product_name=product)
+
+    
+    # Test du temps de scraping
+    products = [
+        "ordinateur portable",
+        "imprimante",
+        "disque dur externe",
+        "clavier sans fil",
+        "souris gamer",
+        "écran LCD",
+        "routeur Wi-Fi",
+        "casque audio",
+        "webcam HD",
+        "tablette graphique"
+    ]
+
+    # Get product information for each product
+    average_times_materiel = []
+    average_times_boulanger = []
+    average_times_grosbill = []
+    average_times_cybertech = []
+    average_times_alternate = []
+
+    for product in products:
+        start_time = time.time()
+        materiel_net.get_infos(product_name=product)
+        end_time = time.time()
+        total_time = end_time - start_time
+        average_times_materiel.append(total_time)
+
+        start_time = time.time()
+        boulanger.get_infos(product_name=product)
+        end_time = time.time()
+        total_time = end_time - start_time
+        average_times_boulanger.append(total_time)
+
+        start_time = time.time()
+        grosbill.get_infos(product_name=product)
+        end_time = time.time()
+        total_time = end_time - start_time
+        average_times_grosbill.append(total_time)
+
+        start_time = time.time()
+        cybertech.get_infos(product_name=product)
+        end_time = time.time()
+        total_time = end_time - start_time
+        average_times_cybertech.append(total_time)
+
+        start_time = time.time()
+        alternate.get_infos(product_name=product)
+        end_time = time.time()
+        total_time = end_time - start_time
+        average_times_alternate.append(total_time)
+
+    mean_time_materiel = sum(average_times_materiel) / len(average_times_materiel)
+    mean_time_boulanger = sum(average_times_boulanger) / len(average_times_boulanger)
+    mean_time_grosbill = sum(average_times_grosbill) / len(average_times_grosbill)
+    mean_time_cybertech = sum(average_times_cybertech) / len(average_times_cybertech)
+    mean_time_alternate = sum(average_times_alternate) / len(average_times_alternate)
+
+    print(f"Temps moyen de scraping par produit pour Materiel.net : {mean_time_materiel} secondes")
+    print(f"Temps moyen de scraping par produit pour Boulanger : {mean_time_boulanger} secondes")
+    print(f"Temps moyen de scraping par produit pour Grosbill : {mean_time_grosbill} secondes")
+    print(f"Temps moyen de scraping par produit pour Cybertech : {mean_time_cybertech} secondes")
+    print(f"Temps moyen de scraping par produit pour Alternate : {mean_time_alternate} secondes")
