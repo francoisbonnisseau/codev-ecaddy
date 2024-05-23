@@ -5,8 +5,10 @@ import sys
 import numpy as np 
 from datetime import date
 from results_interface import ResultsInterface
+from best_path_interface import MultipleProductsInterface
+import pulp
 import threading
-import queue
+#import queue
 sys.path.append("..")
 from scraping.Site import Site
 from scraping import *
@@ -18,7 +20,17 @@ from analyses.cart import Cart
 
 
 class Block:
-    def __init__(self, canvas, window, current_y_position, add_block, images):
+     def __init__(self, canvas, window, current_y_position, add_block, images):
+        """
+        Initialize a Block object.
+
+        Parameters:
+        - canvas: Canvas object where elements will be drawn.
+        - window: Tkinter window.
+        - current_y_position: Current vertical position on the canvas.
+        - add_block: Function to add another block.
+        - images: Dictionary containing image paths.
+        """
         self.canvas = canvas
         self.window = window
         self.current_y_position = current_y_position
@@ -30,12 +42,15 @@ class Block:
         self.brand_inputs = []
         self.price_inputs = []
 
-    def add(self):
-        #supprimer le bouton add_item du bloc précédent si c'est au moins le deuxieme bloc
+     def add(self):
+        """
+        Add a new block to the canvas.
+        """
+        # Remove the previous "Add" button if it exists
         if self.previous_add_button:
             self.previous_add_button.destroy()
         
-        # créer les éléments d'un bloc
+        # Draw rectangle to visually separate each block
         self.canvas.create_rectangle(
             81.0,
             self.current_y_position + 217.9999999999999,
@@ -44,7 +59,8 @@ class Block:
             fill="#1EBA65",
             outline=""
         )
-        
+
+        # Create an "Add" button for adding more blocks
         add_item_button = Button(
             self.window,
             image=self.images['button_image_1'],
@@ -53,13 +69,17 @@ class Block:
             command=self.add_block,
             relief="flat"
         )
+
         add_item_button.place(
             x=309.0,
             y=self.current_y_position + 240.0,
             width=28.0,
             height=28.0
         )
+        
         self.previous_add_button = add_item_button
+        
+        # Create input field for product name
         
         entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_1.png")
@@ -76,6 +96,7 @@ class Block:
             fg="#000716",
             highlightthickness=0
         )
+
         self.product_inputs.append(product_input)
         product_input.place(
             x=120.0,
@@ -83,16 +104,21 @@ class Block:
             width=199.0,
             height=26.0
         )
+        
         self.block_images.append((entry_image_1,))
+        
+        # Create input field for brand
         
         entry_image_2 = PhotoImage(
             file=relative_to_assets("entry_2.png")
         )
+        
         entry_bg_2 = self.canvas.create_image(
             411.0,
             self.current_y_position + 186.0,
             image=entry_image_2
         )
+        
         brand_input = Entry(
             self.window,
             bd=0,
@@ -100,7 +126,9 @@ class Block:
             fg="#000716",
             highlightthickness=0
         )
+        
         self.brand_inputs.append(brand_input)
+        
         brand_input.place(
             x=356.0,
             y=self.current_y_position + 172.0,
@@ -110,11 +138,14 @@ class Block:
         
         self.block_images.append((entry_image_2,))
         
+        # Create input field for price
+        
         entry_bg_3 = self.canvas.create_image(
             550.0,
             self.current_y_position + 186.0,
             image=entry_image_2
         )
+        
         price_input = Entry(
             self.window,
             bd=0,
@@ -122,7 +153,9 @@ class Block:
             fg="#000716",
             highlightthickness=0
         )
+        
         self.price_inputs.append(price_input)
+        
         price_input.place(
             x=500.0,
             y=self.current_y_position + 172.0,
@@ -132,6 +165,7 @@ class Block:
         
         self.block_images.append((entry_image_2,))
         
+        # Add labels for input fields
         
         self.canvas.create_text(
             114.0,
@@ -165,10 +199,11 @@ class Block:
         )
         
         self.block_images.append((button_image_2,))
-        
+        # Update the current_y_position for the next block
         self.current_y_position += 100
 
-    def get_product_brand_inputs(self):
+     def get_product_brand_inputs(self):
+        """Function to retrieve product, brand, and minimum price inputs from the block"""
         product_inputs = [entry.get() for entry in self.product_inputs]
         brand_contents = [entry.get() for entry in self.brand_inputs]
         min_price_content = [entry.get() for entry in self.price_inputs]
@@ -178,6 +213,24 @@ class Block:
 #création de la classe Shopping app qui va contenir l'interface graphique
 class ShoppingApp:
     def __init__(self):
+        """ 
+    This class represents the main shopping application.
+
+    Attributes:
+        sites_repertory (list): A list of available websites for comparison.
+        window (Tk): The main Tkinter window.
+        canvas (Canvas): The canvas widget for displaying elements.
+        checkbox_boulanger_state (BooleanVar): State variable for Boulanger checkbox.
+        checkbox_cybertech_state (BooleanVar): State variable for CyberTech checkbox.
+        checkbox_grosbill_state (BooleanVar): State variable for GrosBill checkbox.
+        checkbox_materiel_state (BooleanVar): State variable for Materiel checkbox.
+        checkbox_alternate_state (BooleanVar): State variable for Alternate checkbox.
+        current_y_position (int): Current y-coordinate position.
+        images (dict): A dictionary containing images used in the application.
+        block (Block): An instance of the Block class for managing product blocks.
+        comparer (Button): Button for initiating product comparison.
+    """
+
         self.sites_repertory = ['boulanger', 'cybertech', 'grosbill', 'materiel', 'alternate']
         self.window = Tk()
         self.window.protocol("WM_DELETE_WINDOW", self.on_close)
@@ -195,7 +248,7 @@ class ShoppingApp:
         )
         self.canvas.place(x=0, y=0)
 
-        # Add text and buttons
+        # creat green rectongle and its text 
         self.canvas.create_rectangle(
             0.0,
             0.0,
@@ -212,22 +265,8 @@ class ShoppingApp:
             fill="#FFFFFF",
             font=("Inter Bold", 16 * -1)
         )
-        self.canvas.create_text(
-            31.0,
-            116.0,
-            anchor="nw",
-            text="CHOISIR DES PRODUITS",
-            fill="#000000",
-            font=("Inter Bold", 16 * -1)
-        )
-        self.canvas.create_text(
-            770.0,
-            177.0,
-            anchor="nw",
-            text="Alternate",
-            fill="#000000",
-            font=("Inter Bold", 16 * -1)
-        )
+        #right column
+       
         self.canvas.create_text(
             667.0,
             116.0,
@@ -236,6 +275,16 @@ class ShoppingApp:
             fill="#000000",
             font=("Inter Bold", 16 * -1)
         )
+
+        self.canvas.create_text(
+            770.0,
+            177.0,
+            anchor="nw",
+            text="Alternate",
+            fill="#000000",
+            font=("Inter Bold", 16 * -1)
+        )
+        
         self.canvas.create_text(
             770.0,
             225.0,
@@ -269,6 +318,8 @@ class ShoppingApp:
             font=("Inter Bold", 16 * -1)
         )
 
+        
+        #checkboxes for the roght column 
         self.checkbox_boulanger_state = BooleanVar()  
         self.checkbox_boulanger = Checkbutton(
             self.window,
@@ -346,18 +397,31 @@ class ShoppingApp:
             fill="#1EBA65",
             outline=""
         )
+        # main session
+        self.canvas.create_text(
+            31.0,
+            116.0,
+            anchor="nw",
+            text="CHOISIR DES PRODUITS",
+            fill="#000000",
+            font=("Inter Bold", 16 * -1)
+        )
 
+        # Set initial y-coordinate position to 0
         self.current_y_position = 0
+
+        # Load images for buttons and entry fields
         self.images = {
             'button_image_1': PhotoImage(file=relative_to_assets("button_1.png")),
             'entry_image_1': PhotoImage(file=relative_to_assets("entry_1.png")),
             'entry_image_2': PhotoImage(file=relative_to_assets("entry_2.png")),
             'button_image_2': PhotoImage(file=relative_to_assets("button_2.png"))
         }
+        # Create a Block instance to manage product blocks
         self.block = Block(self.canvas, self.window, self.current_y_position, self.add_block, self.images)
-        
+         # Add an initial block
         self.add_block()
-
+        # Create and place a button for initiating product comparison
         button_image_5 = PhotoImage(
             file=relative_to_assets("button_5.png")
         )
@@ -375,23 +439,45 @@ class ShoppingApp:
             width=174.0,
             height=64.0
         )
-
+        # Disable window resizing
         self.window.resizable(False, False)
+        # Start the Tkinter event loop
         self.window.mainloop()
 
     def on_close(self):
-        # Appelé lors de la fermeture de la fenêtre Tkinter
+        """
+        Called when the Tkinter window is closed.
+        Destroys the Tkinter window.
+        """
         self.window.destroy()
     
     def add_block(self):
+        """
+        Adds a new block to the interface.
+        """
         self.block.add()
     def to_int_or_zero(self,value):
+        """
+        Converts a value to an integer or returns 0 if conversion fails.
+
+        Args:
+            value: The value to convert.
+
+        Returns:
+            int: The integer value if conversion succeeds, otherwise 0.
+        """
         try:
             return int(value)
         except (ValueError, TypeError):
             return 0
     
     def create_demands(self):
+        """
+        Creates demand objects based on user input.
+
+        Returns:
+            list: A list of Demand objects.
+        """
         writen_demands=[ {'name': writen_demand[0], 'brand': writen_demand[1],'price_min': self.to_int_or_zero(writen_demand[2])}  for writen_demand in self.comparison_information['products'] ]
         """we have to import  writen_demands from the interface """
         demands=[]
@@ -399,22 +485,37 @@ class ShoppingApp:
             the_demand=Demand(name= writen_demand['name'], brand=writen_demand['brand'] , budget_limit=np.inf, store='', quantity=1, price_min=writen_demand['price_min'])
             demands.append(the_demand)
         return demands
-    """ fill dilevery is a function that returns a list of best product for each website """
+    
     def fill_delivery(self, demand, csv_files):
+        """
+        Fills the delivery with sorted products based on the demand.
+
+        Args:
+            demand: The demand object.
+            csv_files: The paths to the CSV files containing product information.
+
+        Returns:
+            list: A list of sorted products.
+        """
         cart=Cart(demand)
         cart.set_products(csv_files)
         sorted_products=cart.fill_the_demand()
         return sorted_products
 
     def load_site_information(self):
-        """ this function load sites proprieties"""
+        """
+        Loads site properties from a JSON file.
+        """
         with open('site_information.json', 'r') as infos_file:
             self.site_information = json.load(infos_file)
             #print(site_information)
             # print(json.dumps(site_information, indent=4, sort_keys=True))
     
     def get_comparison_information(self):
-        """ remploir l'attribu comparison information"""
+        """
+        Retrieves comparison information including demanded products and selected sites.
+        """
+        
         self.comparison_information = {'products':[] , 'sites':[]}
         #on ajoute le produit à la liste si le nom du produit n'est pas vide. On autorise une marque vide
         self.comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
@@ -427,12 +528,29 @@ class ShoppingApp:
         print(self.comparison_information)
             
     def scrape_product(self, product, site, sites_might_be_scrapped):
+        """
+        Scrapes product information from a given site.
+
+        Args:
+            product: The product name.
+            site: The site to scrape.
+            sites_might_be_scrapped: List of Site objects.
+
+        Raises:
+            Exception: If scraping encounters an error.
+        """
         for object_site in sites_might_be_scrapped: 
             if site==object_site.nom:
                 object_site.write_data(product)
         
 
     def perform_scraping(self,sites_might_be_scrapped):
+        """
+        Performs scraping of products from selected sites.
+
+        Args:
+            sites_might_be_scrapped: List of Site objects.
+        """
         for product in self.comparison_information['products']:
             for site in self.comparison_information['sites']:
                 try:
@@ -441,6 +559,15 @@ class ShoppingApp:
                 except Exception as e:
                     print(f'error while scraping {site} for product {product[0]}: {e}')
     def get_csv_paths(self,demand):
+        """
+        Generates paths to CSV files based on demand.
+
+        Args:
+            demand: The demand object.
+
+        Returns:
+            list: A list of CSV file paths.
+        """
         today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
         csv_files = []
         key_word_research = demand.get_name() + "_" + demand.get_brand()
@@ -450,13 +577,113 @@ class ShoppingApp:
             csv_files.append(csv_file)
         return csv_files
     def get_deliveries(self, demands):
+        """
+        Generates deliveries for each demand.
+
+        Args:
+            demands: List of demand objects.
+
+        Returns:
+            list: A list of deliveries.
+        """
         deliveries = []
         for demand in demands:
             csv_files = self.get_csv_paths(demand)
             deliveries.append(self.fill_delivery(demand, csv_files))
         return deliveries
+    def get_best_product_from_each_web( self, demand, csv_files):
+        """
+        Retrieves the best products from each web for a given demand.
 
+        Args:
+            demand: The demand object.
+            csv_files: List of CSV file paths.
+
+        Returns:
+            list: A list of best products.
+        """
+        cart=Cart(demand)
+        cart.set_products(csv_files)
+        best_products=cart.fill_the_demand_1()
+        return best_products
+    def get_best_delivery_from_each(self , demands):
+        """
+        Generates the best delivery from each demand.
+
+        Args:
+            demands: List of demand objects.
+
+        Returns:
+            list: A matrix of best deliveries.
+        """
+        deliveries_matrix = []
+        for demand in demands:
+            csv_files = self.get_csv_paths(demand)
+            best_product_from_each_web=self.get_best_product_from_each_web(demand,csv_files)
+            deliveries_matrix.append(best_product_from_each_web)
+        deliveries_matrix = list(map(list, zip(*deliveries_matrix)))
+        return deliveries_matrix
+    
+    def optimise_path(self, deliveries_matrix, web_site_costs):
+        """
+        Optimizes the delivery path to minimize costs.
+
+        Args:
+            deliveries_matrix: Matrix of best deliveries.
+            web_site_costs: List of costs associated with each web site.
+
+        Returns:
+            tuple: A tuple containing the optimized result matrix and y_results.
+        """
+        num_demands = len(deliveries_matrix[0])
+        num_web_sites = len(deliveries_matrix)
+        # Create the LP problem
+        prob = pulp.LpProblem("Minimize_Delivery_Costs", pulp.LpMinimize)
+        # Define decision variables
+        x = pulp.LpVariable.dicts("x",  ((i, j) for i in range(num_web_sites) for j in range(num_demands)), cat="Binary")    
+        y = pulp.LpVariable.dicts("y", (i for i in range(num_web_sites)), cat="Binary")
+        large_value=1e6
+        # Define the objective function
+        prob += pulp.lpSum([(deliveries_matrix[i][j].get_price() if deliveries_matrix[i][j] is not None else large_value) * x[i, j] for i in range(num_web_sites) for j in range(num_demands)] + [web_site_costs[i] * y[i] for i in range(num_web_sites)])
+        # Add constraints
+        # Each demand must be satisfied exactly once
+        for j in range(num_demands):
+            prob += pulp.lpSum([x[i, j] for i in range(num_web_sites)]) == 1, f"Demand_{j}_Constraint"
+        # Link x and y variables
+        for i in range(num_web_sites):
+            for j in range(num_demands):
+                prob += x[i, j] <= y[i], f"Link_x_y_{i}_{j}"
+        # Solve the problem
+        prob.solve()
+        # Extract the results
+        result_matrix = [[0] * num_demands for _ in range(num_web_sites)]
+        for i in range(num_web_sites):
+            for j in range(num_demands):
+                result_matrix[i][j] = pulp.value(x[i, j])
+        # Extract the y variable results
+        y_results = [pulp.value(y[i]) for i in range(num_web_sites)]
+        return result_matrix, y_results
+    def get_best_sum(self, deliveries_matrix, web_site_costs):
+        """
+        Calculates the best sum of products to buy.
+
+        Args:
+            deliveries_matrix: Matrix of best deliveries.
+            web_site_costs: List of costs associated with each web site.
+
+        Returns:
+            list: A list of best products to buy.
+        """
+        result_matrix, y_results = self.optimise_path(deliveries_matrix, web_site_costs)
+        products_to_buy = []
+        num_web_sites = len(deliveries_matrix)
+        num_demands = len(deliveries_matrix[0])
+        products_to_buy= [deliveries_matrix[i][j] for j in range(num_demands) for i in range(num_web_sites) if result_matrix[i][j] == 1]
+        return products_to_buy
     def compare(self):
+        """
+        Compares products across selected websites and performs optimization.
+        """
         self.load_site_information()
 
         #Setup web sites 
@@ -482,21 +709,18 @@ class ShoppingApp:
             deliveries=self.get_deliveries(demands)
 
             for delivery in deliveries:
-                final_products = []
-                for product in delivery:
-                    final_products.append({'name': product.get_name(), 'brand': product.get_brand(), 'price': product.get_price(), 'description': product.get_description(), 'url': product.get_url(), 'image_url': product.get_image_url(), 'store': product.get_store()})
-                """ResultsInterface(final_products)"""
-
-                thread = threading.Thread(target=ResultsInterface, args=(final_products,))
+                thread = threading.Thread(target=ResultsInterface, args=(delivery,))
                 thread.start()
-            # sceen for each product 
-
-            """final_products = []
-            for product in deliveries:
-                final_products.append({'name': product.get_name(), 'brand': product.get_brand(), 'price': product.get_price(), 'description': product.get_description(), 'url': product.get_url(), 'image_url': product.get_image_url(), 'store': product.get_store()})
             
-            print("these are final all brand =" ,[ delivery.get_brand() for delivery in deliveries])
-            return ResultsInterface(final_products)"""
+            deliveries_matrix=self.get_best_delivery_from_each(demands)
+            
+            #print("this the matrix=" ,deliveries_matrix)
+            
+            
+            best_sum = self.get_best_sum(deliveries_matrix,[0]* len(self.comparison_information["sites"]))
+            thread=threading.Thread(target= MultipleProductsInterface, args=(best_sum,len(demands)))
+            thread.start() 
+
 
 def relative_to_assets(path: str) -> Path:
     OUTPUT_PATH = Path(__file__).parent

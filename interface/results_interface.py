@@ -5,7 +5,9 @@ from tkinter import Scrollbar
 from tkinter import Frame
 from tkinter import Label
 from tkinter.ttk import Treeview
-
+import sys
+sys.path.append("..")
+from analyses.product import Product
 
 class ResultsInterface:
     def __init__(self, products):
@@ -28,14 +30,6 @@ class ResultsInterface:
             fill="#B0E0C6",
             outline=""
         )
-        self.canvas.create_text(
-            431.0,
-            27.0,
-            anchor="nw",
-            text="Vos résultats !",
-            fill="#000000",
-            font=("Inter Bold", 16 * -1)
-        )
         self.canvas.create_rectangle(
             40.0,
             97.0,
@@ -52,22 +46,6 @@ class ResultsInterface:
             fill="#B0DFC6",
             outline=""
         )
-        self.canvas.create_text(
-            151.0,
-            370.0,
-            anchor="nw",
-            text=self.products[1]['description'][:60],
-            fill="#000000",
-            font=("Inter SemiBold", 15 * -1)
-        )
-        self.canvas.create_text(
-            151.0,
-            385.0,
-            anchor="nw",
-            text=self.products[1]['description'][60:120],
-            fill="#000000",
-            font=("Inter SemiBold", 15 * -1)
-        )
         self.canvas.create_rectangle(
             572.0,
             275.0,
@@ -77,21 +55,16 @@ class ResultsInterface:
             outline=""
         )
         self.canvas.create_text(
-            598.0,
-            370.0,
+            431.0,
+            27.0,
             anchor="nw",
-            text=self.products[2]['description'][:50],
+            text="Vos résultats !",
             fill="#000000",
-            font=("Inter SemiBold", 15 * -1)
+            font=("Inter Bold", 16 * -1)
         )
-        self.canvas.create_text(
-            598.0,
-            385.0,
-            anchor="nw",
-            text=self.products[2]['description'][50:100],
-            fill="#000000",
-            font=("Inter SemiBold", 15 * -1)
-        )
+
+
+
         self.canvas.create_text(
             69.0,
             138.0,
@@ -116,11 +89,13 @@ class ResultsInterface:
             fill="#1EBA65",
             font=("Inter Black", 60 * -1)
         )
+
+
         self.canvas.create_text(
             151.0,
             118.0,
             anchor="nw",
-            text=self.products[0]['name'].split(' ')[0],
+            text=self.products[0].get_name().split(' ')[0],
             fill="#000000",
             font=("Inter Black", 30 * -1)
         )
@@ -128,7 +103,7 @@ class ResultsInterface:
             151.0,
             310.0,
             anchor="nw",
-            text=self.products[1]['name'].split(' ')[0],
+            text=self.products[1].get_name().split(' ')[0],
             fill="#000000",
             font=("Inter Black", 30 * -1)
         )
@@ -136,55 +111,16 @@ class ResultsInterface:
             663.0,
             310.0,
             anchor="nw",
-            text=self.products[2]['name'].split(' ')[0],
+            text=self.products[2].get_name().split(' ')[0],
             fill="#000000",
             font=("Inter Black", 20 * -1)
         )
-        self.canvas.create_text(
-            775.0,
-            107.0,
-            anchor="nw",
-            text=self.products[0]['price'],
-            fill="#000000",
-            font=("Inter Bold", 30 * -1)
-        )
-        self.canvas.create_text(
-            405.0,
-            303.0,
-            anchor="nw",
-            text=self.products[1]['price'],
-            fill="#000000",
-            font=("Inter Bold", 30 * -1)
-        )
-        self.canvas.create_text(
-            828.0,
-            307.0,
-            anchor="nw",
-            text=self.products[2]['price'],
-            fill="#000000",
-            font=("Inter Bold", 15 * -1)
-        )
-        self.canvas.create_text(
-            151.0,
-            179.0,
-            anchor="nw",
-            text=self.products[0]['description'][:130],
-            fill="#000000",
-            font=("Inter SemiBold", 15 * -1)
-        )
-        self.canvas.create_text(
-            151.0,
-            194.0,
-            anchor="nw",
-            text=self.products[0]['description'][130:200],
-            fill="#000000",
-            font=("Inter SemiBold", 15 * -1)
-        )
+
         self.canvas.create_text(
             151.0,
             150.0,
             anchor="nw",
-            text=self.products[0]['brand'],
+            text=self.products[0].get_brand(),
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
         )
@@ -192,7 +128,7 @@ class ResultsInterface:
             151.0,
             342.0,
             anchor="nw",
-            text=self.products[1]['brand'],
+            text=self.products[1].get_brand(),
             fill="#000000",
             font=("Inter SemiBold", 15 * -1)
         )
@@ -200,15 +136,45 @@ class ResultsInterface:
             663.0,
             334.0,
             anchor="nw",
-            text=self.products[2]['brand'],
+            text=self.products[2].get_brand(),
             fill="#000000",
             font=("Inter SemiBold", 13 * -1)
         )
+
+
+        
+        
+        self.canvas.create_text(
+            775.0,
+            107.0,
+            anchor="nw",
+            text=self.products[0].get_price(),
+            fill="#000000",
+            font=("Inter Bold", 30 * -1)
+        )
+        self.canvas.create_text(
+            405.0,
+            303.0,
+            anchor="nw",
+            text=self.products[1].get_price(),
+            fill="#000000",
+            font=("Inter Bold", 30 * -1)
+        )
+        self.canvas.create_text(
+            828.0,
+            307.0,
+            anchor="nw",
+            text=self.products[2].get_price(),
+            fill="#000000",
+            font=("Inter Bold", 15 * -1)
+        )
+        
+        
         self.canvas.create_text(
             766.0,
             195.0,
             anchor="nw",
-            text=self.products[0]['store'],
+            text=self.products[0].get_store(),
             fill="#FFFFFF",
             font=("Inter Medium", 20 * -1)
         )
@@ -216,7 +182,7 @@ class ResultsInterface:
             151.0,
             451.0,
             anchor="nw",
-            text=self.products[1]['store'],
+            text=self.products[1].get_store(),
             fill="#1EBA65",
             font=("Inter Medium", 20 * -1)
         )
@@ -224,10 +190,61 @@ class ResultsInterface:
             598.0,
             451.0,
             anchor="nw",
-            text=self.products[2]['store'],
+            text=self.products[2].get_store(),
             fill="#1EBA65",
             font=("Inter Medium", 20 * -1)
         )
+
+        
+        self.canvas.create_text(
+            151.0,
+            179.0,
+            anchor="nw",
+            text=self.products[0].get_description()[:130],
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+        self.canvas.create_text(
+            151.0,
+            194.0,
+            anchor="nw",
+            text=self.products[0].get_description()[130:200],
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+        self.canvas.create_text(
+            151.0,
+            370.0,
+            anchor="nw",
+            text=self.products[1].get_description()[:60],
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+        self.canvas.create_text(
+            151.0,
+            385.0,
+            anchor="nw",
+            text=self.products[1].get_description()[60:120],
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+        self.canvas.create_text(
+            598.0,
+            370.0,
+            anchor="nw",
+            text=self.products[2].get_description()[:50],
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+        self.canvas.create_text(
+            598.0,
+            385.0,
+            anchor="nw",
+            text=self.products[2].get_description()[50:100],
+            fill="#000000",
+            font=("Inter SemiBold", 15 * -1)
+        )
+
         
         self.resultats = Button(
             self.canvas,
@@ -286,7 +303,7 @@ class ResultsInterface:
 
         # Step 6: Insert Data into the Table
         for product in self.products:
-            self.table.insert("", "end", values=(product["name"], product["store"], product["brand"], product["description"], product["price"], product["url"]))
+            self.table.insert("", "end", values=(product.get_name(), product.get_store(), product.get_brand(), product.get_description(), product.get_price(), product.get_url()))
 
     
         # Step 8: Add the table to the new window
@@ -302,10 +319,9 @@ class ResultsInterface:
 
 
 if __name__ == "__main__":
-    products = [
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet là", "price": "998€99", "url":"http://example.com/product1"},
-    {"name": "Iphone 15 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet lorem ipsum dolor si amet texte long long texte long longtexte long long", "price": "1020€99", "url":"http://example.com/product1"},
-    {"name": "Iphone 16 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 16 pro lorem ipsum dolor sit amet ", "price": "1099€99", "url":"http://example.com/product3"},
-    {"name": "Iphone 14 Pro", "store":"Cyber", "brand": "Apple", "description": "Description de l’iphone 14 pro lorem ipsum dolor sit amet ", "price": "1055€99", "url":"http://example.com/product2"}
-]
+    product1 = Product(name="Iphone 14 Pro", store="Cyber", brand="Apple", description="Description de l’iphone 14 pro lorem ipsum dolor sit amet là", price=998.99, url="http://example.com/product1", image_url="http://example.com/image1.jpg")
+    product2 = Product(name="Iphone 15 Pro", store="Cyber", brand="Apple", description="Description de l’iphone 14 pro lorem ipsum dolor sit amet lorem ipsum dolor si amet texte long long texte long longtexte long long", price=1020.99, url="http://example.com/product2", image_url="http://example.com/image2.jpg")
+    product3 = Product(name="Iphone 16 Pro", store="Cyber", brand="Apple", description="Description de l’iphone 16 pro lorem ipsum dolor sit amet ", price=1099.99, url="http://example.com/product3", image_url="http://example.com/image3.jpg")
+    product4 = Product(name="Iphone 14 Pro", store="Cyber", brand="Apple", description="Description de l’iphone 14 pro lorem ipsum dolor sit amet ", price=1055.99, url="http://example.com/product4", image_url="http://example.com/image4.jpg")
+    products = [product1, product2, product3, product4]
     interface = ResultsInterface(products)
