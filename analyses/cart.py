@@ -2,26 +2,32 @@
 import os
 import csv
 import numpy as np 
-from analyses.product import Product
-from analyses.demand import Demand
+from product import Product
+from demand import Demand
 from datetime import date
 class Cart:
-    """classmethod
-    This class have two main attributes: 
-    products: a list that is filled with products found after the scraping, these products are not filtred 
-        products=[[products1 of store A, product 2 of store A, ...],[products1 of store B, product 2 of store B, ...],...]
-    demands: a demand,  it must be instantiated when creating crat
-    
+    """
+    This class represents a shopping cart for one demand.
+
+    Attributes:
+        products (list): A list containing products found after scraping. Each element of the list is a sublist
+                         containing products from a specific store.
+        demand (Demand): A demand object representing the requirements for the shopping cart.
     """
     def __init__(self,demand):
         self.products = []
         self.demand=demand
     def get_products(self):
+        """Get the products in the cart."""
         return self.products
+
     def get_demand(self):
+        """Get the demand associated with the cart."""
         return self.demand
-    def set_demand(self,demand):
-        self.demand=demand
+
+    def set_demand(self, demand):
+        """Set the demand associated with the cart."""
+        self.demand = demand
     
     def add_product(self, product, store):
         """Add a product to the cart."""
@@ -54,9 +60,6 @@ class Cart:
             store (str, optional): The store where the product is available to filter by.
             url (str, optional): The URL of the product to filter by.
             image_url (str, optional): The image URL of the product to filter by.
-        
-        Returns:
-            list: A list of products that match the specified criteria.
         """
         matching_products = []
         for store_products in self.products:
@@ -75,8 +78,7 @@ class Cart:
     
 
     def search_product_by_attributes(self, name=None, price_min=None, price_max=None, brand=None, description=None, store=None, url=None, image_url=None):
-        """Searches for products in the cart based on specified attributes.
-        it updates the aatribute products and returns the best product from each list
+        """Searches for products in the cart based on specified attributes. and returns the best product from each list
         """
         #a list of filtred products i have the same structure of the attribute products  
         useful_products=[]
@@ -103,7 +105,9 @@ class Cart:
             if best_store_price != np.inf : 
                 useful_products.append(matching_products)
                 best_products.append(best_store_product)
-        self.products=useful_products
+            else: 
+                best_products.append(None)
+        #self.products=useful_products
         return best_products
     def search_by_query(self, query):
         """Searches for products in the cart based on a general query string."""
@@ -126,6 +130,7 @@ class Cart:
         if store == "materiel":
             #print(float(SPrice.replace(' ', '').replace('€', '.').replace('\xa0', '').replace('â‚¬', '').strip()))
             return float(SPrice.replace(' ', '').replace('€', '.').replace('\xa0', '').replace('â‚¬', '').strip())
+    
     def set_products(self,csv_files):
         """this function reads the csv files and set the attribute products  """
         """Charge les produits à partir des fichiers CSV et les ajoute à self.products."""
@@ -147,6 +152,7 @@ class Cart:
                     store_products.append(product)
             # Ajouter les produits à self.products       
             self.products.append(store_products)
+    
     def fill_the_demand(self):
         """Calculates the total price of the products for the given demands.
         best_products is a list that contains all the products that match the filtres 
@@ -159,36 +165,66 @@ class Cart:
         if None not in best_products:
             sorted_products = sorted(best_products, key=lambda x: x.get_price())
         return sorted_products
+    
 
 
-""" cette liste est déjà triée """
+    def fill_the_demand_1(self):
+        """Calculates the total price of the products for the given demands.
+        best_products is a list that contains all the products that match the filtres 
+        this function retruns sorted list of products(one from each web_site) that matches the critireas 
+        """
+        demand=self.demand
+        best_products=self.search_product_by_attributes( name=demand.get_name(),price_min=demand.get_price_min(), price_max=demand.get_budget_limit(), brand=demand.get_brand(), description=None, store=demand.get_store(), url=None, image_url=None)
+        
+        return best_products
+
+
 if __name__ == "__main__": 
-   
     # Créer une instance de Demand
     demand = Demand(
-    name="Lap",
-    brand="asus",
-    budget_limit=900,
-    store=""
-)
+        name="Lap",
+        brand="asus",
+        budget_limit=900,
+        store=""
+    )
+    
     # Créer une instance de Cart avec la demande
     cart = Cart(demand)
+    
     # Chemin relatif des fichiers CSV dans le même répertoire que le script principal
     today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
-
     csv_files = [
-        os.path.join(os.path.join(os.path.dirname(__file__), today_date),"materiel_asus_for_test.csv")
+        os.path.join(os.path.dirname(__file__), "materiel_asus_for_test.csv")
     ]
     print(csv_files)
+    
     # Charger les produits à partir des fichiers CSV
     cart.set_products(csv_files)
-    sorted_products=cart.fill_the_demand()
+    
+    # Récupérer les produits triés selon la demande
+    sorted_products = cart.fill_the_demand()
 
     # Afficher les produits du panier
     print("Products in the cart:")
     for store_products in cart.get_products():
         for product in store_products: 
-            print(product.get_id(),product.get_name(), product.get_brand(), product.get_price(),product.get_description())
-    print("Products sorted")
+            print(product.get_id(), product.get_name(), product.get_brand(), product.get_price(), product.get_description())
+    
+    # Afficher les produits triés
+    print("All Products sorted:")
     for product in sorted_products:
         print(product.get_name(), product.get_brand(), product.get_price())
+
+    # Vérifier que les produits sont triés par prix croissant
+    prices = [product.get_price() for product in sorted_products]
+    assert prices == sorted(prices), "Products are not sorted by price"
+    
+
+    # Récupérer les produits triés selon la demande
+    sorted_products = cart.fill_the_demand_1()
+    # Afficher les produits triés
+    print("Best Products sorted:")
+    for product in sorted_products:
+        print(product.get_name(), product.get_brand(), product.get_price())
+    assert len(sorted_products)==1, "Products are not sorted by price"
+    print("Test passed: Select best product from a web site ")

@@ -4,8 +4,20 @@ class Demand:
     last_id = 0  # Class variable to track the last assigned ID
 
     def __init__(self, name, brand='', budget_limit=np.inf, store='', quantity=1, price_min=0):
-        
+        """
+        Initializes a Demand object.
 
+        Args:
+            name (str): The name of the demand.
+            brand (str, optional): The brand of the demand. Defaults to ''.
+            budget_limit (float, optional): The budget limit of the demand. Defaults to np.inf.
+            store (str, optional): The store of the demand. Defaults to ''.
+            quantity (int, optional): The quantity of the demand. Defaults to 1.
+            price_min (float, optional): The minimum price of the demand. Defaults to 0.
+
+        Raises:
+            ValueError: If any input type is invalid or if budget_limit, quantity, or price_min is invalid.
+        """
         # Validate name
         if not isinstance(name, str):
             raise ValueError("name must be a string")
