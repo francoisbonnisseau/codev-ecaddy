@@ -117,7 +117,7 @@ class Cart:
         return matching_products
     
     def correspondPrice (self, SPrice, store):  
-        if store in ["materiel","cybertech","grobill"]:
+        if store in ["materiel","cybertech","grosbill"]:
             return float(SPrice.replace(' ', '').replace('€', '.').strip())
         if store == "boulanger":
             return float(SPrice.replace(',','.').replace(' ', '').replace('€', '').strip())
@@ -145,7 +145,10 @@ class Cart:
             # Ajouter les produits à self.products       
             self.products.append(store_products)
     def fill_the_demand(self):
-        """Calculates the total price of the products for the given demands."""
+        """Calculates the total price of the products for the given demands.
+        best_products is a list that contains all the products that match the filtres 
+        this function retruns sorted list of products that matches the critireas 
+        """
         demand=self.demand
         best_products=self.filter_products( name=demand.get_name(),price_min=demand.get_price_min(), price_max=demand.get_budget_limit(), brand=demand.get_brand(), description=None, store=demand.get_store(), url=None, image_url=None)
         sorted_products=[]
