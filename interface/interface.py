@@ -5,6 +5,8 @@ import sys
 import numpy as np 
 from datetime import date
 from results_interface import ResultsInterface
+import threading
+import queue
 sys.path.append("..")
 from scraping.Site import Site
 from scraping import *
@@ -483,7 +485,10 @@ class ShoppingApp:
                 final_products = []
                 for product in delivery:
                     final_products.append({'name': product.get_name(), 'brand': product.get_brand(), 'price': product.get_price(), 'description': product.get_description(), 'url': product.get_url(), 'image_url': product.get_image_url(), 'store': product.get_store()})
-                ResultsInterface(final_products)
+                """ResultsInterface(final_products)"""
+
+                thread = threading.Thread(target=ResultsInterface, args=(final_products,))
+                thread.start()
             # sceen for each product 
 
             """final_products = []
