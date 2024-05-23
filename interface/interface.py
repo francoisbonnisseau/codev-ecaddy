@@ -383,9 +383,14 @@ class ShoppingApp:
     
     def add_block(self):
         self.block.add()
-
+    def to_int_or_zero(self,value):
+        try:
+            return int(value)
+        except (ValueError, TypeError):
+            return 0
+    
     def create_demands(self):
-        writen_demands=[ {'name': writen_demand[0], 'brand': writen_demand[1],'price_min': int(writen_demand[2])}  for writen_demand in self.comparison_information['products'] ]
+        writen_demands=[ {'name': writen_demand[0], 'brand': writen_demand[1],'price_min': self.to_int_or_zero(writen_demand[2])}  for writen_demand in self.comparison_information['products'] ]
         """we have to import  writen_demands from the interface """
         demands=[]
         for writen_demand in writen_demands:
@@ -399,94 +404,94 @@ class ShoppingApp:
         sorted_products=cart.fill_the_demand()
         return sorted_products
 
-    def compare(self):
-        
+    def load_site_information(self):
+        """ this function load sites proprieties"""
         with open('site_information.json', 'r') as infos_file:
             self.site_information = json.load(infos_file)
-            # print(site_information)
+            #print(site_information)
             # print(json.dumps(site_information, indent=4, sort_keys=True))
+    
+    def get_comparison_information(self):
+        """ remploir l'attribu comparison information"""
+        self.comparison_information = {'products':[] , 'sites':[]}
+        #on ajoute le produit à la liste si le nom du produit n'est pas vide. On autorise une marque vide
+        self.comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
+                                            if product[0] != '']
+        for site in self.sites_repertory: 
+            checkbox = getattr(self, 'checkbox_' + site + '_state')
+            if checkbox.get():
+                self.comparison_information['sites'].append(site)
+        # affichage des erreurs (aucun produit / aucun site) ? 
+        print(self.comparison_information)
+            
+    def scrape_product(self, product, site, sites_might_be_scrapped):
+        for object_site in sites_might_be_scrapped: 
+            if site==object_site.nom:
+                object_site.write_data(product)
         
+
+    def perform_scraping(self,sites_might_be_scrapped):
+        for product in self.comparison_information['products']:
+            for site in self.comparison_information['sites']:
+                try:
+                    self.scrape_product(product[0] + "_" + product[1], site, sites_might_be_scrapped)
+                    print(f'{site} scraped for product {product[0]}')
+                except Exception as e:
+                    print(f'error while scraping {site} for product {product[0]}: {e}')
+    def get_csv_paths(self,demand):
+        today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
+        csv_files = []
+        key_word_research = demand.get_name() + "_" + demand.get_brand()
+        for web_site_name in self.comparison_information['sites']:
+            OUTPUT_PATH = Path(__file__).parent
+            csv_file = f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
+            csv_files.append(csv_file)
+        return csv_files
+    def get_deliveries(self, demands):
+        deliveries = []
+        for demand in demands:
+            csv_files = self.get_csv_paths(demand)
+            deliveries.append(self.fill_delivery(demand, csv_files))
+        return deliveries
+
+    def compare(self):
+        self.load_site_information()
+
+        #Setup web sites 
         materiel_net = Site.Site('materiel', self.site_information['materiel']['base_url'], self.site_information['materiel']['search_url'], self.site_information['materiel']['selectors'])
         boulanger = Site.Site('boulanger', self.site_information['boulanger']['base_url'], self.site_information['boulanger']['search_url'], self.site_information['boulanger']['selectors'])
         grosbill = Site.Site('grosbill', self.site_information['grosbill']['base_url'], self.site_information['grosbill']['search_url'], self.site_information['grosbill']['selectors'])
         cybertech = Site.Site('cybertech', self.site_information['cybertech']['base_url'], self.site_information['cybertech']['search_url'], self.site_information['cybertech']['selectors'])
         alternate = Site.Site('alternate', self.site_information['alternate']['base_url'], self.site_information['alternate']['search_url'], self.site_information['alternate']['selectors'])
         
+        sites_might_be_scrapped=[materiel_net, boulanger,grosbill, cybertech, alternate]
         
         if self.window.winfo_exists():
-            self.comparison_information = {'products':[] , 'sites':[]}
-            #on ajoute le produit à la liste si le nom du produit n'est pas vide. On autorise une marque vide
-            self.comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
-                                                if product[0] != '']
-            for site in self.sites_repertory: 
-                checkbox = getattr(self, 'checkbox_' + site + '_state')
-                if checkbox.get():
-                    self.comparison_information['sites'].append(site)
-            # affichage des erreurs (aucun produit / aucun site) ? 
-            print(self.comparison_information)
+            self.get_comparison_information()
             
+            # if it exists informations about available products and wanted web site let's perform the scrapping the the analyse  
             if(self.comparison_information and self.comparison_information['sites']):
-                #on commence le scrapping et l'analyse des données
-                for product in self.comparison_information['products']:
-                    for site in self.comparison_information['sites']:
-                        if site == 'materiel':
-                            try:
-                                materiel_net.write_data(product[0]+"_"+product[1])
-                                print(f'materiel scraped for product {product[0]}')
-                            except:
-                                print(f'error while scraping materiel for product {product[0]}')
-                        if site == 'boulanger':
-                            try:
-                                boulanger.write_data(product[0]+"_"+product[1])
-                                print(f'boulanger scraped for product {product[0]}')
-                            except: 
-                                print(f'error while scraping boulanger for product {product[0]}')
-                        if site == 'grosbill':
-                            try:
-                                grosbill.write_data(product[0]+"_"+product[1])
-                                print(f'grosbill scraped for product {product[0]}')
-                            except:
-                                print(f'error while scraping grosbill for product {product[0]}')
-                        if site == 'cybertech':
-                            try:
-                                cybertech.write_data(product[0]+"_"+product[1])
-                                print(f'cybertech scraped for product {product[0]}')
-                            except:
-                                print(f'error while scraping cybertech for product {product[0]}')
-                        if site == 'alternate':
-                            try:
-                                alternate.write_data(product[0]+"_"+product[1])
-                                print(f'alternate scraped for product {product[0]}')
-                            except:
-                                print(f'error while scraping alternate for product {product[0]}')
-            
+                #the scrapping
+                self.perform_scraping(sites_might_be_scrapped)
                 
+            # creat demands 
             demands=self.create_demands()
-            #creat csv_files_path 
-            today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
-            
+            # match deliveries to products to deliveries 
+            deliveries=self.get_deliveries(demands)
 
-            #list of the products responding to research
-            deliveries=[]
-            for demand in demands: 
-                #csv files for searching this product
-                csv_files=[]
-                key_word_research=demand.get_name()+"_"+demand.get_brand()
-                for web_site_name in self.comparison_information['sites'] :
-                    OUTPUT_PATH = Path(__file__).parent
-                    csv_file= f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
-                    csv_files.append(csv_file)
-                #print(self.fill_delivery(demand,csv_files))
-                deliveries = self.fill_delivery(demand, csv_files)
-            
-            final_products = []
+            for delivery in deliveries:
+                final_products = []
+                for product in delivery:
+                    final_products.append({'name': product.get_name(), 'brand': product.get_brand(), 'price': product.get_price(), 'description': product.get_description(), 'url': product.get_url(), 'image_url': product.get_image_url(), 'store': product.get_store()})
+                ResultsInterface(final_products)
+            # sceen for each product 
+
+            """final_products = []
             for product in deliveries:
                 final_products.append({'name': product.get_name(), 'brand': product.get_brand(), 'price': product.get_price(), 'description': product.get_description(), 'url': product.get_url(), 'image_url': product.get_image_url(), 'store': product.get_store()})
-        
-            print(final_products)
             
-            
-            return ResultsInterface(final_products)
+            print("these are final all brand =" ,[ delivery.get_brand() for delivery in deliveries])
+            return ResultsInterface(final_products)"""
 
 def relative_to_assets(path: str) -> Path:
     OUTPUT_PATH = Path(__file__).parent

@@ -117,12 +117,15 @@ class Cart:
         return matching_products
     
     def correspondPrice (self, SPrice, store):  
-        if store in ["materiel","cybertech","grosbill"]:
+        if store in ["cybertech","grosbill"]:
             return float(SPrice.replace(' ', '').replace('€', '.').strip())
         if store == "boulanger":
             return float(SPrice.replace(',','.').replace(' ', '').replace('€', '').strip())
         if store == "alternate":
             return float(SPrice.replace('.','').replace(' ', '').replace('€', '').replace(',', '.').strip())
+        if store == "materiel":
+            #print(float(SPrice.replace(' ', '').replace('€', '.').replace('\xa0', '').replace('â‚¬', '').strip()))
+            return float(SPrice.replace(' ', '').replace('€', '.').replace('\xa0', '').replace('â‚¬', '').strip())
     def set_products(self,csv_files):
         """this function reads the csv files and set the attribute products  """
         """Charge les produits à partir des fichiers CSV et les ajoute à self.products."""

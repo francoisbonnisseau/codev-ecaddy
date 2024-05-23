@@ -23,7 +23,8 @@ class Site:
         self.data_list = []
 
     def get_infos(self, product_name):
-        url = f"{self.search_url}{product_name}"
+        name_for_research=product_name.replace("_","%20")
+        url = f"{self.search_url}{name_for_research}"
         #requête de la page demandée
         page = requests.get(url, headers=headers)
         if page.status_code != 200:
@@ -59,7 +60,7 @@ class Site:
             if self.nom == 'boulanger' or self.nom == 'grosbill' or self.nom == 'alternate':
                 if url_image:
                     url_image = self.base_url + url_image
-            
+            #print("wait i a will start to write data ")
             if price != None and name != None and brand != None and description != None and url_product != None:
                 #on stocke toutes les données d'un produit dans ce dictionnaire data, que l'on ajoute ensuite à la liste data_list
                 data = {
@@ -72,8 +73,9 @@ class Site:
                 }
                 
                 self.data_list.append(data)
+                #print(f"hey i am writing data see:{data}")
             
-            self.data_list.append(data)
+            #self.data_list.append(data)
         return self.data_list
 
     # méthode pour extraire le texte d'une balise html
