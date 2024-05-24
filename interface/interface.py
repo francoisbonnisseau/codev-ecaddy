@@ -521,12 +521,21 @@ class ShoppingApp:
         #on ajoute le produit à la liste si le nom du produit n'est pas vide. On autorise une marque vide
         self.comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
                                             if product[0] != '']
+        
+        if not self.comparison_information['products']:
+            WindowError("Veuillez ajouter au moins un produit à comparer.")
+            return
+        
         for site in self.sites_repertory: 
             checkbox = getattr(self, 'checkbox_' + site + '_state')
             if checkbox.get():
                 self.comparison_information['sites'].append(site)
-        # affichage des erreurs (aucun produit / aucun site) ? 
-        print(self.comparison_information)
+        
+        if not self.comparison_information['sites']:
+            WindowError("Veuillez sélectionner au moins un site pour la recherche.")
+            return
+        
+        # print(self.comparison_information)
             
     def scrape_product(self, product, site, sites_might_be_scrapped):
         """
