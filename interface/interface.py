@@ -4,6 +4,7 @@ import json
 import sys
 import numpy as np 
 from datetime import date
+from windowError import WindowError
 from results_interface import ResultsInterface
 from best_path_interface import MultipleProductsInterface
 import pulp
@@ -558,6 +559,7 @@ class ShoppingApp:
                     print(f'{site} scraped for product {product[0]}')
                 except Exception as e:
                     print(f'error while scraping {site} for product {product[0]}: {e}')
+                    WindowError(f'error while scraping {site} for product {product[0]}: {e}')
     def get_csv_paths(self,demand):
         """
         Generates paths to CSV files based on demand.
