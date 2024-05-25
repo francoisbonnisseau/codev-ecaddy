@@ -6,6 +6,7 @@ from tkinter import Frame
 from tkinter import Label
 from tkinter.ttk import Treeview
 import sys
+from windowError import WindowError
 sys.path.append("..")
 from analyses.product import Product
 

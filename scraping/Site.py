@@ -9,6 +9,9 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import time
+# import sys
+# sys.path.append("..")
+# from interface.windowError import WindowError
 
 headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
@@ -29,6 +32,7 @@ class Site:
         page = requests.get(url, headers=headers)
         if page.status_code != 200:
             print(f"Erreur en tentant d'accéder à la page : {url}")
+            WindowError(f"Erreur en tentant d'accéder à la page : {url}")
             return None
         soup = BeautifulSoup(page.text, "html.parser")
 
@@ -37,6 +41,7 @@ class Site:
             products = soup.select(self.selectors['products'])
         except Exception as e:
             print(f"Erreur en tentant de récupérer les éléments de la page: {e}")
+            WindowError(f"Erreur en tentant de récupérer les éléments de la page: {e}")
             return None
 
         for product in products: #cas général plus gestion de qq exceptions selon le site
@@ -85,6 +90,7 @@ class Site:
             return selected_element.get_text(strip=True) if selected_element else None
         except Exception as e:
             print(f"Erreur en tentant d'extraire le texte avec le sélecteur '{selector}': {e}")
+            WindowError(f"Erreur en tentant d'extraire le texte avec le sélecteur '{selector}': {e}")
             return None
 
     # Méthode pour extraire un attribut d'une balise HTML
@@ -94,6 +100,7 @@ class Site:
             return selected_element.get(attribute) if selected_element else None
         except Exception as e:
             print(f"Erreur en tentant d'extraire l'attribut '{attribute}' avec le sélecteur '{selector}': {e}")
+            WindowError(f"Erreur en tentant d'extraire l'attribut '{attribute}' avec le sélecteur '{selector}': {e}")
             return None
     
     

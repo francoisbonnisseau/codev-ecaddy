@@ -6,6 +6,7 @@ import sys
 import numpy as np 
 from datetime import date
 from results_interface import ResultsInterface
+from windowError import WindowError
 sys.path.append("..")
 from scraping.Site import Site
 from scraping import *
