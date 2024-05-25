@@ -602,9 +602,9 @@ class ShoppingApp:
         Returns:
             list: A list of best products.
         """
-        cart=Cart(demand)
-        cart.set_products(csv_files)
-        best_products=cart.fill_the_demand_1()
+        self.cart=Cart(demand)
+        self.cart.set_products(csv_files)
+        best_products=self.cart.fill_the_demand_1()
         return best_products
     def get_best_delivery_from_each(self , demands):
         """
@@ -712,14 +712,17 @@ class ShoppingApp:
                 thread = threading.Thread(target=ResultsInterface, args=(delivery,))
                 thread.start()
             
+
             deliveries_matrix=self.get_best_delivery_from_each(demands)
-            
             #print("this the matrix=" ,deliveries_matrix)
             
-            
-            best_sum = self.get_best_sum(deliveries_matrix,[0]* len(self.comparison_information["sites"]))
-            thread=threading.Thread(target= MultipleProductsInterface, args=(best_sum,len(demands)))
-            thread.start() 
+            if len(demands)>1: 
+                try: 
+                    best_sum = self.get_best_sum(deliveries_matrix,[0]* len(self.comparison_information["sites"]))
+                    thread=threading.Thread(target= MultipleProductsInterface, args=(best_sum,len(demands)))
+                    thread.start()
+                except: 
+                    return
 
 
 def relative_to_assets(path: str) -> Path:

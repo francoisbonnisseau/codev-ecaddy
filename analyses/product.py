@@ -74,7 +74,8 @@ class Product:
 if __name__ == "__main__":
 # Test case 1: Valid input
     try:
-        product1 = Product(name="Laptop", brand="Lenovo", price=899.99, description="Powerful laptop with Intel Core i7 processor.", url="http://example.com/product1", image_url="http://example.com/image1.jpg", store="Store A", nature="Electronics")
+        product1 = Product(name="Laptop", brand="Lenovo", price=899.99, description="Powerful laptop with Intel Core i7 processor.", 
+                           url="http://example.com/product1", image_url="http://example.com/image1.jpg", store="Store A", nature="Electronics")
         assert product1.get_name() == "Laptop"
         assert product1.get_brand() == "Lenovo"
         assert product1.get_price() == 899.99
@@ -89,7 +90,8 @@ if __name__ == "__main__":
 
     # Test case 2: Invalid input - name should be a string
     try:
-        Product(name=123, brand="Lenovo", price=899.99, description="Powerful laptop with Intel Core i7 processor.", url="http://example.com/product1", image_url="http://example.com/image1.jpg", store="Store A", nature="Electronics")
+        Product(name=123, brand="Lenovo", price=899.99, description="Powerful laptop with Intel Core i7 processor.",
+                 url="http://example.com/product1", image_url="http://example.com/image1.jpg", store="Store A", nature="Electronics")
         print("Test case 2 failed: Invalid input - name should be a string")
     except ValueError:
         print("Test case 2 passed: Invalid input - name should be a string")

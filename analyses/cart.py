@@ -136,6 +136,7 @@ class Cart:
     def set_products(self,csv_files):
         """this function reads the csv files and set the attribute products  """
         """Charge les produits à partir des fichiers CSV et les ajoute à self.products."""
+        self.products=[]
         for csv_file in csv_files:
             store_products=[]
             with open(csv_file, newline='', encoding='utf-8') as file:
@@ -183,44 +184,30 @@ class Cart:
 
 if __name__ == "__main__": 
     # Créer une instance de Demand
-    demand = Demand(
-        name="Lap",
-        brand="asus",
-        budget_limit=900,
-        store=""
-    )
-    
+    demand = Demand(name="Lap", brand="asus",budget_limit=900,store="")
     # Créer une instance de Cart avec la demande
     cart = Cart(demand)
-    
     # Chemin relatif des fichiers CSV dans le même répertoire que le script principal
     today_date = date.today().strftime("%d/%m/%Y").replace("/", "_")
-    csv_files = [
-        os.path.join(os.path.dirname(__file__), "materiel_asus_for_test.csv")
-    ]
+    csv_files = [ os.path.join(os.path.dirname(__file__), "materiel_asus_for_test.csv")]
     print(csv_files)
-    
     # Charger les produits à partir des fichiers CSV
     cart.set_products(csv_files)
-    
     # Récupérer les produits triés selon la demande
     sorted_products = cart.fill_the_demand()
-
     # Afficher les produits du panier
     print("Products in the cart:")
     for store_products in cart.get_products():
         for product in store_products: 
             print(product.get_id(), product.get_name(), product.get_brand(), product.get_price(), product.get_description())
-    
     # Afficher les produits triés
     print("All Products sorted:")
     for product in sorted_products:
         print(product.get_name(), product.get_brand(), product.get_price())
-
     # Vérifier que les produits sont triés par prix croissant
     prices = [product.get_price() for product in sorted_products]
     assert prices == sorted(prices), "Products are not sorted by price"
-    
+    print("Test passed: Select matching products and sort them ")
 
     # Récupérer les produits triés selon la demande
     sorted_products = cart.fill_the_demand_1()
@@ -229,4 +216,4 @@ if __name__ == "__main__":
     for product in sorted_products:
         print(product.get_name(), product.get_brand(), product.get_price())
     assert len(sorted_products)==1, "Products are not sorted by price"
-    print("Test passed: Select best product from a web site ")
+    print("Test passed: Select best product from each web site ")
