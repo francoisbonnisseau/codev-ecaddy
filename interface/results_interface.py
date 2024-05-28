@@ -7,8 +7,8 @@ from tkinter import Label
 from tkinter.ttk import Treeview
 import sys
 from windowError import WindowError
-sys.path.append("..")
-from analyses.product import Product
+# sys.path.append("..")
+# from analyses.product import Product
 
 class ResultsInterface:
     def __init__(self, products):

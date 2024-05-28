@@ -5,7 +5,7 @@ import sys
 import numpy as np 
 from datetime import date
 from windowError import WindowError
-from results_interface import ResultsInterface
+from results_interface_errors import ResultsInterface
 from best_path_interface import MultipleProductsInterface
 import pulp
 import threading
@@ -522,20 +522,31 @@ class ShoppingApp:
         self.comparison_information['products'] = [product for product in self.block.get_product_brand_inputs()
                                             if product[0] != '']
         
-        if not self.comparison_information['products']:
-            WindowError("Veuillez ajouter au moins un produit à comparer.")
-            return
-        
         for site in self.sites_repertory: 
             checkbox = getattr(self, 'checkbox_' + site + '_state')
             if checkbox.get():
                 self.comparison_information['sites'].append(site)
         
-        if not self.comparison_information['sites']:
-            WindowError("Veuillez sélectionner au moins un site pour la recherche.")
-            return
+        
         
         # print(self.comparison_information)
+    
+    def get_status(self):
+        """
+        Retrieves the status to know if the scraping can start and throws an error if no product or no site is selected.
+
+        Returns:
+            bool: The status of the application.
+        """
+        if not self.comparison_information['products']:
+            WindowError("Veuillez ajouter au moins un produit à comparer.")
+            return False
+        
+        if not self.comparison_information['sites']:
+            WindowError("Veuillez sélectionner au moins un site pour la recherche.")
+            return False
+        
+        return True
             
     def scrape_product(self, product, site, sites_might_be_scrapped):
         """
@@ -569,6 +580,7 @@ class ShoppingApp:
                 except Exception as e:
                     print(f'error while scraping {site} for product {product[0]}: {e}')
                     WindowError(f'error while scraping {site} for product {product[0]}: {e}')
+                    
     def get_csv_paths(self,demand):
         """
         Generates paths to CSV files based on demand.
@@ -708,32 +720,33 @@ class ShoppingApp:
         
         if self.window.winfo_exists():
             self.get_comparison_information()
-            
-            # if it exists informations about available products and wanted web site let's perform the scrapping the the analyse  
-            if(self.comparison_information and self.comparison_information['sites']):
-                #the scrapping
-                self.perform_scraping(sites_might_be_scrapped)
-                
-            # creat demands 
-            demands=self.create_demands()
-            # match deliveries to products to deliveries 
-            deliveries=self.get_deliveries(demands)
+            _status = self.get_status()
+            if _status == True:
+                # if it exists informations about available products and wanted web site let's perform the scrapping the the analyse  
+                if(self.comparison_information and self.comparison_information['sites']):
+                    #the scrapping
+                    self.perform_scraping(sites_might_be_scrapped)
+                    
+                # creat demands 
+                demands=self.create_demands()
+                # match deliveries to products to deliveries 
+                deliveries=self.get_deliveries(demands)
 
-            for delivery in deliveries:
-                thread = threading.Thread(target=ResultsInterface, args=(delivery,))
-                thread.start()
-            
-
-            deliveries_matrix=self.get_best_delivery_from_each(demands)
-            #print("this the matrix=" ,deliveries_matrix)
-            
-            if len(demands)>1: 
-                try: 
-                    best_sum = self.get_best_sum(deliveries_matrix,[0]* len(self.comparison_information["sites"]))
-                    thread=threading.Thread(target= MultipleProductsInterface, args=(best_sum,len(demands)))
+                for delivery in deliveries:
+                    thread = threading.Thread(target=ResultsInterface, args=(delivery,))
                     thread.start()
-                except: 
-                    return
+                
+
+                deliveries_matrix=self.get_best_delivery_from_each(demands)
+                #print("this the matrix=" ,deliveries_matrix)
+                
+                if len(demands)>1: 
+                    try: 
+                        best_sum = self.get_best_sum(deliveries_matrix,[0]* len(self.comparison_information["sites"]))
+                        thread=threading.Thread(target= MultipleProductsInterface, args=(best_sum,len(demands)))
+                        thread.start()
+                    except: 
+                        return
 
 
 def relative_to_assets(path: str) -> Path:
