@@ -3,8 +3,8 @@ from tkinter.ttk import Scrollbar
 from PIL import Image, ImageTk
 
 import sys
-sys.path.append("..")
-from analyses.product import Product
+# sys.path.append("..")
+# from analyses.product import Product
 
 class MultipleProductsInterface:
     def __init__(self, products, num_articles=3):
