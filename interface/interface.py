@@ -703,6 +703,7 @@ class ShoppingApp:
         num_demands = len(deliveries_matrix[0])
         products_to_buy= [deliveries_matrix[i][j] for j in range(num_demands) for i in range(num_web_sites) if result_matrix[i][j] == 1]
         return products_to_buy
+    
     def compare(self):
         """
         Compares products across selected websites and performs optimization.
