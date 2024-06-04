@@ -1,3 +1,4 @@
+import os
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, Checkbutton, BooleanVar, Scrollbar
 from pathlib import Path
 import json
@@ -596,7 +597,10 @@ class ShoppingApp:
         key_word_research = demand.get_name() + "_" + demand.get_brand()
         for web_site_name in self.comparison_information['sites']:
             OUTPUT_PATH = Path(__file__).parent
-            csv_file = f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
+            if os.name == 'posix':
+                csv_file = f"{OUTPUT_PATH}/{today_date}/{web_site_name}_{key_word_research}.csv"
+            else:
+                csv_file = f"{OUTPUT_PATH}\\{today_date}\\{web_site_name}_{key_word_research}.csv"
             csv_files.append(csv_file)
         return csv_files
     def get_deliveries(self, demands):
