@@ -1,7 +1,7 @@
 # codev-ecaddy
 Projet Codev - Imt Atlantique
-print ("hello world") 
 
+Ce projet vise à proposer un comparateur de prix en direct pour les produits informatiques
 
 structure du csv : 
 
