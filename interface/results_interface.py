@@ -272,7 +272,7 @@ class ResultsInterface:
 
         
     def open_results_window(self):
-        # Step 2: Create a Frame for the Table
+        # Create a Frame for the Table
         self.window_table = Tk()
         self.window_table.geometry("1400x400")
         self.window_table.configure(bg="#FFFFFF")
@@ -281,18 +281,18 @@ class ResultsInterface:
         table_frame.pack(side="bottom", fill="both", expand=True)
 
 
-        # Step 3: Create a Scrollbar
+        # Create a Scrollbar
         scrollbar = Scrollbar(table_frame, orient=VERTICAL)
         scrollbar.pack(side="right", fill="y")
 
-        # Step 4: Create a Treeview Table
+        # Create a Treeview Table
         self.table = Treeview(table_frame, yscrollcommand=scrollbar.set, selectmode="browse")
         self.table.pack(side="bottom", fill="both", expand=True)
 
         # Configure the scrollbar to command the table's yview
         scrollbar.config(command=self.table.yview)
 
-        # Step 5: Configure the Table Headers
+        # Configure the Table Headers
         self.table["columns"] = ("name", "site", "brand", "description", "price", "link")
         self.table.column("#0", width=0, stretch="no")  # Hiding the first column
         self.table.heading("name", text="Name")
@@ -302,12 +302,12 @@ class ResultsInterface:
         self.table.heading("price", text="Price")
         self.table.heading("link", text="Link")
 
-        # Step 6: Insert Data into the Table
+        # Insert Data into the Table
         for product in self.products:
             self.table.insert("", "end", values=(product.get_name(), product.get_store(), product.get_brand(), product.get_description(), product.get_price(), product.get_url()))
 
     
-        # Step 8: Add the table to the new window
+        # Add the table to the new window
         self.table.pack(side="left", fill="both", expand=True)
 
 
