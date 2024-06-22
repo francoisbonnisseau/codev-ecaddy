@@ -9,6 +9,8 @@ from analyses.product import Product
 
 
 class ResultsInterface:
+    """Cette classe permet de créer une interface graphique pour afficher les résultats de la recherche de produits
+    """
     def __init__(self, products):
         self.products = products
 

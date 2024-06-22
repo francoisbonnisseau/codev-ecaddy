@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 
 class WindowError:
+    """Cette classe permet de créer une fenêtre d'erreur
+    """
     def __init__(self, text):
         self.window = tk.Tk()
         self.window.title("Erreur")
